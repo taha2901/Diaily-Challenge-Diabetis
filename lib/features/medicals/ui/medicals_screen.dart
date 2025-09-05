@@ -8,6 +8,7 @@ import 'package:challenge_diabetes/core/widget/custom_app_bar_doctors.dart';
 import 'package:challenge_diabetes/features/medicals/logic/medicine_cubit.dart';
 import 'package:challenge_diabetes/features/medicals/logic/medicine_state.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MedicineListScreen extends StatelessWidget {
   const MedicineListScreen({super.key});
@@ -24,8 +25,8 @@ class MedicineListScreen extends StatelessWidget {
               builder: (context, state) {
                 return state.when(
                   initial: () => Container(),
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  // 🎯 استبدال CircularProgressIndicator بـ Shimmer
+                  loading: () => _buildShimmerLoading(),
                   success: (medicines) {
                     if (medicines.isEmpty) {
                       return const EmptyMedicine();
@@ -43,13 +44,12 @@ class MedicineListScreen extends StatelessWidget {
                   },
                   error: (apiErrorModel) =>
                       Center(child: Text("Error: ${apiErrorModel.title}")),
-                  addMedicineLoading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  // 🎯 حالات التحميل الأخرى أيضا
+                  addMedicineLoading: () => _buildShimmerLoading(),
                   addMedicineSuccess: () => Container(),
                   addMedicineError: (apiErrorModel) =>
                       Center(child: Text("Add Error: ${apiErrorModel.title}")),
-                  deleteMedicineLoading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  deleteMedicineLoading: () => _buildShimmerLoading(),
                   deleteMedicineSuccess: () => Container(),
                   deleteMedicineError: (apiErrorModel) => Center(
                     child: Text("Delete Error: ${apiErrorModel.title}"),
@@ -66,7 +66,6 @@ class MedicineListScreen extends StatelessWidget {
             context,
             Routers.addMedicine,
           );
-
           // ✅ لو تمت الإضافة بنجاح، نعيد تحميل البيانات
           if (result == true) {
             context.read<MedicineCubit>().getMedicine();
@@ -75,6 +74,107 @@ class MedicineListScreen extends StatelessWidget {
         backgroundColor: Colors.blue[600],
         label: const Text("Add Medicine"),
         icon: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget _buildShimmerLoading() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: ListView.builder(
+        padding: EdgeInsets.symmetric(
+          horizontal: 16.w,
+          vertical: 16.h,
+        ),
+        itemCount: 5, // عدد الكاردات الوهمية
+        itemBuilder: (context, index) {
+          return _buildShimmerMedicineCard();
+        },
+      ),
+    );
+  }
+
+  Widget _buildShimmerMedicineCard() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                // Icon placeholder
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Medicine name placeholder
+                      Container(
+                        width: double.infinity,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      // Dosage placeholder
+                      Container(
+                        width: 120,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Menu button placeholder
+                Container(
+                  width: 24,
+                  height: 24,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            // Time container placeholder
+            Container(
+              width: 150,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

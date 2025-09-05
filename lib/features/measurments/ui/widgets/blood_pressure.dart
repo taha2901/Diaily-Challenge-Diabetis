@@ -1,21 +1,24 @@
+import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/blood_pressure_request_model.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/get_measurments_models/get_blood_pressure_response.dart';
 import 'package:flutter/material.dart';
 
 class BloodPressureForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
-  const BloodPressureForm({
-    super.key,
-    required this.formKey,
-  });
+  const BloodPressureForm({super.key, required this.formKey});
 
   @override
-  State<BloodPressureForm> createState() => _BloodPressureFormState();
+  State<BloodPressureForm> createState() => BloodPressureFormState();
 }
 
-class _BloodPressureFormState extends State<BloodPressureForm> {
+class BloodPressureFormState extends State<BloodPressureForm>
+    with AutomaticKeepAliveClientMixin {
   final TextEditingController _systolicController = TextEditingController();
   final TextEditingController _diastolicController = TextEditingController();
   final TextEditingController _heartRateController = TextEditingController();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -35,6 +38,20 @@ class _BloodPressureFormState extends State<BloodPressureForm> {
     _diastolicController.dispose();
     _heartRateController.dispose();
     super.dispose();
+  }
+
+  BloodPressureRequestBody? read() {
+    final s = int.tryParse(_systolicController.text.trim());
+    final d = int.tryParse(_diastolicController.text.trim());
+    final h = int.tryParse(_heartRateController.text.trim());
+
+    if (s == null || d == null || h == null) return null;
+    return BloodPressureRequestBody(
+      dateTime: DateTime.now(),
+      systolicPressure: s,
+      diastolicPressure: d,
+      heartRate: h,
+    );
   }
 
   Widget _buildPressureStatus() {
@@ -77,10 +94,7 @@ class _BloodPressureFormState extends State<BloodPressureForm> {
           const SizedBox(width: 8),
           Text(
             "الحالة: $status",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: statusColor,
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, color: statusColor),
           ),
         ],
       ),
@@ -163,7 +177,9 @@ class _BloodPressureFormState extends State<BloodPressureForm> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0xFF3B82F6)),
+                              borderSide: const BorderSide(
+                                color: Color(0xFF3B82F6),
+                              ),
                             ),
                             filled: true,
                             fillColor: Colors.grey[50],
@@ -173,7 +189,9 @@ class _BloodPressureFormState extends State<BloodPressureForm> {
                               return 'مطلوب';
                             }
                             final pressure = int.tryParse(value);
-                            if (pressure == null || pressure < 80 || pressure > 250) {
+                            if (pressure == null ||
+                                pressure < 80 ||
+                                pressure > 250) {
                               return '80-250';
                             }
                             return null;
@@ -202,7 +220,9 @@ class _BloodPressureFormState extends State<BloodPressureForm> {
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0xFF3B82F6)),
+                              borderSide: const BorderSide(
+                                color: Color(0xFF3B82F6),
+                              ),
                             ),
                             filled: true,
                             fillColor: Colors.grey[50],
@@ -212,7 +232,9 @@ class _BloodPressureFormState extends State<BloodPressureForm> {
                               return 'مطلوب';
                             }
                             final pressure = int.tryParse(value);
-                            if (pressure == null || pressure < 40 || pressure > 150) {
+                            if (pressure == null ||
+                                pressure < 40 ||
+                                pressure > 150) {
                               return '40-150';
                             }
                             return null;

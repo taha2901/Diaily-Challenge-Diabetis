@@ -1,8 +1,10 @@
+import 'package:challenge_diabetes/core/helpers/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:challenge_diabetes/features/medicals/logic/medicine_cubit.dart';
 import 'package:challenge_diabetes/features/medicals/logic/medicine_state.dart';
 import 'package:challenge_diabetes/features/home/ui/widgets/medication_item.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MedicationsCard extends StatelessWidget {
@@ -106,14 +108,14 @@ class MedicationsCard extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: 12),
+          horizontalSpace(8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 120,
-                  height: 14,
+                  width: 120.w,
+                  height: 14.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(4),

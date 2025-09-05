@@ -1,21 +1,22 @@
+import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/blood_suger_request_model.dart';
 import 'package:flutter/material.dart';
 
 class BloodSugarForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
-  const BloodSugarForm({
-    super.key,
-    required this.formKey,
-  });
+  const BloodSugarForm({super.key, required this.formKey});
 
   @override
-  State<BloodSugarForm> createState() => _BloodSugarFormState();
+  State<BloodSugarForm> createState() => BloodSugarFormState();
 }
 
-class _BloodSugarFormState extends State<BloodSugarForm> {
+class BloodSugarFormState extends State<BloodSugarForm>
+    with AutomaticKeepAliveClientMixin {
   final TextEditingController _sugarController = TextEditingController();
   String _selectedMealTime = 'قبل الأكل';
 
+  @override
+  bool get wantKeepAlive => true;
   final List<String> _mealTimes = [
     'قبل الأكل',
     'بعد الأكل بساعتين',
@@ -29,33 +30,43 @@ class _BloodSugarFormState extends State<BloodSugarForm> {
       'title': 'قبل الأكل',
       'description': 'القياس قبل تناول الوجبة',
       'icon': Icons.restaurant,
-      'normalRange': '80-130 mg/dL'
+      'normalRange': '80-130 mg/dL',
     },
     {
       'title': 'بعد الأكل بساعتين',
       'description': 'القياس بعد ساعتين من الوجبة',
       'icon': Icons.access_time,
-      'normalRange': 'أقل من 180 mg/dL'
+      'normalRange': 'أقل من 180 mg/dL',
     },
     {
       'title': 'عند الاستيقاظ',
       'description': 'القياس الصباحي على معدة فارغة',
       'icon': Icons.wb_sunny,
-      'normalRange': '80-130 mg/dL'
+      'normalRange': '80-130 mg/dL',
     },
     {
       'title': 'قبل النوم',
       'description': 'القياس قبل النوم',
       'icon': Icons.bedtime,
-      'normalRange': '100-140 mg/dL'
+      'normalRange': '100-140 mg/dL',
     },
     {
       'title': 'عشوائي',
       'description': 'قياس في أي وقت',
       'icon': Icons.shuffle,
-      'normalRange': 'أقل من 200 mg/dL'
+      'normalRange': 'أقل من 200 mg/dL',
     },
   ];
+
+  BloodSugerRequestBody? read() {
+    final v = int.tryParse(_sugarController.text.trim());
+    if (v == null) return null;
+    return BloodSugerRequestBody(
+      sugarReading: v,
+      measurementDate: _selectedMealTime,
+      dateTime: DateTime.now(),
+    );
+  }
 
   @override
   void dispose() {
@@ -65,6 +76,7 @@ class _BloodSugarFormState extends State<BloodSugarForm> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Form(
@@ -116,7 +128,7 @@ class _BloodSugarFormState extends State<BloodSugarForm> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  
+
                   // Sugar Level Input
                   TextFormField(
                     controller: _sugarController,
@@ -154,12 +166,11 @@ class _BloodSugarFormState extends State<BloodSugarForm> {
                       return null;
                     },
                   ),
-                  
+
                   const SizedBox(height: 16),
-                  
+
                   // Sugar Level Status
-                  if (_sugarController.text.isNotEmpty)
-                    _buildSugarStatus(),
+                  if (_sugarController.text.isNotEmpty) _buildSugarStatus(),
                 ],
               ),
             ),
@@ -210,12 +221,12 @@ class _BloodSugarFormState extends State<BloodSugarForm> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Meal Time Options
                   ...List.generate(_mealTimeDetails.length, (index) {
                     final mealTime = _mealTimeDetails[index];
                     final isSelected = _selectedMealTime == mealTime['title'];
-                    
+
                     return Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: InkWell(
@@ -228,12 +239,12 @@ class _BloodSugarFormState extends State<BloodSugarForm> {
                         child: Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: isSelected 
+                            color: isSelected
                                 ? const Color(0xFF3B82F6).withOpacity(0.1)
                                 : Colors.grey[50],
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: isSelected 
+                              color: isSelected
                                   ? const Color(0xFF3B82F6)
                                   : Colors.grey[300]!,
                               width: isSelected ? 2 : 1,
@@ -244,7 +255,7 @@ class _BloodSugarFormState extends State<BloodSugarForm> {
                               Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: isSelected 
+                                  color: isSelected
                                       ? const Color(0xFF3B82F6)
                                       : Colors.grey[400],
                                   borderRadius: BorderRadius.circular(8),
@@ -265,7 +276,7 @@ class _BloodSugarFormState extends State<BloodSugarForm> {
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
-                                        color: isSelected 
+                                        color: isSelected
                                             ? const Color(0xFF3B82F6)
                                             : const Color(0xFF1F2937),
                                       ),
@@ -317,7 +328,8 @@ class _BloodSugarFormState extends State<BloodSugarForm> {
     IconData statusIcon = Icons.help;
 
     if (sugarLevel > 0) {
-      if (_selectedMealTime == 'قبل الأكل' || _selectedMealTime == 'عند الاستيقاظ') {
+      if (_selectedMealTime == 'قبل الأكل' ||
+          _selectedMealTime == 'عند الاستيقاظ') {
         if (sugarLevel < 80) {
           status = 'منخفض';
           statusColor = const Color(0xFF3B82F6);

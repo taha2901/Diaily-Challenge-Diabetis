@@ -1,6 +1,15 @@
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/features/login/data/models/login_request_body.dart';
 import 'package:challenge_diabetes/features/login/data/models/login_response_body.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/blood_pressure_request_model.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/blood_pressure_response_model.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/blood_suger_request_model.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/blood_suger_response_model.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/weight_request_model.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/weight_response_model.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/get_measurments_models/get_blood_pressure_response.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/get_measurments_models/get_blood_suger_response.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/get_measurments_models/get_weight_response.dart';
 import 'package:challenge_diabetes/features/medicals/model/data/add_medicine_request_body.dart';
 import 'package:challenge_diabetes/features/medicals/model/data/add_medicine_response_body.dart';
 import 'package:challenge_diabetes/features/medicals/model/data/delete_medicine_response_body.dart';
@@ -54,30 +63,30 @@ abstract class ApiServices {
   //   @Query("date") String date,
   // );
 
-  // @POST(ApiConstants.bloodSugar)
-  // Future<BloodSugerResponseBody> addBloodSugar(
-  //   @Body() BloodSugerRequestBody addMedicineRequestBody,
-  // );
+  @POST(ApiConstants.bloodSugar)
+  Future<BloodSugerResponseBody> addBloodSugar(
+    @Body() BloodSugerRequestBody addMedicineRequestBody,
+  );
 
-  // @POST(ApiConstants.bloodPressure)
-  // Future<BloodPressureResponseBody> addBloodPressure(
-  //   @Body() BloodPressureRequestBody addMedicineRequestBody,
-  // );
-  // @POST(ApiConstants.weight)
-  // Future<WeightResponse> addWeight(
-  //   @Body() WeightRequestBody addMedicineRequestBody,
-  // );
-  // @GET(ApiConstants.getBloodSuger)
-  // Future<List<SugarMeasurement>> getBloodSuger(
-  //     @Query('specificDate') String specificDate);
+  @POST(ApiConstants.bloodPressure)
+  Future<BloodPressureResponseBody> addBloodPressure(
+    @Body() BloodPressureRequestBody addMedicineRequestBody,
+  );
+  @POST(ApiConstants.weight)
+  Future<WeightResponseBody> addWeight(
+    @Body() WeightRequestBody addMedicineRequestBody,
+  );
+  @GET(ApiConstants.getBloodSuger)
+  Future<List<SugarMeasurement>> getBloodSuger(
+      @Query('specificDate') String specificDate);
 
-  // @GET(ApiConstants.getWeight)
-  // Future<List<WeightMeasurement>> getWeight(
-  //     @Query('specificDate') String specificDate);
+  @GET(ApiConstants.getWeight)
+  Future<List<WeightMeasurement>> getWeight(
+      @Query('specificDate') String specificDate);
 
-  // @GET(ApiConstants.getPressure)
-  // Future<List<BloodPressureMeasurement>> getPressure(
-  //     @Query('specificDate') String specificDate);
+  @GET(ApiConstants.getPressure)
+  Future<List<BloodPressureMeasurement>> getPressure(
+      @Query('specificDate') String specificDate);
 
   // @GET(ApiConstants.settings)
   // Future<UserDetailsResponse> getProfile();

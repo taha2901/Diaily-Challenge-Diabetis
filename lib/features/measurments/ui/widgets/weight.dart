@@ -1,65 +1,66 @@
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
+import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/weight_request_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WeightForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
-  const WeightForm({
-    super.key,
-    required this.formKey,
-  });
+  const WeightForm({super.key, required this.formKey});
 
   @override
-  State<WeightForm> createState() => _WeightFormState();
+  State<WeightForm> createState() => WeightFormState();
 }
 
-class _WeightFormState extends State<WeightForm> {
+class WeightFormState extends State<WeightForm>
+    with AutomaticKeepAliveClientMixin {
   final TextEditingController _weightController = TextEditingController();
   String _selectedActivity = 'مشي';
 
+  @override
+  bool get wantKeepAlive => true;
   final List<Map<String, dynamic>> _activities = [
     {
       'title': 'مشي',
       'description': 'المشي العادي أو السريع',
       'icon': Icons.directions_walk,
       'color': const Color(0xFF10B981),
-      'calories': '3-5 سعرات/دقيقة'
+      'calories': '3-5 سعرات/دقيقة',
     },
     {
       'title': 'جري',
       'description': 'الجري أو الهرولة',
       'icon': Icons.directions_run,
       'color': const Color(0xFFEF4444),
-      'calories': '8-12 سعرات/دقيقة'
+      'calories': '8-12 سعرات/دقيقة',
     },
     {
       'title': 'سباحة',
       'description': 'السباحة أو التمارين المائية',
       'icon': Icons.pool,
       'color': const Color(0xFF3B82F6),
-      'calories': '6-10 سعرات/دقيقة'
+      'calories': '6-10 سعرات/دقيقة',
     },
     {
       'title': 'ركوب الدراجة',
       'description': 'ركوب الدراجة الهوائية',
       'icon': Icons.directions_bike,
       'color': const Color(0xFF8B5CF6),
-      'calories': '5-8 سعرات/دقيقة'
+      'calories': '5-8 سعرات/دقيقة',
     },
     {
       'title': 'تمارين رياضية',
       'description': 'تمارين اللياقة البدنية',
       'icon': Icons.fitness_center,
       'color': const Color(0xFFF59E0B),
-      'calories': '4-7 سعرات/دقيقة'
+      'calories': '4-7 سعرات/دقيقة',
     },
     {
       'title': 'يوجا',
       'description': 'تمارين اليوجا والاسترخاء',
       'icon': Icons.self_improvement,
       'color': const Color(0xFFEC4899),
-      'calories': '2-4 سعرات/دقيقة'
+      'calories': '2-4 سعرات/دقيقة',
     },
   ];
 
@@ -73,6 +74,15 @@ class _WeightFormState extends State<WeightForm> {
     setState(() {});
   }
 
+  WeightRequestBody? read() {
+    final w = double.tryParse(_weightController.text.trim());
+    if (w == null) return null;
+    return WeightRequestBody(
+      weight: w.toInt(),
+      sport: _selectedActivity.trim() == 'مشي',
+    );
+  }
+
   @override
   void dispose() {
     _weightController.dispose();
@@ -81,6 +91,7 @@ class _WeightFormState extends State<WeightForm> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Form(
@@ -136,7 +147,9 @@ class _WeightFormState extends State<WeightForm> {
                   // Weight Input
                   TextFormField(
                     controller: _weightController,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     decoration: InputDecoration(
                       labelText: 'الوزن الحالي',
                       hintText: 'أدخل وزنك',
@@ -174,8 +187,7 @@ class _WeightFormState extends State<WeightForm> {
                   const SizedBox(height: 16),
 
                   // Weight Status
-                  if (_weightController.text.isNotEmpty)
-                    _buildWeightStatus(),
+                  if (_weightController.text.isNotEmpty) _buildWeightStatus(),
                 ],
               ),
             ),
@@ -231,12 +243,13 @@ class _WeightFormState extends State<WeightForm> {
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.1,
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 1.1,
+                        ),
                     itemCount: _activities.length,
                     itemBuilder: (context, index) {
                       final activity = _activities[index];
@@ -252,12 +265,12 @@ class _WeightFormState extends State<WeightForm> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: isSelected 
+                            color: isSelected
                                 ? activity['color'].withOpacity(0.1)
                                 : Colors.grey[50],
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: isSelected 
+                              color: isSelected
                                   ? activity['color']
                                   : Colors.grey[300]!,
                               width: isSelected ? 2 : 1,
@@ -269,7 +282,7 @@ class _WeightFormState extends State<WeightForm> {
                               Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                  color: isSelected 
+                                  color: isSelected
                                       ? activity['color']
                                       : Colors.grey[400],
                                   borderRadius: BorderRadius.circular(20),
@@ -286,7 +299,7 @@ class _WeightFormState extends State<WeightForm> {
                                 style: TextStyle(
                                   fontSize: 10.sp,
                                   fontWeight: FontWeight.bold,
-                                  color: isSelected 
+                                  color: isSelected
                                       ? activity['color']
                                       : const Color(0xFF1F2937),
                                 ),
@@ -402,7 +415,7 @@ class _WeightFormState extends State<WeightForm> {
 
   Widget _buildWeightStatus() {
     final weight = double.tryParse(_weightController.text) ?? 0;
-    
+
     if (weight <= 0) return const SizedBox.shrink();
 
     // This is a simplified status - in real app, you'd need height for BMI

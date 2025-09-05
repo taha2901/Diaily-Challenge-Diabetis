@@ -4,6 +4,12 @@ import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/doctor/model/repo/doctor_repo.dart';
 import 'package:challenge_diabetes/features/login/data/repos/login_repo.dart';
 import 'package:challenge_diabetes/features/login/logic/cubit/login_cubit.dart';
+import 'package:challenge_diabetes/features/measurments/logic/pressure/pressure_cubit.dart';
+import 'package:challenge_diabetes/features/measurments/logic/suger/suger_cubit.dart';
+import 'package:challenge_diabetes/features/measurments/logic/weight/weight_cubit.dart';
+import 'package:challenge_diabetes/features/measurments/model/repo/pressure_mesurment_repo.dart';
+import 'package:challenge_diabetes/features/measurments/model/repo/suger_measurments_repo.dart';
+import 'package:challenge_diabetes/features/measurments/model/repo/weight_measurment_repo.dart';
 import 'package:challenge_diabetes/features/medicals/logic/medicine_cubit.dart';
 import 'package:challenge_diabetes/features/medicals/model/repo/medicine_repo.dart';
 import 'package:challenge_diabetes/features/signup/data/repo/sign_up_repo.dart';
@@ -35,16 +41,20 @@ Future<void> setUpGetIt() async {
   getit.registerFactory<MedicineCubit>(() => MedicineCubit(getit()));
 
   //measurements
-  // getit.registerLazySingleton<MeasurmentRepo>(() => MeasurmentRepo(getit()));
-  // getit.registerFactory<MeasurmentsCubit>(() => MeasurmentsCubit(getit()));
+  getit.registerLazySingleton<MeasurmentRepo>(() => MeasurmentRepo(getit()));
+  getit.registerFactory<MeasurmentsCubit>(() => MeasurmentsCubit(getit()));
 
   //weight
-  // getit.registerLazySingleton<WeightMeasurmentRepo>(() => WeightMeasurmentRepo(getit()));
-  // getit.registerFactory<WeightCubit>(() => WeightCubit(getit()));
+  getit.registerLazySingleton<WeightMeasurmentRepo>(
+    () => WeightMeasurmentRepo(getit()),
+  );
+  getit.registerFactory<WeightCubit>(() => WeightCubit(getit()));
 
   //pressure
-  // getit.registerLazySingleton<PressureMeasurmentRepo>(() => PressureMeasurmentRepo(getit()));
-  // getit.registerFactory<PressureCubit>(() => PressureCubit(getit()));
+  getit.registerLazySingleton<PressureMeasurmentRepo>(
+    () => PressureMeasurmentRepo(getit()),
+  );
+  getit.registerFactory<PressureCubit>(() => PressureCubit(getit()));
 
   //profile
   // getit.registerLazySingleton<ProfileRepo>(() => ProfileRepo(getit()));
@@ -69,6 +79,4 @@ Future<void> setUpGetIt() async {
   //add person
   // getit.registerLazySingleton<AddPersonRepo>(() => AddPersonRepo(getit()));
   // getit.registerFactory<AddPersonCubit>(() => AddPersonCubit(getit(), getit() , getit()));
-
-
 }

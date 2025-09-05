@@ -7,3 +7,14 @@ class SharedPrefKeys {
 
   static const String onboard = 'onboard';
 }
+
+class DateHelper {
+  static String getCurrentDate() {
+    DateTime currentDate = DateTime.now();
+    return "${currentDate.year}-${currentDate.month}-${currentDate.day}";
+  }
+
+  static String formatDate(DateTime date) {
+    return date.toString().split(' ')[0];
+  }
+}
