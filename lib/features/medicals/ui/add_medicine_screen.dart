@@ -23,7 +23,6 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
   final TextEditingController _notesController = TextEditingController();
   TimeOfDay? _selectedTime;
   String _selectedFrequency = 'Daily';
-  bool _isLoading = false;
 
   final List<String> _frequencies = [
     'Daily',
@@ -79,24 +78,21 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
       body: BlocListener<MedicineCubit, MedicineState>(
         listener: (context, state) {
           state.when(
-            initial: () => setState(() => _isLoading = false),
-            loading: () => setState(() => _isLoading = false),
-            success: (_) => setState(() => _isLoading = false),
-            error: (_) => setState(() => _isLoading = false),
-            addMedicineLoading: () => setState(() => _isLoading = true),
+            addMedicineLoading: () {},
+            error: (apiErrorModel) {
+              _showErrorMessage(apiErrorModel.title.toString());
+            },
+            initial: () {},
+            loading: () {},
+            success: (medicines) {},
             addMedicineSuccess: () {
-              setState(() => _isLoading = false);
               _showSuccessMessage();
-              // العودة إلى الصفحة السابقة بعد نجاح الإضافة
-              Navigator.pop(context, true); // إرسال true للإشارة أن العملية تمت بنجاح
+              Navigator.pop(context, true);
             },
-            addMedicineError: (error) {
-              setState(() => _isLoading = false);
-              _showErrorMessage(error.title ?? 'Unknown error');
-            },
-            deleteMedicineLoading: () => setState(() => _isLoading = false),
-            deleteMedicineSuccess: () => setState(() => _isLoading = false),
-            deleteMedicineError: (_) => setState(() => _isLoading = false),
+            addMedicineError: (error) {},
+            deleteMedicineLoading: () {},
+            deleteMedicineSuccess: () {},
+            deleteMedicineError: (_) {},
           );
         },
         child: SingleChildScrollView(
@@ -137,13 +133,13 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                         },
                         maxLines: 1,
                       ),
-                      const SizedBox(height: 24),
+                      verticalSpace(24),
                       SectionTitle(title: "Schedule"),
                       verticalSpace(16),
                       _buildTimeSelector(),
                       verticalSpace(20),
                       _buildFrequencyDropdown(),
-                      const SizedBox(height: 24),
+                      verticalSpace(24),
                       SectionTitle(title: "Additional Notes"),
                       verticalSpace(16),
                       TextFieldOfMedicine(
@@ -152,21 +148,23 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                         icon: Icons.notes,
                         maxLines: 3,
                       ),
-                      const SizedBox(height: 40),
+                      verticalSpace(40),
                       SaveMedicineButton(
-                        isLoading: _isLoading,
                         onSave: () {
-                          if (_formKey.currentState!.validate() && !_isLoading) {
+                          if (_formKey.currentState!.validate()) {
                             final cubit = context.read<MedicineCubit>();
-                            
+
                             // تنظيف الكنترولر أولاً
                             cubit.clearControllers();
-                            
+
                             // ملء البيانات الجديدة
-                            cubit.nameController.text = _nameController.text.trim();
-                            cubit.dosageController.text = _doseController.text.trim();
+                            cubit.nameController.text = _nameController.text
+                                .trim();
+                            cubit.dosageController.text = _doseController.text
+                                .trim();
                             cubit.countController.text = _selectedFrequency;
-                            cubit.timeController.text = _selectedTime?.format(context) ?? "8:00 AM";
+                            cubit.timeController.text =
+                                _selectedTime?.format(context) ?? "8:00 AM";
 
                             cubit.emitAddMedicine();
                           }
@@ -278,3 +276,4 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
     super.dispose();
   }
 }
+

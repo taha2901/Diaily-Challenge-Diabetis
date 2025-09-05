@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:challenge_diabetes/features/medicals/logic/medicine_cubit.dart';
 import 'package:challenge_diabetes/features/medicals/logic/medicine_state.dart';
 import 'package:challenge_diabetes/features/home/ui/widgets/medication_item.dart';
-import 'package:challenge_diabetes/core/helpers/spacing.dart';
-import 'package:challenge_diabetes/core/theming/styles.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MedicationsCard extends StatelessWidget {
   const MedicationsCard({super.key});
@@ -15,10 +14,12 @@ class MedicationsCard extends StatelessWidget {
       builder: (context, state) {
         return state.when(
           initial: () => const SizedBox(),
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () => _buildShimmerLoading(),
           success: (medicines) {
             final displayed = medicines.take(2).toList();
-            if (displayed.isEmpty) return const SizedBox(); /// لا تعرض الكارد لو فاضي
+            if (displayed.isEmpty) return const SizedBox();
+
+            /// لا تعرض الكارد لو فاضي
 
             return _buildMedicationsCard(displayed);
           },
@@ -31,6 +32,115 @@ class MedicationsCard extends StatelessWidget {
           deleteMedicineError: (_) => const SizedBox(),
         );
       },
+    );
+  }
+
+  Widget _buildShimmerLoading() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade300,
+            spreadRadius: 1,
+            blurRadius: 10,
+          ),
+        ],
+      ),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header shimmer
+            Row(
+              children: [
+                Container(
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Container(
+                  width: 140,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Medicine items shimmer
+            _buildShimmerMedicineItem(),
+            const SizedBox(height: 8),
+            _buildShimmerMedicineItem(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShimmerMedicineItem() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey[200]!),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 20,
+            height: 20,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 120,
+                  height: 14,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  width: 80,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: 50,
+            height: 24,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -67,16 +177,15 @@ class MedicationsCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              Expanded(
+              const Expanded(
                 child: Text(
                   'Medication Reminder',
-                  style: TextStyles.font18DarkBlueBold,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
           ),
-          verticalSpace(16),
-
+          const SizedBox(height: 16),
           // Items
           ...medicineList.map(
             (medicine) => Padding(
@@ -85,7 +194,7 @@ class MedicationsCard extends StatelessWidget {
                 name: medicine.name ?? 'Unknown',
                 time: medicine.times ?? 'N/A',
                 dose: medicine.dosage ?? '',
-                taken: false, // لو عندك فلاغ يؤكد انه تم، ضيفه
+                taken: false,
               ),
             ),
           ),

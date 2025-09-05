@@ -27,8 +27,6 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
   final TextEditingController _notesController = TextEditingController();
   TimeOfDay? _selectedTime;
   String _selectedFrequency = 'Daily';
-  bool _isLoading = false;
-
   final List<String> _frequencies = [
     'Daily',
     'Every 2 days',
@@ -41,7 +39,7 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
     super.initState();
     _nameController.text = widget.medicine.name ?? '';
     _doseController.text = widget.medicine.dosage ?? '';
-    _notesController.text = ''; // لو مفيش notes في الـ model
+    _notesController.text = '';
     _selectedTime = _parseTime(widget.medicine.times ?? '8:00');
     _selectedFrequency = widget.medicine.times ?? 'Daily';
   }
@@ -103,26 +101,21 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
       body: BlocListener<MedicineCubit, MedicineState>(
         listener: (context, state) {
           state.when(
-            initial: () => setState(() => _isLoading = false),
-            loading: () => setState(() => _isLoading = false),
-            success: (_) => setState(() => _isLoading = false),
-            error: (_) => setState(() => _isLoading = false),
-            addMedicineLoading: () => setState(() => _isLoading = true),
+            addMedicineLoading: () {},
+            error: (apiErrorModel) {
+              _showErrorMessage(apiErrorModel.title.toString());
+            },
+            initial: () {},
+            loading: () {},
+            success: (medicines) {},
             addMedicineSuccess: () {
-              setState(() => _isLoading = false);
               _showSuccessMessage();
-              Navigator.pop(context, true); // العودة مع إشارة النجاح
+              Navigator.pop(context, true);
             },
-            addMedicineError: (error) {
-              setState(() => _isLoading = false);
-              _showErrorMessage(error.title ?? 'Unknown error');
-            },
-            deleteMedicineLoading: () => setState(() => _isLoading = true),
-            deleteMedicineSuccess: () => setState(() => _isLoading = false),
-            deleteMedicineError: (error) {
-              setState(() => _isLoading = false);
-              _showErrorMessage(error.title ?? 'Delete error');
-            },
+            addMedicineError: (error) {},
+            deleteMedicineLoading: () {},
+            deleteMedicineSuccess: () {},
+            deleteMedicineError: (_) {},
           );
         },
         child: Column(
@@ -186,20 +179,24 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
                           Expanded(
                             flex: 2,
                             child: UpdateButton(
-                              isLoading: _isLoading,
                               onUpdate: () {
-                                if (_formKey.currentState!.validate() && !_isLoading) {
+                                if (_formKey.currentState!.validate()) {
                                   final cubit = context.read<MedicineCubit>();
 
                                   final updateData = AddMedicineRequestBody(
                                     name: _nameController.text.trim(),
                                     dosage: _doseController.text.trim(),
-                                    time: _selectedTime?.format(context) ?? "8:00 AM",
+                                    time:
+                                        _selectedTime?.format(context) ??
+                                        "8:00 AM",
                                     times: _selectedFrequency,
                                   );
 
                                   // استخدام الدالة الجديدة للتعديل
-                                  cubit.updateMedicine(widget.medicine.id!, updateData);
+                                  cubit.updateMedicine(
+                                    widget.medicine.id!,
+                                    updateData,
+                                  );
                                 }
                               },
                             ),

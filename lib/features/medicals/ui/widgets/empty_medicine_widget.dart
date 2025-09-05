@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 
-class EmptyMedicineWidget1 extends StatefulWidget {
+class EmptyMedicine extends StatefulWidget {
   final VoidCallback? onAddMedicine;
 
-  const EmptyMedicineWidget1({super.key, this.onAddMedicine});
+  const EmptyMedicine({super.key, this.onAddMedicine});
 
   @override
-  State<EmptyMedicineWidget1> createState() => _EmptyMedicineWidget1State();
+  State<EmptyMedicine> createState() => _EmptyMedicineState();
 }
 
-class _EmptyMedicineWidget1State extends State<EmptyMedicineWidget1>
+class _EmptyMedicineState extends State<EmptyMedicine>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
