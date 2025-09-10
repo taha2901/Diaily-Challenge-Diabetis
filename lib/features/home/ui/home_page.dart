@@ -1,4 +1,3 @@
-import 'package:challenge_diabetes/core/di/dependency_injection.dart';
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
 import 'package:challenge_diabetes/core/theming/colors.dart';
 import 'package:challenge_diabetes/core/widget/cutom_app_bar.dart';

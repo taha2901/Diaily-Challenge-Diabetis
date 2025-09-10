@@ -3,6 +3,7 @@ import 'package:challenge_diabetes/core/routings/routers.dart';
 import 'package:challenge_diabetes/core/theming/colors.dart';
 import 'package:challenge_diabetes/core/theming/styles.dart';
 import 'package:challenge_diabetes/features/home/ui/widgets/action_button.dart';
+import 'package:challenge_diabetes/features/measurments/ui/measurments_screen.dart';
 import 'package:flutter/material.dart';
 
 class QuickActionsSection extends StatelessWidget {
@@ -13,10 +14,7 @@ class QuickActionsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Text(
-          'Quick Actions',
-          style: TextStyles.font18DarkBlueBold,
-        ),
+        Text('Quick Actions', style: TextStyles.font18DarkBlueBold),
         verticalSpace(12),
         Row(
           children: [
@@ -39,9 +37,7 @@ class QuickActionsSection extends StatelessWidget {
                 icon: Icons.camera_alt_outlined,
                 label: 'Food Photo',
                 color: ColorsManager.lightGreen,
-                onTap: () {
-                  // Navigate to food scanner
-                },
+                onTap: () {},
               ),
             ),
           ],

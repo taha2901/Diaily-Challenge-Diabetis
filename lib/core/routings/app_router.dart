@@ -7,7 +7,7 @@ import 'package:challenge_diabetes/features/doctor/ui/doctor_screen.dart';
 import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor_details_screen.dart';
 import 'package:challenge_diabetes/features/login/logic/cubit/login_cubit.dart';
 import 'package:challenge_diabetes/features/login/ui/login_screen.dart';
-import 'package:challenge_diabetes/features/measurments/ui/measurments_screen.dart';
+import 'package:challenge_diabetes/features/measurments/ui/adding_measurments_screen.dart';
 import 'package:challenge_diabetes/features/medicals/logic/medicine_cubit.dart';
 import 'package:challenge_diabetes/features/medicals/model/data/medicine_response_body.dart';
 import 'package:challenge_diabetes/features/medicals/ui/add_medicine_screen.dart';
@@ -82,7 +82,7 @@ class AppRouter {
         }
 
       case Routers.measurement:
-        return MaterialPageRoute(builder: (_) => const MeasurementsScreen());
+        return MaterialPageRoute(builder: (_) => const AddingMeasurementsScreen());
 
       // يمكنك إضافة الـ routes المعلقة هنا عند الحاجة
       // case Routers.doctorResrvation:

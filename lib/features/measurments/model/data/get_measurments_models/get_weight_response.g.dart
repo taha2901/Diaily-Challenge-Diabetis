@@ -11,7 +11,7 @@ WeightMeasurement _$WeightMeasurementFromJson(Map<String, dynamic> json) =>
       userId: json['user_Id'] as String,
       weight: (json['weight'] as num).toInt(),
       sport: json['sport'] as bool,
-      dateTime: json['dateTime'] as String,
+      dateTime: DateTime.parse(json['dateTime'] as String),
     );
 
 Map<String, dynamic> _$WeightMeasurementToJson(WeightMeasurement instance) =>
@@ -19,5 +19,5 @@ Map<String, dynamic> _$WeightMeasurementToJson(WeightMeasurement instance) =>
       'user_Id': instance.userId,
       'weight': instance.weight,
       'sport': instance.sport,
-      'dateTime': instance.dateTime,
+      'dateTime': instance.dateTime.toIso8601String(),
     };

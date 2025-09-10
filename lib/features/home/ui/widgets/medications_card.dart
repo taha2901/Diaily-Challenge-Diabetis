@@ -25,7 +25,7 @@ class MedicationsCard extends StatelessWidget {
 
             return _buildMedicationsCard(displayed);
           },
-          error: (_) => const SizedBox(), // أو رسالة خطأ لو حابب
+          error: (_) => const SizedBox(),
           addMedicineLoading: () => const SizedBox(),
           addMedicineSuccess: () => const SizedBox(),
           addMedicineError: (_) => const SizedBox(),

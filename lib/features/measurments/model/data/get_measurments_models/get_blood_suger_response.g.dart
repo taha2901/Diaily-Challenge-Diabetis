@@ -9,7 +9,7 @@ part of 'get_blood_suger_response.dart';
 SugarMeasurement _$SugarMeasurementFromJson(Map<String, dynamic> json) =>
     SugarMeasurement(
       userId: json['user_Id'] as String,
-      dateTime: json['dateTime'] as String,
+      dateTime: DateTime.parse(json['dateTime'] as String),
       measurementDate: json['measurement_date'] as String,
       sugarReading: (json['sugar_reading'] as num).toInt(),
       status: json['status'] as String,
@@ -18,7 +18,7 @@ SugarMeasurement _$SugarMeasurementFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SugarMeasurementToJson(SugarMeasurement instance) =>
     <String, dynamic>{
       'user_Id': instance.userId,
-      'dateTime': instance.dateTime,
+      'dateTime': instance.dateTime.toIso8601String(),
       'measurement_date': instance.measurementDate,
       'sugar_reading': instance.sugarReading,
       'status': instance.status,

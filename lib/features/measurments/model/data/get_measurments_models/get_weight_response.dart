@@ -9,7 +9,7 @@ class WeightMeasurement {
   
   final int weight;
   final bool sport;
-  final String dateTime;
+  final DateTime dateTime;
 
   WeightMeasurement({
     required this.userId,

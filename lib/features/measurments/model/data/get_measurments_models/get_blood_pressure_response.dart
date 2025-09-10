@@ -6,7 +6,7 @@ part 'get_blood_pressure_response.g.dart';
 class BloodPressureMeasurement {
   @JsonKey(name: 'user_Id')
   final String userId;
-  final String dateTime;
+  final DateTime dateTime;
   @JsonKey(name: 'systolic_pressure')
   final int systolicPressure;
   @JsonKey(name: 'diastolic_pressure')

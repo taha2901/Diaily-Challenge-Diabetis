@@ -5,7 +5,7 @@ part 'get_blood_suger_response.g.dart';
 class SugarMeasurement {
   @JsonKey(name: 'user_Id')
   final String userId;
-  final String dateTime;
+  final DateTime dateTime;
   @JsonKey(name: 'measurement_date')
   final String measurementDate;
   @JsonKey(name: 'sugar_reading')
