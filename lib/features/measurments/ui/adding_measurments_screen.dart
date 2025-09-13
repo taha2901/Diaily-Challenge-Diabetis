@@ -14,10 +14,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AddingMeasurementsScreen extends StatefulWidget {
-  const AddingMeasurementsScreen({super.key});
+  final VoidCallback? onMeasurementAdded;
+  const AddingMeasurementsScreen({super.key, this.onMeasurementAdded});
 
   @override
-  State<AddingMeasurementsScreen> createState() => _AddingMeasurementsScreenState();
+  State<AddingMeasurementsScreen> createState() =>
+      _AddingMeasurementsScreenState();
 }
 
 class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
@@ -25,15 +27,20 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
   late TabController _tabController;
 
   // مفاتيح للفورمات + مفاتيح لحالات الودجت عشان نقرأ القيم
-  final _sugarFormKey = GlobalKey<FormState>();
-  final _pressureFormKey = GlobalKey<FormState>();
-  final _weightFormKey = GlobalKey<FormState>();
+  final sugarFormKey = GlobalKey<FormState>();
+  final pressureFormKey = GlobalKey<FormState>();
+  final weightFormKey = GlobalKey<FormState>();
 
-  final _sugarWidgetKey = GlobalKey<BloodSugarFormState>();
-  final _pressureWidgetKey = GlobalKey<BloodPressureFormState>();
-  final _weightWidgetKey = GlobalKey<WeightFormState>();
+  final sugarWidgetKey = GlobalKey<BloodSugarFormState>();
+  final pressureWidgetKey = GlobalKey<BloodPressureFormState>();
+  final weightWidgetKey = GlobalKey<WeightFormState>();
+
+  final sugarKey = TextEditingController();
+  final pressureKey = TextEditingController();
+  final weightKey = TextEditingController();
 
   DateTime _selectedDateTime = DateTime.now();
+  bool _isDisposed = false;
 
   // Overlay loader flag
   bool _isSaving = false;
@@ -46,19 +53,31 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
 
   @override
   void dispose() {
+    _isDisposed = true;
     _tabController.dispose();
     super.dispose();
   }
 
+  void _safeSetState(VoidCallback callback) {
+    if (!_isDisposed && mounted) {
+      setState(callback);
+    }
+  }
+
   Future<void> _pickDateTime() async {
+    // Prevent interaction during saving
+    if (_isSaving) return;
+
     final date = await showDatePicker(
       context: context,
       initialDate: _selectedDateTime,
       firstDate: DateTime(2020),
-      lastDate: DateTime(2100),
+      lastDate: DateTime.now().add(const Duration(days: 1)),
       locale: const Locale('ar'),
     );
-    if (date == null) return;
+    if (date == null || _isDisposed) return;
+
+    if (!mounted) return;
 
     final time = await showTimePicker(
       context: context,
@@ -68,9 +87,9 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
         child: child ?? const SizedBox.shrink(),
       ),
     );
-    if (time == null) return;
+    if (time == null || _isDisposed) return;
 
-    setState(() {
+    _safeSetState(() {
       _selectedDateTime = DateTime(
         date.year,
         date.month,
@@ -81,10 +100,44 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
     });
   }
 
+  // الدالة المفقودة
+  void _handleSuccessfulSave() {
+    // إذا كان هناك callback، استدعيه لتحديث الشاشة السابقة
+    if (widget.onMeasurementAdded != null) {
+      widget.onMeasurementAdded!();
+    }
+
+    // يمكن إضافة تأخير صغير قبل العودة للشاشة السابقة لإظهار الرسالة
+    Future.delayed(const Duration(seconds: 1), () {
+      if (mounted && !_isDisposed) {
+        Navigator.of(context).pop();
+      }
+    });
+
+    // أو يمكن مسح الحقول بدلاً من الإغلاق
+    // _clearCurrentForm();
+  }
+
+  // دالة إضافية لمسح الفورم الحالي (اختيارية)
+  void _clearCurrentForm() {
+    switch (_tabController.index) {
+      case 0: // Sugar
+        sugarFormKey.currentState?.reset();
+       sugarKey.clear();
+        break;
+      case 1: // Pressure
+       pressureFormKey.currentState?.reset();
+       pressureKey.clear();
+        break;
+      case 2: // Weight
+       weightFormKey.currentState?.reset();
+       weightKey.clear();
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // IMPORTANT: وفّر الـ Repos بالطريقة اللي عندك (GetIt أو عبر البارنت)
-    // هنا افتراض أنه عندك ApiServices جاهز للتمرير
     return MultiBlocListener(
       listeners: [
         // Sugar listeners
@@ -103,7 +156,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
               addBloodSugerSuccess: () {
                 _toggleSaving(false);
                 _showSnack('تم حفظ قياس السكر بنجاح', success: true);
-                Navigator.pop(context);
+                _handleSuccessfulSave();
               },
               addBloodSugerError: (err) {
                 _toggleSaving(false);
@@ -129,7 +182,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
               addBloodPressureSuccess: () {
                 _toggleSaving(false);
                 _showSnack('تم حفظ قياس الضغط بنجاح', success: true);
-                Navigator.pop(context);
+                _handleSuccessfulSave();
               },
               addBloodPressureError: () {
                 _toggleSaving(false);
@@ -155,7 +208,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
               addWeightSuccess: () {
                 _toggleSaving(false);
                 _showSnack('تم حفظ الوزن بنجاح', success: true);
-                Navigator.pop(context);
+                _handleSuccessfulSave();
               },
               addWeightError: () {
                 _toggleSaving(false);
@@ -197,7 +250,10 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                     onTap: _pickDateTime,
                     borderRadius: BorderRadius.circular(16),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
@@ -228,7 +284,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                   ),
                 ),
                 const SizedBox(height: 12),
-    
+
                 // Tabs
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -258,36 +314,45 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                       fontWeight: FontWeight.w600,
                     ),
                     tabs: [
-                      Tab(icon: Icon(Icons.bloodtype, size: 20.sp), text: 'السكر'),
-                      Tab(icon: Icon(Icons.favorite, size: 20.sp), text: 'الضغط'),
-                      Tab(icon: Icon(Icons.monitor_weight, size: 20.sp), text: 'الوزن'),
+                      Tab(
+                        icon: Icon(Icons.bloodtype, size: 20.sp),
+                        text: 'السكر',
+                      ),
+                      Tab(
+                        icon: Icon(Icons.favorite, size: 20.sp),
+                        text: 'الضغط',
+                      ),
+                      Tab(
+                        icon: Icon(Icons.monitor_weight, size: 20.sp),
+                        text: 'الوزن',
+                      ),
                     ],
                   ),
                 ),
-    
+
                 const SizedBox(height: 20),
-    
+
                 // Tab Content
                 Expanded(
                   child: TabBarView(
                     controller: _tabController,
                     children: [
                       BloodSugarForm(
-                        key: _sugarWidgetKey,
-                        formKey: _sugarFormKey,
+                        key: sugarWidgetKey,
+                        formKey: sugarFormKey,
                       ),
                       BloodPressureForm(
-                        key: _pressureWidgetKey,
-                        formKey: _pressureFormKey,
+                        key: pressureWidgetKey,
+                        formKey: pressureFormKey,
                       ),
                       WeightForm(
-                        key: _weightWidgetKey,
-                        formKey: _weightFormKey,
+                        key: weightWidgetKey,
+                        formKey: weightFormKey,
                       ),
                     ],
                   ),
                 ),
-    
+
                 // Save Button
                 Container(
                   padding: const EdgeInsets.all(20),
@@ -295,7 +360,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                     width: double.infinity,
                     height: 56,
                     child: ElevatedButton(
-                      onPressed: _saveMeasurement,
+                      onPressed: _isSaving ? null : _saveMeasurement,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF3B82F6),
                         foregroundColor: Colors.white,
@@ -304,36 +369,44 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
+                        disabledBackgroundColor: Colors.grey[400],
                       ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.save, size: 20),
-                          SizedBox(width: 8),
-                          Text(
-                            'حفظ القياس',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                      child: _isSaving
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.save, size: 20),
+                                SizedBox(width: 8),
+                                Text(
+                                  'حفظ القياس',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-    
+
           if (_isSaving)
             Positioned.fill(
-              child: IgnorePointer(
-                child: Container(
-                  color: Colors.black.withOpacity(0.15),
-                  child: const Center(
-                    child: CircularProgressIndicator(color: Color(0xFF3B82F6)),
-                  ),
+              child: Container(
+                color: Colors.black.withOpacity(0.15),
+                child: const Center(
+                  child: CircularProgressIndicator(color: Color(0xFF3B82F6)),
                 ),
               ),
             ),
@@ -342,63 +415,72 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
     );
   }
 
-  void _toggleSaving(bool v) => setState(() => _isSaving = v);
+  void _toggleSaving(bool v) {
+    if (mounted && !_isDisposed) {
+      setState(() => _isSaving = v);
+    }
+  }
 
   void _showSnack(String msg, {required bool success}) {
+    if (!mounted || _isDisposed) return;
+    
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(msg),
-        backgroundColor: success ? const Color(0xFF10B981) : const Color(0xFFEF4444),
+        backgroundColor: success
+            ? const Color(0xFF10B981)
+            : const Color(0xFFEF4444),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
 
   void _saveMeasurement() {
+    if (_isSaving) return; // منع الحفظ المتعدد
+    
     FocusScope.of(context).unfocus();
 
     switch (_tabController.index) {
       case 0: // Sugar
-        if (_sugarFormKey.currentState?.validate() ?? false) {
-          final sugarData = _sugarWidgetKey.currentState?.read();
+        if (sugarFormKey.currentState?.validate() ?? false) {
+          final sugarData = sugarWidgetKey.currentState?.read();
           if (sugarData == null) return;
           context.read<MeasurmentsCubit>().emitAddBloodSugar(
-                sugarData.measurementDate, // نرسل نوع التوقيت كـ measurementDate (حسب API)
-                sugarData.sugarReading,
-                _selectedDateTime,
-              );
+            sugarData.measurementDate,
+            sugarData.sugarReading,
+            _selectedDateTime,
+          );
         } else {
           _showSnack('يرجى ملء جميع الحقول المطلوبة', success: false);
         }
         break;
 
       case 1: // Pressure
-        if (_pressureFormKey.currentState?.validate() ?? false) {
-          final pressureData = _pressureWidgetKey.currentState?.read();
+        if (pressureFormKey.currentState?.validate() ?? false) {
+          final pressureData = pressureWidgetKey.currentState?.read();
           if (pressureData == null) return;
           context.read<PressureCubit>().emitAddBloodPressure(
-                systolic: pressureData.systolicPressure,
-                diastolic: pressureData.diastolicPressure,
-                heartRate: pressureData.heartRate,
-                selectedDate: _selectedDateTime,
-              );
+            systolic: pressureData.systolicPressure,
+            diastolic: pressureData.diastolicPressure,
+            heartRate: pressureData.heartRate,
+            selectedDate: _selectedDateTime,
+          );
         } else {
           _showSnack('يرجى ملء جميع الحقول المطلوبة', success: false);
         }
         break;
 
       case 2: // Weight
-        if (_weightFormKey.currentState?.validate() ?? false) {
-          final weightData = _weightWidgetKey.currentState?.read();
+        if (weightFormKey.currentState?.validate() ?? false) {
+          final weightData = weightWidgetKey.currentState?.read();
           if (weightData == null) return;
           context.read<WeightCubit>().emitAddWeight(
-                weightData.weight.round(),
-                weightData.sport.toString(), // اسم النشاط
-                _selectedDateTime,
-              );
+            weightData.weight.round(),
+            weightData.sport.toString(),
+            _selectedDateTime,
+          );
         } else {
           _showSnack('يرجى ملء جميع الحقول المطلوبة', success: false);
         }

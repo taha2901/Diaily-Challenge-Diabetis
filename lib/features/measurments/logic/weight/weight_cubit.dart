@@ -5,63 +5,6 @@ import 'package:challenge_diabetes/features/measurments/model/data/get_measurmen
 import 'package:challenge_diabetes/features/measurments/model/repo/weight_measurment_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// class WeightCubit extends Cubit<WeightState> {
-//   final WeightMeasurmentRepo _measurmentRepo;
-//   WeightCubit(this._measurmentRepo) : super(const WeightState.initial());
-
-//   List<WeightMeasurement> weightMeasurements = [];
-
-//   // Add Weight
-//   Future<void> emitAddWeight(
-//     int weight,
-//     String? activity,
-//     DateTime dateTime,
-//   ) async {
-//     if (isClosed) return;
-//     emit(const WeightState.addWeightLoading());
-
-//     final response = await _measurmentRepo.addWeight(
-//       WeightRequestBody(sport: activity == "مشى", weight: weight),
-//     );
-
-//     response.when(
-//       success: (addWeight) async {
-//         if (isClosed) return;
-//         // تحديث البيانات للتاريخ المحدد بعد الإضافة
-//         String formattedDate = DateHelper.formatDate(dateTime);
-//         await fetchWeightData(formattedDate);
-//         emit(const WeightState.addWeightSuccess());
-//       },
-//       failure: (error) {
-//         if (isClosed) return;
-//         emit(const WeightState.addWeightError());
-//       },
-//     );
-//   }
-
-//   //get weight
-//   Future<void> fetchWeightData(String specificDate) async {
-//     if (isClosed) return;
-//     emit(const WeightState.getWeightLoading());
-//     final response = await _measurmentRepo.getWeight(specificDate);
-//     response.when(
-//       success: (weight) async {
-//         weightMeasurements = weight.toList();
-//         if (isClosed) return;
-//         emit(
-//           WeightState.getWeightSuccess(weightMeasurements: weightMeasurements),
-//         );
-//       },
-//       failure: (error) {
-//         if (isClosed) return;
-//         emit(WeightState.getWeightError(error: error.toString()));
-//       },
-//     );
-//   }
-// }
-
-
-
 class WeightCubit extends Cubit<WeightState> {
   final WeightMeasurmentRepo _measurmentRepo;
   WeightCubit(this._measurmentRepo) : super(const WeightState.initial());
@@ -105,7 +48,9 @@ class WeightCubit extends Cubit<WeightState> {
       success: (weight) async {
         weightMeasurements = weight.toList();
         if (isClosed) return;
-        emit(WeightState.getWeightSuccess(weightMeasurements: weightMeasurements));
+        emit(
+          WeightState.getWeightSuccess(weightMeasurements: weightMeasurements),
+        );
       },
       failure: (error) {
         if (isClosed) return;

@@ -1,5 +1,6 @@
 class ApiConstants {
   static const String apiBaseUrl = 'http://diabetesapp.runasp.net/api/';
+                                  
 
   static const String login = 'Auth/Login';
 
@@ -12,6 +13,8 @@ class ApiConstants {
   static const String availableTime = 'Doctors/AvailableTime';
 
   static const String reservation = 'Doctors/Reservation';
+
+  static const String userReservations = '/appointment/index';
 
   static const String cancelReservation = 'profiles/DeleteResrvation';
 

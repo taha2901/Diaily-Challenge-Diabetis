@@ -90,12 +90,24 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                   BlocBuilder<DoctorsCubit, DoctorsState>(
                     builder: (context, state) {
                       return state.when(
+                        userReservationError: (apiErrorModel) => SizedBox(),
+                        userReservationLoading: () => SizedBox(),
+                        userReservationSuccess: (reservation) => SizedBox(),
+                        availableTimeError: (apiErrorModel) => SizedBox(),
+                        availableTimeLoading: () => SizedBox(),
+                        availableTimeSuccess: (availableTimeResponse) =>
+                            SizedBox(),
+                        deleteReservationError: (apiErrorModel) => SizedBox(),
+                        deleteReservationLoading: () => SizedBox(),
+                        deleteReservationSuccess: (deleteReservaionResponse) =>
+                            SizedBox(),
+                        reservationError: (apiErrorModel) => SizedBox(),
+                        reservationLoading: () => SizedBox(),
+                        reservationSuccess: (reservationResponse) => SizedBox(),
                         initial: () => StatesCardInitial(),
                         doctorLoading: () => StatesCardLoading(),
                         doctorSuccess: (doctors) {
-                          return SatatesCardSuccess(
-                            doctors: doctors,
-                          );
+                          return SatatesCardSuccess(doctors: doctors);
                         },
                         doctorError: (error) => StatesCardError(),
                       );
@@ -109,6 +121,19 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
             child: BlocBuilder<DoctorsCubit, DoctorsState>(
               builder: (context, state) {
                 return state.when(
+                  userReservationError: (apiErrorModel) => SizedBox(),
+                  userReservationLoading: () => SizedBox(),
+                  userReservationSuccess: (reservation) => SizedBox(),
+                  availableTimeError: (apiErrorModel) => SizedBox(),
+                  availableTimeLoading: () => SizedBox(),
+                  availableTimeSuccess: (availableTimeResponse) => SizedBox(),
+                  deleteReservationError: (apiErrorModel) => SizedBox(),
+                  deleteReservationLoading: () => SizedBox(),
+                  deleteReservationSuccess: (deleteReservaionResponse) =>
+                      SizedBox(),
+                  reservationError: (apiErrorModel) => SizedBox(),
+                  reservationLoading: () => SizedBox(),
+                  reservationSuccess: (reservationResponse) => SizedBox(),
                   initial: () => const Center(child: Text('لا توجد بيانات')),
                   doctorLoading: () =>
                       const Center(child: CircularProgressIndicator()),
