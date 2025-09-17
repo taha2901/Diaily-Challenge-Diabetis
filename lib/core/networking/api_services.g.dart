@@ -468,30 +468,25 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<List<ReservationResponseBody>> getUserReservations() async {
+  Future<UserReservationsResponseBody> getUserReservations() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<ReservationResponseBody>>(
+    final _options = _setStreamType<UserReservationsResponseBody>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'appointment/index',
+            'profiles/UserReservations',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ReservationResponseBody> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late UserReservationsResponseBody _value;
     try {
-      _value = _result.data!
-          .map(
-            (dynamic i) =>
-                ReservationResponseBody.fromJson(i as Map<String, dynamic>),
-          )
-          .toList();
+      _value = UserReservationsResponseBody.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

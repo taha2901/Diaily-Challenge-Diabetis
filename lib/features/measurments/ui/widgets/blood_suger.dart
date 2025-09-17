@@ -17,6 +17,7 @@ class BloodSugarFormState extends State<BloodSugarForm>
 
   @override
   bool get wantKeepAlive => true;
+  
   final List<String> _mealTimes = [
     'قبل الأكل',
     'بعد الأكل بساعتين',
@@ -77,8 +78,9 @@ class BloodSugarFormState extends State<BloodSugarForm>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Form(
         key: widget.formKey,
         child: Column(
@@ -101,6 +103,7 @@ class BloodSugarFormState extends State<BloodSugarForm>
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     children: [
@@ -128,7 +131,7 @@ class BloodSugarFormState extends State<BloodSugarForm>
                     ],
                   ),
                   const SizedBox(height: 20),
-
+                  
                   // Sugar Level Input
                   TextFormField(
                     controller: _sugarController,
@@ -166,17 +169,17 @@ class BloodSugarFormState extends State<BloodSugarForm>
                       return null;
                     },
                   ),
-
+                  
                   const SizedBox(height: 16),
-
+                  
                   // Sugar Level Status
                   if (_sugarController.text.isNotEmpty) _buildSugarStatus(),
                 ],
               ),
             ),
-
+                  
             const SizedBox(height: 20),
-
+                  
             // Meal Time Selection Card
             Container(
               width: double.infinity,
@@ -221,12 +224,12 @@ class BloodSugarFormState extends State<BloodSugarForm>
                     ],
                   ),
                   const SizedBox(height: 16),
-
+                  
                   // Meal Time Options
                   ...List.generate(_mealTimeDetails.length, (index) {
                     final mealTime = _mealTimeDetails[index];
                     final isSelected = _selectedMealTime == mealTime['title'];
-
+                  
                     return Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: InkWell(
@@ -315,6 +318,9 @@ class BloodSugarFormState extends State<BloodSugarForm>
                 ],
               ),
             ),
+            
+            // إضافة مساحة إضافية في النهاية
+            const SizedBox(height: 100),
           ],
         ),
       ),

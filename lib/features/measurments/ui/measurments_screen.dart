@@ -71,6 +71,7 @@ class _MeasurementsScreenState extends State<MeasurementsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
         elevation: 0,

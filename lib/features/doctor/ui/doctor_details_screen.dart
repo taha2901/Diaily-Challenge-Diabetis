@@ -345,10 +345,7 @@ class DoctorDetailsScreen extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => getit<DoctorsCubit>(),
-                  child: DoctorBookingScreen(doctor: doctor),
-                ),
+                builder: (context) => DoctorBookingScreen(doctor: doctor),
               ),
             );
           },

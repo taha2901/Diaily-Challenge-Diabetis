@@ -1,7 +1,7 @@
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
+import 'package:challenge_diabetes/core/routings/routers.dart';
 import 'package:challenge_diabetes/core/theming/colors.dart';
 import 'package:challenge_diabetes/core/widget/cutom_app_bar.dart';
-import 'package:challenge_diabetes/features/doctor/ui/my_reservations_screen.dart' hide verticalSpace, ColorsManager;
 import 'package:challenge_diabetes/features/profile/ui/widget/setting_item.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -69,12 +69,7 @@ class ProfilePage extends StatelessWidget {
                 icon: Iconsax.reserve,
                 title: 'User Reservation',
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyReservationsScreen(),
-                    ),
-                  );
+                 Navigator.of(context, rootNavigator: true).pushNamed(Routers.myReservation);
                 },
               ),
 

@@ -3,6 +3,7 @@ import 'package:challenge_diabetes/features/doctor/model/data/available_time_res
 import 'package:challenge_diabetes/features/doctor/model/data/delete_reservaion_response.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/reservation_response_body.dart';
+import 'package:challenge_diabetes/features/doctor/model/data/user_reservations_response_body.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'doctors_state.freezed.dart';
@@ -45,7 +46,7 @@ class DoctorsState with _$DoctorsState {
   // user reservation
   const factory DoctorsState.userReservationLoading() = UserReservationLoading;
   const factory DoctorsState.userReservationSuccess({
-    required List<ReservationResponseBody> reservation,
+    required List<ReservationModel> reservations,
   }) = UserReservationSuccess;
   const factory DoctorsState.userReservationError(ApiErrorModel apiErrorModel) =
       UserReservationError;

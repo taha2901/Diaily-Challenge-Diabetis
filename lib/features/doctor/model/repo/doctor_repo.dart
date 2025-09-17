@@ -6,6 +6,7 @@ import 'package:challenge_diabetes/features/doctor/model/data/delete_reservaion_
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/reservation_request_body.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/reservation_response_body.dart';
+import 'package:challenge_diabetes/features/doctor/model/data/user_reservations_response_body.dart';
 import 'package:flutter/material.dart';
 
 class DoctorRepo {
@@ -24,14 +25,13 @@ class DoctorRepo {
       return ApiResult.failure(errorHandler);
     }
   }
+
   //get reservations
-  Future<ApiResult<List<ReservationResponseBody>>> getUserReservations() async {
+  Future<ApiResult<UserReservationsResponseBody>> getUserReservations() async {
     try {
       final response = await _apiService.getUserReservations();
-      debugPrint("API Response: ${response.toString()}");
       return ApiResult.success(response);
     } catch (error) {
-      debugPrint("API Error: ${error.toString()}");
       final errorHandler = ApiErrorHandler.handle(error);
       return ApiResult.failure(errorHandler);
     }
@@ -50,10 +50,14 @@ class DoctorRepo {
   // }
 
   Future<ApiResult<ReservationResponseBody>> addReservation(
-      int doctorId, ReservationRequestBody reservationRequestBody) async {
+    int doctorId,
+    ReservationRequestBody reservationRequestBody,
+  ) async {
     try {
-      final response =
-          await _apiService.addReservation(doctorId, reservationRequestBody);
+      final response = await _apiService.addReservation(
+        doctorId,
+        reservationRequestBody,
+      );
       debugPrint('Doctor ID IS: ${doctorId.toString()}');
       return ApiResult.success(response);
     } catch (error) {
@@ -64,8 +68,10 @@ class DoctorRepo {
     }
   }
 
-    Future<ApiResult<AvailableTimesResponse>> getAvailableTime(
-      int id, String date) async {
+  Future<ApiResult<AvailableTimesResponse>> getAvailableTime(
+    int id,
+    String date,
+  ) async {
     try {
       final response = await _apiService.getAvailableTime(id, date);
       print("API Response: ${response.toString()}");
@@ -77,7 +83,8 @@ class DoctorRepo {
       return ApiResult.failure(errorHandler);
     }
   }
-    Future<ApiResult<DeleteReservaionResponse>> deleteReservation(int id) async {
+
+  Future<ApiResult<DeleteReservaionResponse>> deleteReservation(int id) async {
     try {
       final response = await _apiService.cancelReservation(id);
       print("API Response: ${response.toString()}");

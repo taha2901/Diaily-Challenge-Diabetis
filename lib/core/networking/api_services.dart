@@ -3,6 +3,7 @@ import 'package:challenge_diabetes/features/doctor/model/data/delete_reservaion_
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/reservation_request_body.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/reservation_response_body.dart';
+import 'package:challenge_diabetes/features/doctor/model/data/user_reservations_response_body.dart';
 import 'package:challenge_diabetes/features/login/data/models/login_request_body.dart';
 import 'package:challenge_diabetes/features/login/data/models/login_response_body.dart';
 import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/blood_pressure_request_model.dart';
@@ -92,7 +93,7 @@ abstract class ApiServices {
   );
 
   @GET(ApiConstants.userReservations)
-  Future<List<ReservationResponseBody>> getUserReservations();
+  Future<UserReservationsResponseBody> getUserReservations();
 
   // @GET(ApiConstants.popularDoctor)
   // Future<List<PopularDoctorResponseBody>> getPopularDoctor();

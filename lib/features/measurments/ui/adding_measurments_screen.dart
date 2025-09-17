@@ -26,7 +26,6 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
-  // مفاتيح للفورمات + مفاتيح لحالات الودجت عشان نقرأ القيم
   final sugarFormKey = GlobalKey<FormState>();
   final pressureFormKey = GlobalKey<FormState>();
   final weightFormKey = GlobalKey<FormState>();
@@ -100,40 +99,16 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
     });
   }
 
-  // الدالة المفقودة
   void _handleSuccessfulSave() {
-    // إذا كان هناك callback، استدعيه لتحديث الشاشة السابقة
     if (widget.onMeasurementAdded != null) {
       widget.onMeasurementAdded!();
     }
 
-    // يمكن إضافة تأخير صغير قبل العودة للشاشة السابقة لإظهار الرسالة
     Future.delayed(const Duration(seconds: 1), () {
       if (mounted && !_isDisposed) {
         Navigator.of(context).pop();
       }
     });
-
-    // أو يمكن مسح الحقول بدلاً من الإغلاق
-    // _clearCurrentForm();
-  }
-
-  // دالة إضافية لمسح الفورم الحالي (اختيارية)
-  void _clearCurrentForm() {
-    switch (_tabController.index) {
-      case 0: // Sugar
-        sugarFormKey.currentState?.reset();
-       sugarKey.clear();
-        break;
-      case 1: // Pressure
-       pressureFormKey.currentState?.reset();
-       pressureKey.clear();
-        break;
-      case 2: // Weight
-       weightFormKey.currentState?.reset();
-       weightKey.clear();
-        break;
-    }
   }
 
   @override
@@ -222,6 +197,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
       child: Stack(
         children: [
           Scaffold(
+            resizeToAvoidBottomInset: true,
             backgroundColor: ColorsManager.mainBackGround,
             appBar: AppBar(
               elevation: 0,
@@ -240,164 +216,171 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
               ),
               centerTitle: true,
             ),
-            body: Column(
-              children: [
-                HeaderWithDescription(),
-                // Date/Time picker row
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: InkWell(
-                    onTap: _pickDateTime,
-                    borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 10,
-                          ),
-                        ],
-                        border: Border.all(color: Colors.grey[200]!),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.schedule, color: Color(0xFF3B82F6)),
-                          const SizedBox(width: 8),
-                          Text(
-                            'وقت القياس: '
-                            '${_selectedDateTime.year}/${_selectedDateTime.month.toString().padLeft(2, '0')}/${_selectedDateTime.day.toString().padLeft(2, '0')} '
-                            '${_selectedDateTime.hour.toString().padLeft(2, '0')}:${_selectedDateTime.minute.toString().padLeft(2, '0')}',
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          const Spacer(),
-                          const Icon(Icons.edit, size: 18, color: Colors.grey),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-
-                // Tabs
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                      ),
-                    ],
-                  ),
-                  child: TabBar(
-                    controller: _tabController,
-                    indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: ColorsManager.mainBlue,
-                    ),
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    dividerColor: Colors.transparent,
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.grey[600],
-                    labelStyle: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    tabs: [
-                      Tab(
-                        icon: Icon(Icons.bloodtype, size: 20.sp),
-                        text: 'السكر',
-                      ),
-                      Tab(
-                        icon: Icon(Icons.favorite, size: 20.sp),
-                        text: 'الضغط',
-                      ),
-                      Tab(
-                        icon: Icon(Icons.monitor_weight, size: 20.sp),
-                        text: 'الوزن',
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Tab Content
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      BloodSugarForm(
-                        key: sugarWidgetKey,
-                        formKey: sugarFormKey,
-                      ),
-                      BloodPressureForm(
-                        key: pressureWidgetKey,
-                        formKey: pressureFormKey,
-                      ),
-                      WeightForm(
-                        key: weightWidgetKey,
-                        formKey: weightFormKey,
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Save Button
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: _isSaving ? null : _saveMeasurement,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF3B82F6),
-                        foregroundColor: Colors.white,
-                        elevation: 2,
-                        shadowColor: const Color(0xFF3B82F6).withOpacity(0.3),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+            // الحل الجذري: تغليف كل body في SingleChildScrollView
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  HeaderWithDescription(),
+                  // Date/Time picker row
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: InkWell(
+                      onTap: _pickDateTime,
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
                         ),
-                        disabledBackgroundColor: Colors.grey[400],
-                      ),
-                      child: _isSaving
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.save, size: 20),
-                                SizedBox(width: 8),
-                                Text(
-                                  'حفظ القياس',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              spreadRadius: 1,
+                              blurRadius: 10,
                             ),
+                          ],
+                          border: Border.all(color: Colors.grey[200]!),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.schedule, color: Color(0xFF3B82F6)),
+                            const SizedBox(width: 8),
+                            Text(
+                              'وقت القياس: '
+                              '${_selectedDateTime.year}/${_selectedDateTime.month.toString().padLeft(2, '0')}/${_selectedDateTime.day.toString().padLeft(2, '0')} '
+                              '${_selectedDateTime.hour.toString().padLeft(2, '0')}:${_selectedDateTime.minute.toString().padLeft(2, '0')}',
+                              style: const TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                            const Spacer(),
+                            const Icon(Icons.edit, size: 18, color: Colors.grey),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 12),
+
+                  // Tabs
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: TabBar(
+                      controller: _tabController,
+                      indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: ColorsManager.mainBlue,
+                      ),
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      dividerColor: Colors.transparent,
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Colors.grey[600],
+                      labelStyle: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      tabs: [
+                        Tab(
+                          icon: Icon(Icons.bloodtype, size: 20.sp),
+                          text: 'السكر',
+                        ),
+                        Tab(
+                          icon: Icon(Icons.favorite, size: 20.sp),
+                          text: 'الضغط',
+                        ),
+                        Tab(
+                          icon: Icon(Icons.monitor_weight, size: 20.sp),
+                          text: 'الوزن',
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Tab Content - استخدام Container بارتفاع محدد بدل Expanded
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        BloodSugarForm(
+                          key: sugarWidgetKey,
+                          formKey: sugarFormKey,
+                        ),
+                        BloodPressureForm(
+                          key: pressureWidgetKey,
+                          formKey: pressureFormKey,
+                        ),
+                        WeightForm(
+                          key: weightWidgetKey,
+                          formKey: weightFormKey,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Save Button
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: _isSaving ? null : _saveMeasurement,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF3B82F6),
+                          foregroundColor: Colors.white,
+                          elevation: 2,
+                          shadowColor: const Color(0xFF3B82F6).withOpacity(0.3),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          disabledBackgroundColor: Colors.grey[400],
+                        ),
+                        child: _isSaving
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.save, size: 20),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'حفظ القياس',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    ),
+                  ),
+                  
+                  // مساحة إضافية للـ keyboard
+                  SizedBox(height: MediaQuery.of(context).viewInsets.bottom + 50),
+                ],
+              ),
             ),
           ),
 
@@ -438,7 +421,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
   }
 
   void _saveMeasurement() {
-    if (_isSaving) return; // منع الحفظ المتعدد
+    if (_isSaving) return;
     
     FocusScope.of(context).unfocus();
 

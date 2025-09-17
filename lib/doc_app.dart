@@ -3,6 +3,7 @@ import 'package:challenge_diabetes/core/helpers/constants.dart';
 import 'package:challenge_diabetes/core/routings/app_router.dart';
 import 'package:challenge_diabetes/core/routings/routers.dart';
 import 'package:challenge_diabetes/core/theming/colors.dart';
+import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/measurments/logic/pressure/pressure_cubit.dart';
 import 'package:challenge_diabetes/features/measurments/logic/suger/suger_cubit.dart';
 import 'package:challenge_diabetes/features/measurments/logic/weight/weight_cubit.dart';
@@ -24,15 +25,20 @@ class DocApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
+        final today = DateHelper.formatDate(DateTime.now());
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => getit<RegisterCubit>()),
             BlocProvider(
               create: (context) => getit<MedicineCubit>()..getMedicine(),
             ),
+            // BlocProvider(create: (_) => getit<MeasurmentsCubit>()..fetchSugarData(today)),
+            // BlocProvider(create: (_) => getit<PressureCubit>()..fetchPressureData(today)),
+            // BlocProvider(create: (_) => getit<WeightCubit>()..fetchWeightData(today)),
             BlocProvider(create: (_) => getit<MeasurmentsCubit>()),
             BlocProvider(create: (_) => getit<PressureCubit>()),
             BlocProvider(create: (_) => getit<WeightCubit>()),
+            BlocProvider(create: (_) => getit<DoctorsCubit>()),
           ],
           child: MaterialApp(
             builder: DevicePreview.appBuilder,

@@ -14,27 +14,45 @@ class LoginBlocListenter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
-      listenWhen: (previous, current) =>
-          current is Loading || current is Success || current is Error,
+      listenWhen: (previous, current) {
+        // بس لما يتغير الـ state فعليًا
+        return previous != current &&
+            (current is Loading || current is Success || current is Error);
+      },
+
       listener: (context, state) {
+        if (!context.mounted) return; // ✅ يمنع الكراش
+
         state.whenOrNull(
           loading: () {
+            FocusScope.of(context).unfocus(); // ✅ يمنع فقدان التركيز من غير سبب
             _showLoadingDialog(context);
           },
           success: (data) {
-            context.pop();
+            safePop(context);
+            if (!context.mounted) return;
             context.pushNamed(Routers.bottomNavBar);
           },
           error: (error) {
+            safePop(context); // ✅ close dialog بأمان
+            if (!context.mounted) return;
             _setupErrorState(context, error);
           },
         );
       },
+
       child: const SizedBox.shrink(),
     );
   }
 
+  void safePop(BuildContext context) {
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    }
+  }
+
   void _showLoadingDialog(BuildContext context) {
+    FocusScope.of(context).unfocus();
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -55,10 +73,7 @@ class LoginBlocListenter extends StatelessWidget {
                     color: ColorsManager.mainBlue,
                   ),
                   SizedBox(height: 16.h),
-                  Text(
-                    'Logging in...',
-                    style: TextStyles.font16BlackBold,
-                  ),
+                  Text('Logging in...', style: TextStyles.font16BlackBold),
                 ],
               ),
             ),
@@ -70,18 +85,14 @@ class LoginBlocListenter extends StatelessWidget {
 
   void _setupErrorState(BuildContext context, String error) {
     context.pop(); // Close loading dialog
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.r),
         ),
-        icon: Icon(
-          Icons.error_outline,
-          color: Colors.red,
-          size: 48.r,
-        ),
+        icon: Icon(Icons.error_outline, color: Colors.red, size: 48.r),
         title: Text(
           'Login Failed',
           style: TextStyles.font18DarkBlueSemiBold,

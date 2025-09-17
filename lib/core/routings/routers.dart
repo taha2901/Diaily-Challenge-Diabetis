@@ -10,6 +10,7 @@ class Routers {
   static const String addMedicine = '/addMedicine';
   static const String editMedicine = '/editMedicine';
   static const String measurement = '/measurement';
+  static const String myReservation = '/myReservation';
   // static const String confirmDoctorResrvation = '/confirmDoctorResrvation';
   // static const String doctorResrvation = '/doctorResrvation';
   // static const String profile = '/profile';

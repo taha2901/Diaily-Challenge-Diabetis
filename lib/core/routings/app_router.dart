@@ -5,6 +5,7 @@ import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/features/doctor/ui/doctor_screen.dart';
 import 'package:challenge_diabetes/features/doctor/ui/doctor_details_screen.dart';
+import 'package:challenge_diabetes/features/doctor/ui/my_reservations_screen.dart';
 import 'package:challenge_diabetes/features/login/logic/cubit/login_cubit.dart';
 import 'package:challenge_diabetes/features/login/ui/login_screen.dart';
 import 'package:challenge_diabetes/features/measurments/ui/adding_measurments_screen.dart';
@@ -34,9 +35,7 @@ class AppRouter {
       case Routers.bottomNavBar:
         return MaterialPageRoute(builder: (_) => const CustomBottomNavbar());
       case Routers.medicine:
-        return MaterialPageRoute(
-          builder: (_) => MedicineListScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => MedicineListScreen());
       case Routers.editMedicine:
         if (arguments is MedicineResponseBody) {
           return MaterialPageRoute(
@@ -56,10 +55,21 @@ class AppRouter {
 
       case Routers.doctors:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getit<DoctorsCubit>()..getDoctors(),
+          builder: (_) => BlocProvider.value(
+            value:  getit<DoctorsCubit>()..getDoctors(),
             child: const DoctorsListScreen(),
           ),
+        );
+        case Routers.myReservation:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value:  getit<DoctorsCubit>()..getUserReservation(),
+            child: const MyReservationsScreen(),
+          ),
+        );
+      case Routers.measurement:
+        return MaterialPageRoute(
+          builder: (_) => const AddingMeasurementsScreen(),
         );
 
       case Routers.doctorDetails:
@@ -80,29 +90,10 @@ class AppRouter {
             ),
           );
         }
+    
 
-      case Routers.measurement:
-        return MaterialPageRoute(builder: (_) => const AddingMeasurementsScreen());
-
-      // يمكنك إضافة الـ routes المعلقة هنا عند الحاجة
-      // case Routers.doctorResrvation:
-      //   if (arguments is DoctorResponseBody) {
-      //     final doctorResponseBody = arguments;
-      //     int doctorId = doctorResponseBody.id;
-      //     debugPrint('doctorId in routers is: $doctorId');
-      //     return MaterialPageRoute(
-      //       builder: (_) => DoctorReservation(
-      //         doctorId: doctorId,
-      //         doctorResponseBody: doctorResponseBody,
-      //       ),
-      //     );
-      //   }
-      //   return _errorRoute('بيانات الطبيب مطلوبة');
-
-      // case Routers.confirmDoctorResrvation:
-      //   return MaterialPageRoute(
-      //     builder: (_) => ConfirmDoctorReservation(),
-      //   );
+     
+   
 
       // case Routers.exercise:
       //   return MaterialPageRoute(
@@ -114,10 +105,7 @@ class AppRouter {
       //     builder: (_) => const ProfileScreen(),
       //   );
 
-      // case Routers.updateProfile:
-      //   return MaterialPageRoute(
-      //     builder: (_) => UpdateUserDataScreen(),
-      //   );
+   
 
       // case Routers.chatbot:
       //   return MaterialPageRoute(

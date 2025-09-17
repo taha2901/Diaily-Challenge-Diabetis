@@ -1,12 +1,12 @@
 import 'package:challenge_diabetes/core/widget/custom_app_bar_doctors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:challenge_diabetes/core/di/dependency_injection.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_state.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/core/theming/colors.dart';
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DoctorBookingScreen extends StatefulWidget {
   final DoctorResponseBody doctor;
@@ -263,240 +263,237 @@ class _DoctorBookingScreenState extends State<DoctorBookingScreen>
     final availableDates = _getAvailableDates();
     final availableTimeSlots = _getAvailableTimeSlots();
 
-    return BlocProvider(
-      create: (context) => getit<DoctorsCubit>(),
-      child: Scaffold(
-        body: Column(
-          children: [
-            const CustomAppBarForDoctors(title: 'حجز موعد'),
-
-            // Doctor Info Header
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    ColorsManager.mainBlue,
-                    ColorsManager.mainBlue.withOpacity(0.8),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+    return Scaffold(
+      body: Column(
+        children: [
+          const CustomAppBarForDoctors(title: 'حجز موعد'),
+    
+          // Doctor Info Header
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  ColorsManager.mainBlue,
+                  ColorsManager.mainBlue.withOpacity(0.8),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(28),
-                      child: widget.doctor.photo.isNotEmpty
-                          ? Image.network(
-                              widget.doctor.photo,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: Colors.white,
-                                  child: const Icon(
-                                    Icons.person,
-                                    color: ColorsManager.mainBlue,
-                                    size: 30,
-                                  ),
-                                );
-                              },
-                            )
-                          : Container(
-                              color: Colors.white,
-                              child: const Icon(
-                                Icons.person,
-                                color: ColorsManager.mainBlue,
-                                size: 30,
-                              ),
-                            ),
-                    ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: Colors.white, width: 2),
                   ),
-                  horizontalSpace(16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'د. ${widget.doctor.userName}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(28),
+                    child: widget.doctor.photo.isNotEmpty
+                        ? Image.network(
+                            widget.doctor.photo,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: Colors.white,
+                                child: const Icon(
+                                  Icons.person,
+                                  color: ColorsManager.mainBlue,
+                                  size: 30,
+                                ),
+                              );
+                            },
+                          )
+                        : Container(
                             color: Colors.white,
+                            child: const Icon(
+                              Icons.person,
+                              color: ColorsManager.mainBlue,
+                              size: 30,
+                            ),
+                          ),
+                  ),
+                ),
+                horizontalSpace(16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'د. ${widget.doctor.userName}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      verticalSpace(4),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.attach_money,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                          horizontalSpace(4),
+                          Text(
+                            '${widget.doctor.detectionPrice} جنيه',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          horizontalSpace(16),
+                          const Icon(Icons.star, color: Colors.amber, size: 16),
+                          horizontalSpace(4),
+                          Text(
+                            '${widget.doctor.rate ?? 0}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.white70,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+    
+          // Booking Steps
+          Expanded(
+            child: Column(
+              children: [
+                // Tab Bar
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: TabBar(
+                    controller: _tabController,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.grey[600],
+                    indicator: BoxDecoration(
+                      color: ColorsManager.mainBlue,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    tabs: const [
+                      Tab(
+                        child: Text('البيانات', style: TextStyle(fontSize: 12)),
+                      ),
+                      Tab(
+                        child: Text('التاريخ', style: TextStyle(fontSize: 12)),
+                      ),
+                      Tab(
+                        child: Text('الوقت', style: TextStyle(fontSize: 12)),
+                      ),
+                      Tab(
+                        child: Text('ملاحظات', style: TextStyle(fontSize: 12)),
+                      ),
+                    ],
+                  ),
+                ),
+    
+                // Tab Bar View
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      // User Data
+                      _buildUserDataSection(),
+                      
+                      // Date Selection
+                      _buildDateSelection(availableDates),
+    
+                      // Time Selection
+                      _buildTimeSelection(availableTimeSlots),
+    
+                      // Notes and Summary
+                      _buildNotesAndSummarySection(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+    
+          // Book Button with BlocListener
+          BlocListener<DoctorsCubit, DoctorsState>(
+            listener: (context, state) {
+              state.whenOrNull(
+                reservationSuccess: (reservationResponse) {
+                  _showSuccessDialog();
+                },
+                reservationError: (error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(error.getAllErrorMessages()),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                },
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: BlocBuilder<DoctorsCubit, DoctorsState>(
+                  builder: (context, state) {
+                    return ElevatedButton(
+                      onPressed: state.maybeWhen(
+                        reservationLoading: () => null,
+                        orElse: () => () => _handleBooking(context),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorsManager.mainBlue,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                      ),
+                      child: state.maybeWhen(
+                        reservationLoading: () => const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
                           ),
                         ),
-                        verticalSpace(4),
-                        Row(
+                        orElse: () => Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(
-                              Icons.attach_money,
-                              color: Colors.white,
-                              size: 16,
-                            ),
-                            horizontalSpace(4),
-                            Text(
-                              '${widget.doctor.detectionPrice} جنيه',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.white70,
-                              ),
-                            ),
-                            horizontalSpace(16),
-                            const Icon(Icons.star, color: Colors.amber, size: 16),
-                            horizontalSpace(4),
-                            Text(
-                              '${widget.doctor.rate ?? 0}',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.white70,
+                            const Icon(Icons.calendar_month, size: 20),
+                            horizontalSpace(8),
+                            const Text(
+                              'تأكيد الحجز',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Booking Steps
-            Expanded(
-              child: Column(
-                children: [
-                  // Tab Bar
-                  Container(
-                    margin: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: TabBar(
-                      controller: _tabController,
-                      labelColor: Colors.white,
-                      unselectedLabelColor: Colors.grey[600],
-                      indicator: BoxDecoration(
-                        color: ColorsManager.mainBlue,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      tabs: const [
-                        Tab(
-                          child: Text('البيانات', style: TextStyle(fontSize: 12)),
-                        ),
-                        Tab(
-                          child: Text('التاريخ', style: TextStyle(fontSize: 12)),
-                        ),
-                        Tab(
-                          child: Text('الوقت', style: TextStyle(fontSize: 12)),
-                        ),
-                        Tab(
-                          child: Text('ملاحظات', style: TextStyle(fontSize: 12)),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Tab Bar View
-                  Expanded(
-                    child: TabBarView(
-                      controller: _tabController,
-                      children: [
-                        // User Data
-                        _buildUserDataSection(),
-                        
-                        // Date Selection
-                        _buildDateSelection(availableDates),
-
-                        // Time Selection
-                        _buildTimeSelection(availableTimeSlots),
-
-                        // Notes and Summary
-                        _buildNotesAndSummarySection(),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Book Button with BlocListener
-            BlocListener<DoctorsCubit, DoctorsState>(
-              listener: (context, state) {
-                state.whenOrNull(
-                  reservationSuccess: (reservationResponse) {
-                    _showSuccessDialog();
-                  },
-                  reservationError: (error) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(error.getAllErrorMessages()),
-                        backgroundColor: Colors.red,
                       ),
                     );
                   },
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: BlocBuilder<DoctorsCubit, DoctorsState>(
-                    builder: (context, state) {
-                      return ElevatedButton(
-                        onPressed: state.maybeWhen(
-                          reservationLoading: () => null,
-                          orElse: () => () => _handleBooking(context),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorsManager.mainBlue,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 2,
-                        ),
-                        child: state.maybeWhen(
-                          reservationLoading: () => const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                          orElse: () => Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.calendar_month, size: 20),
-                              horizontalSpace(8),
-                              const Text(
-                                'تأكيد الحجز',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -620,11 +617,11 @@ class _DoctorBookingScreenState extends State<DoctorBookingScreen>
           verticalSpace(16),
           Expanded(
             child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 2.5,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
+                childAspectRatio: 2.1.h,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
               ),
               itemCount: availableDates.length,
               itemBuilder: (context, index) {
@@ -646,6 +643,7 @@ class _DoctorBookingScreenState extends State<DoctorBookingScreen>
                     });
                   },
                   child: Container(
+                    height: 200.h,
                     decoration: BoxDecoration(
                       color: isSelected ? ColorsManager.mainBlue : Colors.white,
                       border: Border.all(
@@ -814,86 +812,88 @@ class _DoctorBookingScreenState extends State<DoctorBookingScreen>
   Widget _buildNotesAndSummarySection() {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'ملاحظات إضافية (اختياري)',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: ColorsManager.mainBlue,
-            ),
-          ),
-          verticalSpace(8),
-          const Text(
-            'أضف أي ملاحظات أو تفاصيل تريد أن يعرفها الطبيب',
-            style: TextStyle(fontSize: 14, color: Colors.grey),
-          ),
-          verticalSpace(20),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[50],
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey[300]!),
-            ),
-            child: TextField(
-              controller: notesController,
-              maxLines: 4,
-              decoration: const InputDecoration(
-                hintText: 'اكتب ملاحظاتك هنا...',
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.all(16),
-                hintStyle: TextStyle(color: Colors.grey),
-              ),
-              textAlign: TextAlign.right,
-            ),
-          ),
-          verticalSpace(20),
-
-          // Booking Summary
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: ColorsManager.mainBlue.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: ColorsManager.mainBlue.withOpacity(0.2),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'ملاحظات إضافية (اختياري)',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: ColorsManager.mainBlue,
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'ملخص الحجز',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: ColorsManager.mainBlue,
+            verticalSpace(8),
+            const Text(
+              'أضف أي ملاحظات أو تفاصيل تريد أن يعرفها الطبيب',
+              style: TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            verticalSpace(20),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[50],
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey[300]!),
+              ),
+              child: TextField(
+                controller: notesController,
+                maxLines: 4,
+                decoration: const InputDecoration(
+                  hintText: 'اكتب ملاحظاتك هنا...',
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(16),
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+                textAlign: TextAlign.right,
+              ),
+            ),
+            verticalSpace(20),
+        
+            // Booking Summary
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: ColorsManager.mainBlue.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: ColorsManager.mainBlue.withOpacity(0.2),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'ملخص الحجز',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: ColorsManager.mainBlue,
+                    ),
                   ),
-                ),
-                verticalSpace(12),
-                _buildSummaryRow('الطبيب:', 'د. ${widget.doctor.userName}'),
-                _buildSummaryRow('الاسم:', nameController.text.isNotEmpty ? nameController.text : 'لم يتم الإدخال'),
-                _buildSummaryRow('رقم الهاتف:', phoneController.text.isNotEmpty ? phoneController.text : 'لم يتم الإدخال'),
-                _buildSummaryRow('العمر:', ageController.text.isNotEmpty ? '${ageController.text} سنة' : 'لم يتم الإدخال'),
-                _buildSummaryRow('الجنس:', selectedGender),
-                _buildSummaryRow(
-                  'التاريخ:',
-                  '${_getArabicDayName(selectedDate.weekday)} ${selectedDate.day} ${_getArabicMonth(selectedDate.month)}',
-                ),
-                _buildSummaryRow(
-                  'الوقت:',
-                  selectedTimeSlot ?? 'لم يتم الاختيار',
-                ),
-                _buildSummaryRow(
-                  'السعر:',
-                  '${widget.doctor.detectionPrice} جنيه',
-                ),
-              ],
+                  verticalSpace(12),
+                  _buildSummaryRow('الطبيب:', 'د. ${widget.doctor.userName}'),
+                  _buildSummaryRow('الاسم:', nameController.text.isNotEmpty ? nameController.text : 'لم يتم الإدخال'),
+                  _buildSummaryRow('رقم الهاتف:', phoneController.text.isNotEmpty ? phoneController.text : 'لم يتم الإدخال'),
+                  _buildSummaryRow('العمر:', ageController.text.isNotEmpty ? '${ageController.text} سنة' : 'لم يتم الإدخال'),
+                  _buildSummaryRow('الجنس:', selectedGender),
+                  _buildSummaryRow(
+                    'التاريخ:',
+                    '${_getArabicDayName(selectedDate.weekday)} ${selectedDate.day} ${_getArabicMonth(selectedDate.month)}',
+                  ),
+                  _buildSummaryRow(
+                    'الوقت:',
+                    selectedTimeSlot ?? 'لم يتم الاختيار',
+                  ),
+                  _buildSummaryRow(
+                    'السعر:',
+                    '${widget.doctor.detectionPrice} جنيه',
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

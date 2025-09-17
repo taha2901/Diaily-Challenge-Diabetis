@@ -19,16 +19,21 @@ class RegisterBlocListener extends StatelessWidget {
           current is RegisterSuccess ||
           current is RegisterError,
       listener: (context, state) {
+        if (!context.mounted) return;
         state.whenOrNull(
           registerLoading: () {
             _showLoadingDialog(context);
           },
           registerSuccess: (data) {
-            context.pop(); // Close loading dialog
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
             _showSuccessDialog(context, data?.username ?? 'User');
           },
           registerError: (error) {
-            context.pop(); // Close loading dialog
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
             _showErrorDialog(context, error);
           },
         );
@@ -106,14 +111,14 @@ class RegisterBlocListener extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20.h),
-                
+
                 Text(
                   'Welcome Aboard!',
                   style: TextStyles.font18DarkBlueBold,
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 12.h),
-                
+
                 RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
@@ -132,7 +137,7 @@ class RegisterBlocListener extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 24.h),
-                
+
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -146,7 +151,7 @@ class RegisterBlocListener extends StatelessWidget {
                     onPressed: () {
                       context.pop(); // Close success dialog
                       context.pushNamedAndRemoveUntil(
-                        Routers.login,
+                        Routers.home,
                         predicate: (route) => false,
                       );
                     },
@@ -174,27 +179,23 @@ class RegisterBlocListener extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.error_outline,
-              color: Colors.red,
-              size: 48.r,
-            ),
+            Icon(Icons.error_outline, color: Colors.red, size: 48.r),
             SizedBox(height: 16.h),
-            
+
             Text(
               'Registration Failed',
               style: TextStyles.font18DarkBlueBold,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 12.h),
-            
+
             Text(
               error,
               style: TextStyles.font14greyRegular,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20.h),
-            
+
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -206,10 +207,7 @@ class RegisterBlocListener extends StatelessWidget {
                   ),
                 ),
                 onPressed: () => context.pop(),
-                child: Text(
-                  'Try Again',
-                  style: TextStyles.font16WhiteSemiBold,
-                ),
+                child: Text('Try Again', style: TextStyles.font16WhiteSemiBold),
               ),
             ),
           ],
