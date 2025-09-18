@@ -1,18 +1,20 @@
 import 'package:challenge_diabetes/core/theming/colors.dart';
 import 'package:challenge_diabetes/core/widget/custom_app_bar_doctors.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor_error_retry_model.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/empty_search_widget.dart';
+import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/doctor_card.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/empty_search_widget.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/search_bar_widget.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/states_card_error.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/states_card_loading.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/states_card_success.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/doctor_error_retry_model.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_state.dart';
-import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/states_card_error.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/states_card_initial.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/states_card_loading.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/states_card_success.dart';
 import 'package:flutter/material.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'widgets/doctor/states_card_initial.dart';
 
 class DoctorsListScreen extends StatefulWidget {
   const DoctorsListScreen({super.key});
@@ -23,20 +25,6 @@ class DoctorsListScreen extends StatefulWidget {
 
 class _DoctorsListScreenState extends State<DoctorsListScreen> {
   String searchQuery = '';
-  List<DoctorResponseBody> filteredDoctors = [];
-
-  void _filterDoctors(List<DoctorResponseBody> allDoctors) {
-    filteredDoctors = allDoctors.where((doctor) {
-      final matchesSearch =
-          searchQuery.isEmpty ||
-          doctor.userName.toLowerCase().contains(searchQuery.toLowerCase()) ||
-          doctor.doctorspecialization.toLowerCase().contains(
-            searchQuery.toLowerCase(),
-          );
-
-      return matchesSearch;
-    }).toList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,50 +48,12 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
               child: Column(
                 children: [
                   // Search Bar
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextField(
-                      onChanged: (value) {
-                        setState(() {
-                          searchQuery = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'ابحث عن طبيب...',
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: ColorsManager.mainBlue,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20.w,
-                          vertical: 15.h,
-                        ),
-                      ),
-                    ),
-                  ),
+                  SearchBarWidget(),
                   // Statistics with BlocBuilder
                   BlocBuilder<DoctorsCubit, DoctorsState>(
                     builder: (context, state) {
-                      return state.when(
-                        userReservationError: (apiErrorModel) => SizedBox(),
-                        userReservationLoading: () => SizedBox(),
-                        userReservationSuccess: (reservation) => SizedBox(),
-                        availableTimeError: (apiErrorModel) => SizedBox(),
-                        availableTimeLoading: () => SizedBox(),
-                        availableTimeSuccess: (availableTimeResponse) =>
-                            SizedBox(),
-                        deleteReservationError: (apiErrorModel) => SizedBox(),
-                        deleteReservationLoading: () => SizedBox(),
-                        deleteReservationSuccess: (deleteReservaionResponse) =>
-                            SizedBox(),
-                        reservationError: (apiErrorModel) => SizedBox(),
-                        reservationLoading: () => SizedBox(),
-                        reservationSuccess: (reservationResponse) => SizedBox(),
+                      return state.maybeWhen(
+                        orElse: () => const StatesCardInitial(),
                         initial: () => StatesCardInitial(),
                         doctorLoading: () => StatesCardLoading(),
                         doctorSuccess: (doctors) {
@@ -120,27 +70,22 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
           Expanded(
             child: BlocBuilder<DoctorsCubit, DoctorsState>(
               builder: (context, state) {
-                return state.when(
-                  userReservationError: (apiErrorModel) => SizedBox(),
-                  userReservationLoading: () => SizedBox(),
-                  userReservationSuccess: (reservation) => SizedBox(),
-                  availableTimeError: (apiErrorModel) => SizedBox(),
-                  availableTimeLoading: () => SizedBox(),
-                  availableTimeSuccess: (availableTimeResponse) => SizedBox(),
-                  deleteReservationError: (apiErrorModel) => SizedBox(),
-                  deleteReservationLoading: () => SizedBox(),
-                  deleteReservationSuccess: (deleteReservaionResponse) =>
-                      SizedBox(),
-                  reservationError: (apiErrorModel) => SizedBox(),
-                  reservationLoading: () => SizedBox(),
-                  reservationSuccess: (reservationResponse) => SizedBox(),
+                return state.maybeWhen(
+                  orElse: () =>
+                      const Center(child: CircularProgressIndicator()),
                   initial: () => const Center(child: Text('لا توجد بيانات')),
                   doctorLoading: () =>
                       const Center(child: CircularProgressIndicator()),
-                  doctorSuccess: (doctors) {
-                    _filterDoctors(doctors);
+                  doctorSearch: (filtered) {
+                    if (filtered.isEmpty) {
+                      return EmptySearchWidget();
+                    }
+                    return buildDoctorsList(filtered, context);
+                  },
 
-                    if (filteredDoctors.isEmpty) {
+                  doctorSuccess: (doctors) {
+                    final cubit = context.read<DoctorsCubit>();
+                    if (cubit.filteredDoctors.isEmpty) {
                       return EmptySearchWidget();
                     }
 
@@ -150,9 +95,9 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
                       },
                       child: ListView.builder(
                         padding: EdgeInsets.only(top: 8.h, bottom: 20.h),
-                        itemCount: filteredDoctors.length,
+                        itemCount: cubit.filteredDoctors.length,
                         itemBuilder: (context, index) {
-                          final doctor = filteredDoctors[index];
+                          final doctor = cubit.filteredDoctors[index];
                           return DoctorCard(doctor: doctor);
                         },
                       ),
@@ -168,3 +113,20 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
     );
   }
 }
+
+ Widget buildDoctorsList(List<DoctorResponseBody> doctors, BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<DoctorsCubit>().getDoctors();
+      },
+      child: ListView.builder(
+        padding: EdgeInsets.only(top: 8.h, bottom: 20.h),
+        itemCount: doctors.length,
+        itemBuilder: (context, index) {
+          final doctor = doctors[index];
+          return DoctorCard(doctor: doctor);
+        },
+      ),
+    );
+  }
+

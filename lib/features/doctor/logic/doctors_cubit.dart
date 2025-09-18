@@ -14,6 +14,8 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   AvailableTimesResponse? availableTimesResponse;
   List<ReservationModel> userReservations = [];
 
+  List<DoctorResponseBody> filteredDoctors = [];
+
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final ageController = TextEditingController();
@@ -29,6 +31,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
       success: (doctorData) {
         if (isClosed) return;
         doctorResponseBody = doctorData.toList();
+        filteredDoctors = doctorResponseBody;
         emit(DoctorsState.doctorSuccess(doctor: doctorResponseBody));
       },
       failure: (apiErrorModel) {
@@ -36,6 +39,20 @@ class DoctorsCubit extends Cubit<DoctorsState> {
         emit(DoctorsState.doctorError(apiErrorModel));
       },
     );
+  }
+
+  void searchDoctors(String query) {
+    if (query.isEmpty) {
+      filteredDoctors = doctorResponseBody;
+    } else {
+      filteredDoctors = doctorResponseBody.where((doctor) {
+        return doctor.userName.toLowerCase().contains(query.toLowerCase()) ||
+            doctor.doctorspecialization.toLowerCase().contains(
+              query.toLowerCase(),
+            );
+      }).toList();
+    }
+    emit(DoctorsState.doctorSearch(filteredDoctors: filteredDoctors));
   }
 
   void getAvailableTime(int id, String formattedDate) async {
@@ -103,49 +120,50 @@ class DoctorsCubit extends Cubit<DoctorsState> {
 
   //delete reservation
   void deleteReservation(int reservationId, BuildContext context) async {
-  if (isClosed) return;
-  emit(const DoctorsState.deleteReservationLoading());
+    if (isClosed) return;
+    emit(const DoctorsState.deleteReservationLoading());
 
-  final response = await _doctorRepo.deleteReservation(reservationId);
-  response.when(
-    success: (deleteReservaionResponse) async {
-      if (isClosed) return;
+    final response = await _doctorRepo.deleteReservation(reservationId);
+    response.when(
+      success: (deleteReservaionResponse) async {
+        if (isClosed) return;
 
-      // ✅ اعمل كده عشان تعمل Refresh بعد الحذف
-      // await getUserReservation();
+        // ✅ اعمل كده عشان تعمل Refresh بعد الحذف
+        // await getUserReservation();
 
-      // ✅ بعد التحديث اعمل هذا الاسطر لاظهار رساله في ال UI
-      emit(
-        DoctorsState.deleteReservationSuccess(
-          deleteReservaionResponse: deleteReservaionResponse,
-        ),
-      );
-    },
-    failure: (apiErrorModel) {
-      if (isClosed) return;
-      emit(DoctorsState.deleteReservationError(apiErrorModel));
-    },
-  );
-}
+        // ✅ بعد التحديث اعمل هذا الاسطر لاظهار رساله في ال UI
+        emit(
+          DoctorsState.deleteReservationSuccess(
+            deleteReservaionResponse: deleteReservaionResponse,
+          ),
+        );
+      },
+      failure: (apiErrorModel) {
+        if (isClosed) return;
+        emit(DoctorsState.deleteReservationError(apiErrorModel));
+      },
+    );
+  }
 
   //user reservation
   Future<void> getUserReservation() async {
-  if (isClosed) return;
-  emit(const DoctorsState.userReservationLoading());
-  final response = await _doctorRepo.getUserReservations();
-  response.when(
-    success: (reservationsList) {
-      if (isClosed) return;
-      userReservations = reservationsList.data ?? [];
-      emit(DoctorsState.userReservationSuccess(reservations: userReservations));
-    },
-    failure: (errorModel) {
-      if (isClosed) return;
-      emit(DoctorsState.userReservationError(errorModel));
-    },
-  );
-}
-
+    if (isClosed) return;
+    emit(const DoctorsState.userReservationLoading());
+    final response = await _doctorRepo.getUserReservations();
+    response.when(
+      success: (reservationsList) {
+        if (isClosed) return;
+        userReservations = reservationsList.data ?? [];
+        emit(
+          DoctorsState.userReservationSuccess(reservations: userReservations),
+        );
+      },
+      failure: (errorModel) {
+        if (isClosed) return;
+        emit(DoctorsState.userReservationError(errorModel));
+      },
+    );
+  }
 
   // void getDoctorComment(int id) async {
   //   if (isClosed) return;

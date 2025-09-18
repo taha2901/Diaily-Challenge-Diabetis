@@ -1,5 +1,4 @@
 import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/blood_pressure_request_model.dart';
-import 'package:challenge_diabetes/features/measurments/model/data/get_measurments_models/get_blood_pressure_response.dart';
 import 'package:flutter/material.dart';
 
 class BloodPressureForm extends StatefulWidget {

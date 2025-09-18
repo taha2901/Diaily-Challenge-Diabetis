@@ -21,7 +21,7 @@ class DoctorCard extends StatelessWidget {
         onTap: () {
           Navigator.of(context).pushNamed(
             Routers.doctorDetails,
-            arguments: doctor, // تمرير بيانات الطبيب
+            arguments: doctor, 
           );
         },
         borderRadius: BorderRadius.circular(12),
@@ -116,7 +116,6 @@ class DoctorCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // إضافة السعر
                     if (doctor.detectionPrice > 0) ...[
                       verticalSpace(8),
                       Row(

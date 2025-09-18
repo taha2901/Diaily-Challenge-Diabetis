@@ -50,4 +50,8 @@ class DoctorsState with _$DoctorsState {
   }) = UserReservationSuccess;
   const factory DoctorsState.userReservationError(ApiErrorModel apiErrorModel) =
       UserReservationError;
+
+  const factory DoctorsState.doctorSearch({
+    required List<DoctorResponseBody> filteredDoctors,
+  }) = DoctorSearch;
 }

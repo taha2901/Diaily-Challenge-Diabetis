@@ -246,16 +246,25 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.schedule, color: Color(0xFF3B82F6)),
+                            const Icon(
+                              Icons.schedule,
+                              color: Color(0xFF3B82F6),
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               'وقت القياس: '
                               '${_selectedDateTime.year}/${_selectedDateTime.month.toString().padLeft(2, '0')}/${_selectedDateTime.day.toString().padLeft(2, '0')} '
                               '${_selectedDateTime.hour.toString().padLeft(2, '0')}:${_selectedDateTime.minute.toString().padLeft(2, '0')}',
-                              style: const TextStyle(fontWeight: FontWeight.w600),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             const Spacer(),
-                            const Icon(Icons.edit, size: 18, color: Colors.grey),
+                            const Icon(
+                              Icons.edit,
+                              size: 18,
+                              color: Colors.grey,
+                            ),
                           ],
                         ),
                       ),
@@ -310,8 +319,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
 
                   const SizedBox(height: 20),
 
-                  // Tab Content - استخدام Container بارتفاع محدد بدل Expanded
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height * 0.6,
                     child: TabBarView(
                       controller: _tabController,
@@ -332,54 +340,37 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                     ),
                   ),
 
-                  // Save Button
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 56,
-                      child: ElevatedButton(
-                        onPressed: _isSaving ? null : _saveMeasurement,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3B82F6),
-                          foregroundColor: Colors.white,
-                          elevation: 2,
-                          shadowColor: const Color(0xFF3B82F6).withOpacity(0.3),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          disabledBackgroundColor: Colors.grey[400],
-                        ),
-                        child: _isSaving
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.save, size: 20),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    'حفظ القياس',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                      ),
+                  // مساحة إضافية للـ keyboard
+                  SizedBox(
+                    height: MediaQuery.of(context).viewInsets.bottom + 50,
+                  ),
+                ],
+              ),
+            ),
+            bottomNavigationBar: Padding(
+              padding: const EdgeInsets.all(20),
+              child: SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: _isSaving ? null : _saveMeasurement,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  
-                  // مساحة إضافية للـ keyboard
-                  SizedBox(height: MediaQuery.of(context).viewInsets.bottom + 50),
-                ],
+                  child: _isSaving
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          "حفظ القياس",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                ),
               ),
             ),
           ),
@@ -406,7 +397,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
 
   void _showSnack(String msg, {required bool success}) {
     if (!mounted || _isDisposed) return;
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(msg),
@@ -422,7 +413,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
 
   void _saveMeasurement() {
     if (_isSaving) return;
-    
+
     FocusScope.of(context).unfocus();
 
     switch (_tabController.index) {

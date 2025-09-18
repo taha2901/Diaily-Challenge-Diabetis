@@ -1,6 +1,6 @@
 
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/state_card.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/state_card.dart';
 import 'package:flutter/material.dart';
 
 class SatatesCardSuccess extends StatelessWidget {

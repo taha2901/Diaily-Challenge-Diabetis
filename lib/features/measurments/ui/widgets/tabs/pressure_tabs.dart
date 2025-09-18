@@ -1,5 +1,6 @@
 import 'package:challenge_diabetes/features/measurments/logic/pressure/pressure_cubit.dart';
 import 'package:challenge_diabetes/features/measurments/logic/pressure/pressure_state.dart';
+import 'package:challenge_diabetes/features/measurments/logic/suger/suger_cubit.dart';
 import 'package:challenge_diabetes/features/measurments/model/data/get_measurments_models/get_blood_pressure_response.dart';
 import 'package:challenge_diabetes/features/measurments/ui/widgets/charts/pressure_chart.dart';
 import 'package:challenge_diabetes/features/measurments/ui/widgets/cards/pressure_card.dart';
@@ -21,17 +22,13 @@ class PressureTab extends StatelessWidget {
       builder: (context, state) {
         return state.maybeWhen(
           getBloodPressureLoading: () => const LoadingStateWidget(),
+          getBloodPressureEmpty: () => EmptyStateWidget(
+            icon: Icons.bloodtype,
+            message: 'لا توجد قراءات ضغط حالياً',
+            onRefresh: () =>
+                context.read<PressureCubit>().fetchPressureData(selectedDate),
+          ),
           getBloodPressureSuccess: (bloodPressure, heartRate) {
-            if (bloodPressure.isEmpty) {
-              return EmptyStateWidget(
-                icon: Icons.favorite,
-                message: 'لا توجد قراءات ضغط حالياً',
-                onRefresh: () => context
-                    .read<PressureCubit>()
-                    .fetchPressureData(selectedDate),
-              );
-            }
-
             return MeasurementContentWidget(
               chart: PressureChartWidget(data: bloodPressure),
               items: _buildPressureCards(bloodPressure),

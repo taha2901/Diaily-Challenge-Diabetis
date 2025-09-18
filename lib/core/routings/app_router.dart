@@ -5,7 +5,7 @@ import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/features/doctor/ui/doctor_screen.dart';
 import 'package:challenge_diabetes/features/doctor/ui/doctor_details_screen.dart';
-import 'package:challenge_diabetes/features/doctor/ui/my_reservations_screen.dart';
+import 'package:challenge_diabetes/features/profile/ui/my_reservations_screen.dart';
 import 'package:challenge_diabetes/features/login/logic/cubit/login_cubit.dart';
 import 'package:challenge_diabetes/features/login/ui/login_screen.dart';
 import 'package:challenge_diabetes/features/measurments/ui/adding_measurments_screen.dart';

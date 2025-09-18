@@ -40,6 +40,8 @@ mixin _$DoctorsState {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -63,6 +65,7 @@ mixin _$DoctorsState {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -86,6 +89,7 @@ mixin _$DoctorsState {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -111,6 +115,7 @@ mixin _$DoctorsState {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
@@ -130,6 +135,7 @@ mixin _$DoctorsState {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
@@ -149,6 +155,7 @@ mixin _$DoctorsState {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -239,6 +246,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return initial();
   }
@@ -266,6 +275,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return initial?.call();
   }
@@ -293,6 +303,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -325,6 +336,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return initial(this);
   }
@@ -348,6 +360,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return initial?.call(this);
   }
@@ -371,6 +384,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -448,6 +462,8 @@ class _$DoctorLoadingImpl implements DoctorLoading {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return doctorLoading();
   }
@@ -475,6 +491,7 @@ class _$DoctorLoadingImpl implements DoctorLoading {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return doctorLoading?.call();
   }
@@ -502,6 +519,7 @@ class _$DoctorLoadingImpl implements DoctorLoading {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (doctorLoading != null) {
@@ -534,6 +552,7 @@ class _$DoctorLoadingImpl implements DoctorLoading {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return doctorLoading(this);
   }
@@ -557,6 +576,7 @@ class _$DoctorLoadingImpl implements DoctorLoading {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return doctorLoading?.call(this);
   }
@@ -580,6 +600,7 @@ class _$DoctorLoadingImpl implements DoctorLoading {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (doctorLoading != null) {
@@ -691,6 +712,8 @@ class _$DoctorSuccessImpl implements DoctorSuccess {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return doctorSuccess(doctor);
   }
@@ -718,6 +741,7 @@ class _$DoctorSuccessImpl implements DoctorSuccess {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return doctorSuccess?.call(doctor);
   }
@@ -745,6 +769,7 @@ class _$DoctorSuccessImpl implements DoctorSuccess {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (doctorSuccess != null) {
@@ -777,6 +802,7 @@ class _$DoctorSuccessImpl implements DoctorSuccess {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return doctorSuccess(this);
   }
@@ -800,6 +826,7 @@ class _$DoctorSuccessImpl implements DoctorSuccess {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return doctorSuccess?.call(this);
   }
@@ -823,6 +850,7 @@ class _$DoctorSuccessImpl implements DoctorSuccess {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (doctorSuccess != null) {
@@ -938,6 +966,8 @@ class _$DoctorErrorImpl implements DoctorError {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return doctorError(apiErrorModel);
   }
@@ -965,6 +995,7 @@ class _$DoctorErrorImpl implements DoctorError {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return doctorError?.call(apiErrorModel);
   }
@@ -992,6 +1023,7 @@ class _$DoctorErrorImpl implements DoctorError {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (doctorError != null) {
@@ -1024,6 +1056,7 @@ class _$DoctorErrorImpl implements DoctorError {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return doctorError(this);
   }
@@ -1047,6 +1080,7 @@ class _$DoctorErrorImpl implements DoctorError {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return doctorError?.call(this);
   }
@@ -1070,6 +1104,7 @@ class _$DoctorErrorImpl implements DoctorError {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (doctorError != null) {
@@ -1156,6 +1191,8 @@ class _$ReservationLoadingImpl implements ReservationLoading {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return reservationLoading();
   }
@@ -1183,6 +1220,7 @@ class _$ReservationLoadingImpl implements ReservationLoading {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return reservationLoading?.call();
   }
@@ -1210,6 +1248,7 @@ class _$ReservationLoadingImpl implements ReservationLoading {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (reservationLoading != null) {
@@ -1242,6 +1281,7 @@ class _$ReservationLoadingImpl implements ReservationLoading {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return reservationLoading(this);
   }
@@ -1265,6 +1305,7 @@ class _$ReservationLoadingImpl implements ReservationLoading {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return reservationLoading?.call(this);
   }
@@ -1288,6 +1329,7 @@ class _$ReservationLoadingImpl implements ReservationLoading {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (reservationLoading != null) {
@@ -1396,6 +1438,8 @@ class _$ReservationSuccessImpl implements ReservationSuccess {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return reservationSuccess(reservationResponse);
   }
@@ -1423,6 +1467,7 @@ class _$ReservationSuccessImpl implements ReservationSuccess {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return reservationSuccess?.call(reservationResponse);
   }
@@ -1450,6 +1495,7 @@ class _$ReservationSuccessImpl implements ReservationSuccess {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (reservationSuccess != null) {
@@ -1482,6 +1528,7 @@ class _$ReservationSuccessImpl implements ReservationSuccess {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return reservationSuccess(this);
   }
@@ -1505,6 +1552,7 @@ class _$ReservationSuccessImpl implements ReservationSuccess {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return reservationSuccess?.call(this);
   }
@@ -1528,6 +1576,7 @@ class _$ReservationSuccessImpl implements ReservationSuccess {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (reservationSuccess != null) {
@@ -1646,6 +1695,8 @@ class _$ReservationErrorImpl implements ReservationError {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return reservationError(apiErrorModel);
   }
@@ -1673,6 +1724,7 @@ class _$ReservationErrorImpl implements ReservationError {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return reservationError?.call(apiErrorModel);
   }
@@ -1700,6 +1752,7 @@ class _$ReservationErrorImpl implements ReservationError {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (reservationError != null) {
@@ -1732,6 +1785,7 @@ class _$ReservationErrorImpl implements ReservationError {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return reservationError(this);
   }
@@ -1755,6 +1809,7 @@ class _$ReservationErrorImpl implements ReservationError {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return reservationError?.call(this);
   }
@@ -1778,6 +1833,7 @@ class _$ReservationErrorImpl implements ReservationError {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (reservationError != null) {
@@ -1865,6 +1921,8 @@ class _$DeleteReservationLoadingImpl implements DeleteReservationLoading {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return deleteReservationLoading();
   }
@@ -1892,6 +1950,7 @@ class _$DeleteReservationLoadingImpl implements DeleteReservationLoading {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return deleteReservationLoading?.call();
   }
@@ -1919,6 +1978,7 @@ class _$DeleteReservationLoadingImpl implements DeleteReservationLoading {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (deleteReservationLoading != null) {
@@ -1951,6 +2011,7 @@ class _$DeleteReservationLoadingImpl implements DeleteReservationLoading {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return deleteReservationLoading(this);
   }
@@ -1974,6 +2035,7 @@ class _$DeleteReservationLoadingImpl implements DeleteReservationLoading {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return deleteReservationLoading?.call(this);
   }
@@ -1997,6 +2059,7 @@ class _$DeleteReservationLoadingImpl implements DeleteReservationLoading {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (deleteReservationLoading != null) {
@@ -2110,6 +2173,8 @@ class _$DeleteReservationSuccessImpl implements DeleteReservationSuccess {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return deleteReservationSuccess(deleteReservaionResponse);
   }
@@ -2137,6 +2202,7 @@ class _$DeleteReservationSuccessImpl implements DeleteReservationSuccess {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return deleteReservationSuccess?.call(deleteReservaionResponse);
   }
@@ -2164,6 +2230,7 @@ class _$DeleteReservationSuccessImpl implements DeleteReservationSuccess {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (deleteReservationSuccess != null) {
@@ -2196,6 +2263,7 @@ class _$DeleteReservationSuccessImpl implements DeleteReservationSuccess {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return deleteReservationSuccess(this);
   }
@@ -2219,6 +2287,7 @@ class _$DeleteReservationSuccessImpl implements DeleteReservationSuccess {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return deleteReservationSuccess?.call(this);
   }
@@ -2242,6 +2311,7 @@ class _$DeleteReservationSuccessImpl implements DeleteReservationSuccess {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (deleteReservationSuccess != null) {
@@ -2361,6 +2431,8 @@ class _$DeleteReservationErrorImpl implements DeleteReservationError {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return deleteReservationError(apiErrorModel);
   }
@@ -2388,6 +2460,7 @@ class _$DeleteReservationErrorImpl implements DeleteReservationError {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return deleteReservationError?.call(apiErrorModel);
   }
@@ -2415,6 +2488,7 @@ class _$DeleteReservationErrorImpl implements DeleteReservationError {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (deleteReservationError != null) {
@@ -2447,6 +2521,7 @@ class _$DeleteReservationErrorImpl implements DeleteReservationError {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return deleteReservationError(this);
   }
@@ -2470,6 +2545,7 @@ class _$DeleteReservationErrorImpl implements DeleteReservationError {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return deleteReservationError?.call(this);
   }
@@ -2493,6 +2569,7 @@ class _$DeleteReservationErrorImpl implements DeleteReservationError {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (deleteReservationError != null) {
@@ -2580,6 +2657,8 @@ class _$AvailableTimeLoadingImpl implements AvailableTimeLoading {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return availableTimeLoading();
   }
@@ -2607,6 +2686,7 @@ class _$AvailableTimeLoadingImpl implements AvailableTimeLoading {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return availableTimeLoading?.call();
   }
@@ -2634,6 +2714,7 @@ class _$AvailableTimeLoadingImpl implements AvailableTimeLoading {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (availableTimeLoading != null) {
@@ -2666,6 +2747,7 @@ class _$AvailableTimeLoadingImpl implements AvailableTimeLoading {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return availableTimeLoading(this);
   }
@@ -2689,6 +2771,7 @@ class _$AvailableTimeLoadingImpl implements AvailableTimeLoading {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return availableTimeLoading?.call(this);
   }
@@ -2712,6 +2795,7 @@ class _$AvailableTimeLoadingImpl implements AvailableTimeLoading {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (availableTimeLoading != null) {
@@ -2821,6 +2905,8 @@ class _$AvailableTimeSuccessImpl implements AvailableTimeSuccess {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return availableTimeSuccess(availableTimeResponse);
   }
@@ -2848,6 +2934,7 @@ class _$AvailableTimeSuccessImpl implements AvailableTimeSuccess {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return availableTimeSuccess?.call(availableTimeResponse);
   }
@@ -2875,6 +2962,7 @@ class _$AvailableTimeSuccessImpl implements AvailableTimeSuccess {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (availableTimeSuccess != null) {
@@ -2907,6 +2995,7 @@ class _$AvailableTimeSuccessImpl implements AvailableTimeSuccess {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return availableTimeSuccess(this);
   }
@@ -2930,6 +3019,7 @@ class _$AvailableTimeSuccessImpl implements AvailableTimeSuccess {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return availableTimeSuccess?.call(this);
   }
@@ -2953,6 +3043,7 @@ class _$AvailableTimeSuccessImpl implements AvailableTimeSuccess {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (availableTimeSuccess != null) {
@@ -3071,6 +3162,8 @@ class _$AvailableTimeErrorImpl implements AvailableTimeError {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return availableTimeError(apiErrorModel);
   }
@@ -3098,6 +3191,7 @@ class _$AvailableTimeErrorImpl implements AvailableTimeError {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return availableTimeError?.call(apiErrorModel);
   }
@@ -3125,6 +3219,7 @@ class _$AvailableTimeErrorImpl implements AvailableTimeError {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (availableTimeError != null) {
@@ -3157,6 +3252,7 @@ class _$AvailableTimeErrorImpl implements AvailableTimeError {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return availableTimeError(this);
   }
@@ -3180,6 +3276,7 @@ class _$AvailableTimeErrorImpl implements AvailableTimeError {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return availableTimeError?.call(this);
   }
@@ -3203,6 +3300,7 @@ class _$AvailableTimeErrorImpl implements AvailableTimeError {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (availableTimeError != null) {
@@ -3290,6 +3388,8 @@ class _$UserReservationLoadingImpl implements UserReservationLoading {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return userReservationLoading();
   }
@@ -3317,6 +3417,7 @@ class _$UserReservationLoadingImpl implements UserReservationLoading {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return userReservationLoading?.call();
   }
@@ -3344,6 +3445,7 @@ class _$UserReservationLoadingImpl implements UserReservationLoading {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (userReservationLoading != null) {
@@ -3376,6 +3478,7 @@ class _$UserReservationLoadingImpl implements UserReservationLoading {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return userReservationLoading(this);
   }
@@ -3399,6 +3502,7 @@ class _$UserReservationLoadingImpl implements UserReservationLoading {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return userReservationLoading?.call(this);
   }
@@ -3422,6 +3526,7 @@ class _$UserReservationLoadingImpl implements UserReservationLoading {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (userReservationLoading != null) {
@@ -3543,6 +3648,8 @@ class _$UserReservationSuccessImpl implements UserReservationSuccess {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return userReservationSuccess(reservations);
   }
@@ -3570,6 +3677,7 @@ class _$UserReservationSuccessImpl implements UserReservationSuccess {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return userReservationSuccess?.call(reservations);
   }
@@ -3597,6 +3705,7 @@ class _$UserReservationSuccessImpl implements UserReservationSuccess {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (userReservationSuccess != null) {
@@ -3629,6 +3738,7 @@ class _$UserReservationSuccessImpl implements UserReservationSuccess {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return userReservationSuccess(this);
   }
@@ -3652,6 +3762,7 @@ class _$UserReservationSuccessImpl implements UserReservationSuccess {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return userReservationSuccess?.call(this);
   }
@@ -3675,6 +3786,7 @@ class _$UserReservationSuccessImpl implements UserReservationSuccess {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (userReservationSuccess != null) {
@@ -3794,6 +3906,8 @@ class _$UserReservationErrorImpl implements UserReservationError {
     required TResult Function(List<ReservationModel> reservations)
     userReservationSuccess,
     required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
   }) {
     return userReservationError(apiErrorModel);
   }
@@ -3821,6 +3935,7 @@ class _$UserReservationErrorImpl implements UserReservationError {
     TResult? Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
   }) {
     return userReservationError?.call(apiErrorModel);
   }
@@ -3848,6 +3963,7 @@ class _$UserReservationErrorImpl implements UserReservationError {
     TResult Function(List<ReservationModel> reservations)?
     userReservationSuccess,
     TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
     required TResult orElse(),
   }) {
     if (userReservationError != null) {
@@ -3880,6 +3996,7 @@ class _$UserReservationErrorImpl implements UserReservationError {
     required TResult Function(UserReservationSuccess value)
     userReservationSuccess,
     required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
   }) {
     return userReservationError(this);
   }
@@ -3903,6 +4020,7 @@ class _$UserReservationErrorImpl implements UserReservationError {
     TResult? Function(UserReservationLoading value)? userReservationLoading,
     TResult? Function(UserReservationSuccess value)? userReservationSuccess,
     TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
   }) {
     return userReservationError?.call(this);
   }
@@ -3926,6 +4044,7 @@ class _$UserReservationErrorImpl implements UserReservationError {
     TResult Function(UserReservationLoading value)? userReservationLoading,
     TResult Function(UserReservationSuccess value)? userReservationSuccess,
     TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
     required TResult orElse(),
   }) {
     if (userReservationError != null) {
@@ -3946,4 +4065,270 @@ abstract class UserReservationError implements DoctorsState {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserReservationErrorImplCopyWith<_$UserReservationErrorImpl>
   get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DoctorSearchImplCopyWith<$Res> {
+  factory _$$DoctorSearchImplCopyWith(
+    _$DoctorSearchImpl value,
+    $Res Function(_$DoctorSearchImpl) then,
+  ) = __$$DoctorSearchImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<DoctorResponseBody> filteredDoctors});
+}
+
+/// @nodoc
+class __$$DoctorSearchImplCopyWithImpl<$Res>
+    extends _$DoctorsStateCopyWithImpl<$Res, _$DoctorSearchImpl>
+    implements _$$DoctorSearchImplCopyWith<$Res> {
+  __$$DoctorSearchImplCopyWithImpl(
+    _$DoctorSearchImpl _value,
+    $Res Function(_$DoctorSearchImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of DoctorsState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? filteredDoctors = null}) {
+    return _then(
+      _$DoctorSearchImpl(
+        filteredDoctors: null == filteredDoctors
+            ? _value._filteredDoctors
+            : filteredDoctors // ignore: cast_nullable_to_non_nullable
+                  as List<DoctorResponseBody>,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$DoctorSearchImpl implements DoctorSearch {
+  const _$DoctorSearchImpl({
+    required final List<DoctorResponseBody> filteredDoctors,
+  }) : _filteredDoctors = filteredDoctors;
+
+  final List<DoctorResponseBody> _filteredDoctors;
+  @override
+  List<DoctorResponseBody> get filteredDoctors {
+    if (_filteredDoctors is EqualUnmodifiableListView) return _filteredDoctors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_filteredDoctors);
+  }
+
+  @override
+  String toString() {
+    return 'DoctorsState.doctorSearch(filteredDoctors: $filteredDoctors)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DoctorSearchImpl &&
+            const DeepCollectionEquality().equals(
+              other._filteredDoctors,
+              _filteredDoctors,
+            ));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    const DeepCollectionEquality().hash(_filteredDoctors),
+  );
+
+  /// Create a copy of DoctorsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DoctorSearchImplCopyWith<_$DoctorSearchImpl> get copyWith =>
+      __$$DoctorSearchImplCopyWithImpl<_$DoctorSearchImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() doctorLoading,
+    required TResult Function(List<DoctorResponseBody> doctor) doctorSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) doctorError,
+    required TResult Function() reservationLoading,
+    required TResult Function(ReservationResponseBody reservationResponse)
+    reservationSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) reservationError,
+    required TResult Function() deleteReservationLoading,
+    required TResult Function(DeleteReservaionResponse deleteReservaionResponse)
+    deleteReservationSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel)
+    deleteReservationError,
+    required TResult Function() availableTimeLoading,
+    required TResult Function(AvailableTimesResponse availableTimeResponse)
+    availableTimeSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) availableTimeError,
+    required TResult Function() userReservationLoading,
+    required TResult Function(List<ReservationModel> reservations)
+    userReservationSuccess,
+    required TResult Function(ApiErrorModel apiErrorModel) userReservationError,
+    required TResult Function(List<DoctorResponseBody> filteredDoctors)
+    doctorSearch,
+  }) {
+    return doctorSearch(filteredDoctors);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? doctorLoading,
+    TResult? Function(List<DoctorResponseBody> doctor)? doctorSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? doctorError,
+    TResult? Function()? reservationLoading,
+    TResult? Function(ReservationResponseBody reservationResponse)?
+    reservationSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? reservationError,
+    TResult? Function()? deleteReservationLoading,
+    TResult? Function(DeleteReservaionResponse deleteReservaionResponse)?
+    deleteReservationSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? deleteReservationError,
+    TResult? Function()? availableTimeLoading,
+    TResult? Function(AvailableTimesResponse availableTimeResponse)?
+    availableTimeSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? availableTimeError,
+    TResult? Function()? userReservationLoading,
+    TResult? Function(List<ReservationModel> reservations)?
+    userReservationSuccess,
+    TResult? Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult? Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
+  }) {
+    return doctorSearch?.call(filteredDoctors);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? doctorLoading,
+    TResult Function(List<DoctorResponseBody> doctor)? doctorSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? doctorError,
+    TResult Function()? reservationLoading,
+    TResult Function(ReservationResponseBody reservationResponse)?
+    reservationSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? reservationError,
+    TResult Function()? deleteReservationLoading,
+    TResult Function(DeleteReservaionResponse deleteReservaionResponse)?
+    deleteReservationSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? deleteReservationError,
+    TResult Function()? availableTimeLoading,
+    TResult Function(AvailableTimesResponse availableTimeResponse)?
+    availableTimeSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? availableTimeError,
+    TResult Function()? userReservationLoading,
+    TResult Function(List<ReservationModel> reservations)?
+    userReservationSuccess,
+    TResult Function(ApiErrorModel apiErrorModel)? userReservationError,
+    TResult Function(List<DoctorResponseBody> filteredDoctors)? doctorSearch,
+    required TResult orElse(),
+  }) {
+    if (doctorSearch != null) {
+      return doctorSearch(filteredDoctors);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(DoctorLoading value) doctorLoading,
+    required TResult Function(DoctorSuccess value) doctorSuccess,
+    required TResult Function(DoctorError value) doctorError,
+    required TResult Function(ReservationLoading value) reservationLoading,
+    required TResult Function(ReservationSuccess value) reservationSuccess,
+    required TResult Function(ReservationError value) reservationError,
+    required TResult Function(DeleteReservationLoading value)
+    deleteReservationLoading,
+    required TResult Function(DeleteReservationSuccess value)
+    deleteReservationSuccess,
+    required TResult Function(DeleteReservationError value)
+    deleteReservationError,
+    required TResult Function(AvailableTimeLoading value) availableTimeLoading,
+    required TResult Function(AvailableTimeSuccess value) availableTimeSuccess,
+    required TResult Function(AvailableTimeError value) availableTimeError,
+    required TResult Function(UserReservationLoading value)
+    userReservationLoading,
+    required TResult Function(UserReservationSuccess value)
+    userReservationSuccess,
+    required TResult Function(UserReservationError value) userReservationError,
+    required TResult Function(DoctorSearch value) doctorSearch,
+  }) {
+    return doctorSearch(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(DoctorLoading value)? doctorLoading,
+    TResult? Function(DoctorSuccess value)? doctorSuccess,
+    TResult? Function(DoctorError value)? doctorError,
+    TResult? Function(ReservationLoading value)? reservationLoading,
+    TResult? Function(ReservationSuccess value)? reservationSuccess,
+    TResult? Function(ReservationError value)? reservationError,
+    TResult? Function(DeleteReservationLoading value)? deleteReservationLoading,
+    TResult? Function(DeleteReservationSuccess value)? deleteReservationSuccess,
+    TResult? Function(DeleteReservationError value)? deleteReservationError,
+    TResult? Function(AvailableTimeLoading value)? availableTimeLoading,
+    TResult? Function(AvailableTimeSuccess value)? availableTimeSuccess,
+    TResult? Function(AvailableTimeError value)? availableTimeError,
+    TResult? Function(UserReservationLoading value)? userReservationLoading,
+    TResult? Function(UserReservationSuccess value)? userReservationSuccess,
+    TResult? Function(UserReservationError value)? userReservationError,
+    TResult? Function(DoctorSearch value)? doctorSearch,
+  }) {
+    return doctorSearch?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(DoctorLoading value)? doctorLoading,
+    TResult Function(DoctorSuccess value)? doctorSuccess,
+    TResult Function(DoctorError value)? doctorError,
+    TResult Function(ReservationLoading value)? reservationLoading,
+    TResult Function(ReservationSuccess value)? reservationSuccess,
+    TResult Function(ReservationError value)? reservationError,
+    TResult Function(DeleteReservationLoading value)? deleteReservationLoading,
+    TResult Function(DeleteReservationSuccess value)? deleteReservationSuccess,
+    TResult Function(DeleteReservationError value)? deleteReservationError,
+    TResult Function(AvailableTimeLoading value)? availableTimeLoading,
+    TResult Function(AvailableTimeSuccess value)? availableTimeSuccess,
+    TResult Function(AvailableTimeError value)? availableTimeError,
+    TResult Function(UserReservationLoading value)? userReservationLoading,
+    TResult Function(UserReservationSuccess value)? userReservationSuccess,
+    TResult Function(UserReservationError value)? userReservationError,
+    TResult Function(DoctorSearch value)? doctorSearch,
+    required TResult orElse(),
+  }) {
+    if (doctorSearch != null) {
+      return doctorSearch(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DoctorSearch implements DoctorsState {
+  const factory DoctorSearch({
+    required final List<DoctorResponseBody> filteredDoctors,
+  }) = _$DoctorSearchImpl;
+
+  List<DoctorResponseBody> get filteredDoctors;
+
+  /// Create a copy of DoctorsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DoctorSearchImplCopyWith<_$DoctorSearchImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -19,6 +19,9 @@ import 'package:challenge_diabetes/features/medicals/model/data/add_medicine_req
 import 'package:challenge_diabetes/features/medicals/model/data/add_medicine_response_body.dart';
 import 'package:challenge_diabetes/features/medicals/model/data/delete_medicine_response_body.dart';
 import 'package:challenge_diabetes/features/medicals/model/data/medicine_response_body.dart';
+import 'package:challenge_diabetes/features/profile/data/models/update_user_request.dart';
+import 'package:challenge_diabetes/features/profile/data/models/update_user_response.dart';
+import 'package:challenge_diabetes/features/profile/data/models/user_details_response.dart';
 import 'package:challenge_diabetes/features/signup/data/models/sign_up_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -98,13 +101,15 @@ abstract class ApiServices {
   // @GET(ApiConstants.popularDoctor)
   // Future<List<PopularDoctorResponseBody>> getPopularDoctor();
 
-  // @GET(ApiConstants.settings)
-  // Future<UserDetailsResponse> getProfile();
+  @GET(ApiConstants.settings)
+  Future<UserDetailsResponse> getProfile();
 
-  // @PUT(ApiConstants.updateProfile)
-  // Future<UpdateUserResponse> updateProfile(
-  //   @Body() UpdateUserRequest updateProfileRequestModel,
-  // );
+  @PUT(ApiConstants.updateProfile)
+  Future<UpdateUserResponse> updateProfile(
+    @Body() UpdateUserRequest updateProfileRequestModel,
+  );
+  //   @POST(ApiConstants.logout)
+  // Future<void> logout();
   // @GET(ApiConstants.getExercise)
   // Future<List<Exercise>> gerExercise();
 
