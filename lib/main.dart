@@ -1,5 +1,5 @@
 import 'package:challenge_diabetes/core/di/dependency_injection.dart';
-import 'package:challenge_diabetes/core/helpers/api_key.dart';
+import 'package:challenge_diabetes/core/helpers/api_keys.dart';
 import 'package:challenge_diabetes/core/helpers/constants.dart';
 import 'package:challenge_diabetes/core/helpers/extentions.dart';
 import 'package:challenge_diabetes/core/helpers/shared_pref_helper.dart';
