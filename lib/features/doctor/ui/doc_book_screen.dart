@@ -1,3 +1,4 @@
+import 'package:challenge_diabetes/features/checkout_payment/views/widgets/payment_methods_bottom_sheet.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/doctor/ui/widgets/booking/booking_bottom_widget.dart';
@@ -71,22 +72,55 @@ class _DoctorBookingScreenState extends State<DoctorBookingScreen>
     return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
   }
 
-  void _handleBooking(BuildContext context) {
-    if (!_validateBookingData()) return;
+  // void _handleBooking(BuildContext context) {
+  //   if (!_validateBookingData()) return;
 
-    final doctorsCubit = context.read<DoctorsCubit>();
-    doctorsCubit.emitReservationStates(
-      username: nameController.text.trim(),
-      phone: phoneController.text.trim(),
-      age: int.parse(ageController.text.trim()),
-      sex: selectedGender,
-      date: _formatDateForAPI(selectedDate),
-      time: selectedTimeSlot!,
-      doctorId: widget.doctor.id,
-      context: context,
-    );
-  }
+  //   final doctorsCubit = context.read<DoctorsCubit>();
+  //   doctorsCubit.emitReservationStates(
+  //     username: nameController.text.trim(),
+  //     phone: phoneController.text.trim(),
+  //     age: int.parse(ageController.text.trim()),
+  //     sex: selectedGender,
+  //     date: _formatDateForAPI(selectedDate),
+  //     time: selectedTimeSlot!,
+  //     doctorId: widget.doctor.id,
+  //     context: context,
+  //   );
+  // }
 
+void _handleBooking(BuildContext context) {
+  if (!_validateBookingData()) return;
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    builder: (_) => BlocProvider.value(
+      value: context.read<DoctorsCubit>(), // تمرير الCubit للBottomSheet
+      child: PaymentMethodsBottomSheet(
+        total: widget.doctor.detectionPrice.toDouble(),
+        doctorId: widget.doctor.id,
+        startTime: selectedTimeSlot!,
+        // تمرير بيانات الحجز
+        bookingData: {
+          'username': nameController.text.trim(),
+          'phone': phoneController.text.trim(),
+          'age': int.parse(ageController.text.trim()),
+          'sex': selectedGender,
+          'date': _formatDateForAPI(selectedDate),
+          'time': selectedTimeSlot!,
+          'doctorId': widget.doctor.id,
+        },
+        onPaymentSuccess: () {
+          // إغلاق الBottomSheet أولاً
+          Navigator.of(context).pop();
+        },
+      ),
+    ),
+  );
+}
   bool _validateBookingData() {
     if (nameController.text.trim().isEmpty) {
       _showErrorSnackBar(LocaleKeys.booking_enter_name.tr());
@@ -193,7 +227,6 @@ class _DoctorBookingScreenState extends State<DoctorBookingScreen>
               ),
             ),
 
-            // زر الحجز محسن
             BookingButtonWidget(onBooking: () => _handleBooking(context)),
           ],
         ),

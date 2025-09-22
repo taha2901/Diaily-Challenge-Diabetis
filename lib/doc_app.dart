@@ -3,6 +3,8 @@ import 'package:challenge_diabetes/core/helpers/constants.dart';
 import 'package:challenge_diabetes/core/routings/app_router.dart';
 import 'package:challenge_diabetes/core/routings/routers.dart';
 import 'package:challenge_diabetes/core/theming/colors.dart';
+import 'package:challenge_diabetes/features/checkout_payment/data/repos/checkout_repo_impl.dart';
+import 'package:challenge_diabetes/features/checkout_payment/presentation/manger/payment_cubit.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/measurments/logic/pressure/pressure_cubit.dart';
 import 'package:challenge_diabetes/features/measurments/logic/suger/suger_cubit.dart';
@@ -36,6 +38,9 @@ class DocApp extends StatelessWidget {
             BlocProvider(create: (_) => getit<PressureCubit>()),
             BlocProvider(create: (_) => getit<WeightCubit>()),
             BlocProvider(create: (_) => getit<DoctorsCubit>()),
+          BlocProvider(
+              create: (_) => PaymenttCubit(CheckoutRepoImpl()),
+            ),
           ],
           child: MaterialApp(
             builder: (context, child) => Directionality(
