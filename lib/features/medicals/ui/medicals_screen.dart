@@ -1,5 +1,7 @@
 import 'package:challenge_diabetes/features/medicals/ui/widgets/empty_medicine_widget.dart';
 import 'package:challenge_diabetes/features/medicals/ui/widgets/medicine_card.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:challenge_diabetes/core/routings/routers.dart';
@@ -19,7 +21,7 @@ class MedicineListScreen extends StatelessWidget {
       backgroundColor: ColorsManager.mainBackGround,
       body: Column(
         children: [
-          const CustomAppBarForDoctors(title: 'Medicines'),
+           CustomAppBarForDoctors(title: LocaleKeys.medicines.tr()),
           Expanded(
             child: BlocBuilder<MedicineCubit, MedicineState>(
               builder: (context, state) {
@@ -43,16 +45,16 @@ class MedicineListScreen extends StatelessWidget {
                     );
                   },
                   error: (apiErrorModel) =>
-                      Center(child: Text("Error: ${apiErrorModel.title}")),
+                      Center(child: Text("${LocaleKeys.error.tr()}: ${apiErrorModel.title}")),
                   // 🎯 حالات التحميل الأخرى أيضا
                   addMedicineLoading: () => _buildShimmerLoading(),
                   addMedicineSuccess: () => Container(),
                   addMedicineError: (apiErrorModel) =>
-                      Center(child: Text("Add Error: ${apiErrorModel.title}")),
+                      Center(child: Text("${LocaleKeys.add_error.tr()}: ${apiErrorModel.title}")),
                   deleteMedicineLoading: () => _buildShimmerLoading(),
                   deleteMedicineSuccess: () => Container(),
                   deleteMedicineError: (apiErrorModel) => Center(
-                    child: Text("Delete Error: ${apiErrorModel.title}"),
+                    child: Text("${LocaleKeys.delete_error.tr()}: ${apiErrorModel.title}"),
                   ),
                 );
               },
@@ -72,7 +74,7 @@ class MedicineListScreen extends StatelessWidget {
           }
         },
         backgroundColor: Colors.blue[600],
-        label: const Text("Add Medicine"),
+        label:  Text(LocaleKeys.add_medicine.tr()),
         icon: const Icon(Icons.add),
       ),
     );

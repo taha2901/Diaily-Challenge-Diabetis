@@ -1,4 +1,6 @@
 import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/blood_suger_request_model.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class BloodSugarForm extends StatefulWidget {
@@ -17,43 +19,43 @@ class BloodSugarFormState extends State<BloodSugarForm>
 
   @override
   bool get wantKeepAlive => true;
-  
+
   final List<String> _mealTimes = [
-    'قبل الأكل',
-    'بعد الأكل بساعتين',
-    'عند الاستيقاظ',
-    'قبل النوم',
-    'عشوائي',
+    LocaleKeys.before_meal.tr(),
+    LocaleKeys.after_meal.tr(),
+    LocaleKeys.wake_up.tr(),
+    LocaleKeys.before_sleep.tr(),
+    LocaleKeys.random.tr(),
   ];
 
   final List<Map<String, dynamic>> _mealTimeDetails = [
     {
-      'title': 'قبل الأكل',
-      'description': 'القياس قبل تناول الوجبة',
+      'title': LocaleKeys.before_meal.tr(),
+      'description':LocaleKeys.before_meal_desc.tr(),
       'icon': Icons.restaurant,
       'normalRange': '80-130 mg/dL',
     },
     {
-      'title': 'بعد الأكل بساعتين',
-      'description': 'القياس بعد ساعتين من الوجبة',
+      'title':  LocaleKeys.after_meal.tr(),
+      'description': LocaleKeys.after_meal_desc.tr(),
       'icon': Icons.access_time,
       'normalRange': 'أقل من 180 mg/dL',
     },
     {
-      'title': 'عند الاستيقاظ',
-      'description': 'القياس الصباحي على معدة فارغة',
+      'title':  LocaleKeys.wake_up.tr(),
+      'description': LocaleKeys.wake_up_desc.tr(),
       'icon': Icons.wb_sunny,
       'normalRange': '80-130 mg/dL',
     },
     {
-      'title': 'قبل النوم',
-      'description': 'القياس قبل النوم',
+      'title':  LocaleKeys.before_sleep.tr(),
+      'description': LocaleKeys.before_sleep_desc.tr(),
       'icon': Icons.bedtime,
       'normalRange': '100-140 mg/dL',
     },
     {
-      'title': 'عشوائي',
-      'description': 'قياس في أي وقت',
+      'title':  LocaleKeys.random.tr(),
+      'description': LocaleKeys.random_desc.tr(),
       'icon': Icons.shuffle,
       'normalRange': 'أقل من 200 mg/dL',
     },
@@ -78,7 +80,7 @@ class BloodSugarFormState extends State<BloodSugarForm>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Form(
@@ -120,8 +122,8 @@ class BloodSugarFormState extends State<BloodSugarForm>
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Text(
-                        'قياس السكر',
+                       Text(
+                        LocaleKeys.sugar_measurement.tr(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -131,14 +133,14 @@ class BloodSugarFormState extends State<BloodSugarForm>
                     ],
                   ),
                   const SizedBox(height: 20),
-                  
+
                   // Sugar Level Input
                   TextFormField(
                     controller: _sugarController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: 'مستوى السكر',
-                      hintText: 'أدخل القياس',
+                      labelText: LocaleKeys.sugar_level.tr(),
+                      hintText:  LocaleKeys.enter_sugar.tr(),
                       suffixText: 'mg/dL',
                       prefixIcon: const Icon(
                         Icons.straighten,
@@ -157,29 +159,29 @@ class BloodSugarFormState extends State<BloodSugarForm>
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'يرجى إدخال قياس السكر';
+                        return  LocaleKeys.sugar_required.tr();
                       }
                       final sugarLevel = int.tryParse(value);
                       if (sugarLevel == null) {
-                        return 'يرجى إدخال رقم صحيح';
+                        return LocaleKeys.sugar_number.tr();
                       }
                       if (sugarLevel < 50 || sugarLevel > 500) {
-                        return 'القياس يجب أن يكون بين 50-500';
+                        return  LocaleKeys.sugar_range.tr();
                       }
                       return null;
                     },
                   ),
-                  
+
                   const SizedBox(height: 16),
-                  
+
                   // Sugar Level Status
                   if (_sugarController.text.isNotEmpty) _buildSugarStatus(),
                 ],
               ),
             ),
-                  
+
             const SizedBox(height: 20),
-                  
+
             // Meal Time Selection Card
             Container(
               width: double.infinity,
@@ -213,8 +215,8 @@ class BloodSugarFormState extends State<BloodSugarForm>
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Text(
-                        'توقيت القياس',
+                       Text(
+                        LocaleKeys.measurement_time.tr(),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -224,12 +226,12 @@ class BloodSugarFormState extends State<BloodSugarForm>
                     ],
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Meal Time Options
                   ...List.generate(_mealTimeDetails.length, (index) {
                     final mealTime = _mealTimeDetails[index];
                     final isSelected = _selectedMealTime == mealTime['title'];
-                  
+
                     return Container(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: InkWell(
@@ -293,7 +295,7 @@ class BloodSugarFormState extends State<BloodSugarForm>
                                       ),
                                     ),
                                     Text(
-                                      'المعدل الطبيعي: ${mealTime['normalRange']}',
+                                      '${LocaleKeys.normal_range.tr()} ${mealTime['normalRange']}',
                                       style: TextStyle(
                                         fontSize: 10,
                                         color: Colors.grey[500],
@@ -318,7 +320,7 @@ class BloodSugarFormState extends State<BloodSugarForm>
                 ],
               ),
             ),
-            
+
             // إضافة مساحة إضافية في النهاية
             const SizedBox(height: 100),
           ],
@@ -334,32 +336,32 @@ class BloodSugarFormState extends State<BloodSugarForm>
     IconData statusIcon = Icons.help;
 
     if (sugarLevel > 0) {
-      if (_selectedMealTime == 'قبل الأكل' ||
-          _selectedMealTime == 'عند الاستيقاظ') {
+      if (_selectedMealTime ==  LocaleKeys.before_meal.tr() ||
+          _selectedMealTime ==  LocaleKeys.wake_up.tr()) {
         if (sugarLevel < 80) {
-          status = 'منخفض';
+          status =  LocaleKeys.low.tr();
           statusColor = const Color(0xFF3B82F6);
           statusIcon = Icons.keyboard_arrow_down;
         } else if (sugarLevel <= 130) {
-          status = 'طبيعي';
+          status =  LocaleKeys.normal.tr();
           statusColor = const Color(0xFF10B981);
           statusIcon = Icons.check_circle;
         } else {
-          status = 'مرتفع';
+          status =  LocaleKeys.high.tr();
           statusColor = const Color(0xFFEF4444);
           statusIcon = Icons.keyboard_arrow_up;
         }
-      } else if (_selectedMealTime == 'بعد الأكل بساعتين') {
+      } else if (_selectedMealTime ==  LocaleKeys.after_meal.tr() || _selectedMealTime ==  LocaleKeys.before_sleep.tr()) {
         if (sugarLevel < 140) {
-          status = 'طبيعي';
+          status =  LocaleKeys.normal.tr();
           statusColor = const Color(0xFF10B981);
           statusIcon = Icons.check_circle;
         } else if (sugarLevel <= 180) {
-          status = 'مقبول';
+          status =  LocaleKeys.acceptable.tr();
           statusColor = const Color(0xFFF59E0B);
           statusIcon = Icons.warning;
         } else {
-          status = 'مرتفع';
+          status =  LocaleKeys.high.tr();
           statusColor = const Color(0xFFEF4444);
           statusIcon = Icons.keyboard_arrow_up;
         }
@@ -378,7 +380,7 @@ class BloodSugarFormState extends State<BloodSugarForm>
           Icon(statusIcon, color: statusColor, size: 20),
           const SizedBox(width: 8),
           Text(
-            'الحالة: $status',
+            '${LocaleKeys.status.tr()}: $status',
             style: TextStyle(
               color: statusColor,
               fontWeight: FontWeight.w600,

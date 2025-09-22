@@ -1,3 +1,5 @@
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class MeasurementsTabBar extends StatelessWidget {
@@ -28,9 +30,9 @@ class MeasurementsTabBar extends StatelessWidget {
         labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
         unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
         tabs: [
-          _buildTab(Icons.favorite, "الضغط"),
-          _buildTab(Icons.bloodtype, "السكر"),
-          _buildTab(Icons.monitor_weight, "الوزن"),
+          _buildTab(Icons.favorite, LocaleKeys.pressure.tr()),
+          _buildTab(Icons.bloodtype,  LocaleKeys.sugar.tr()),
+          _buildTab(Icons.monitor_weight,  LocaleKeys.weight.tr()),
         ],
       ),
     );

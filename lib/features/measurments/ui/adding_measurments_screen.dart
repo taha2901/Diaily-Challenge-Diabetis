@@ -9,6 +9,8 @@ import 'package:challenge_diabetes/features/measurments/ui/widgets/blood_pressur
 import 'package:challenge_diabetes/features/measurments/ui/widgets/blood_suger.dart';
 import 'package:challenge_diabetes/features/measurments/ui/widgets/header_with_desc.dart';
 import 'package:challenge_diabetes/features/measurments/ui/widgets/weight.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -81,10 +83,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
     final time = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_selectedDateTime),
-      builder: (ctx, child) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: child ?? const SizedBox.shrink(),
-      ),
+      builder: (ctx, child) => child ?? const SizedBox.shrink(),
     );
     if (time == null || _isDisposed) return;
 
@@ -130,12 +129,12 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
               addBloodSugerLoading: () => _toggleSaving(true),
               addBloodSugerSuccess: () {
                 _toggleSaving(false);
-                _showSnack('تم حفظ قياس السكر بنجاح', success: true);
+                _showSnack(LocaleKeys.sugar_saved_success.tr(), success: true);
                 _handleSuccessfulSave();
               },
               addBloodSugerError: (err) {
                 _toggleSaving(false);
-                _showSnack(err ?? 'فشل حفظ قياس السكر', success: false);
+                _showSnack(LocaleKeys.sugar_saved_error.tr(), success: false);
               },
               orElse: () {},
             );
@@ -156,12 +155,18 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
               addBloodPressureLoading: () => _toggleSaving(true),
               addBloodPressureSuccess: () {
                 _toggleSaving(false);
-                _showSnack('تم حفظ قياس الضغط بنجاح', success: true);
+                _showSnack(
+                  LocaleKeys.pressure_saved_success.tr(),
+                  success: true,
+                );
                 _handleSuccessfulSave();
               },
               addBloodPressureError: () {
                 _toggleSaving(false);
-                _showSnack('فشل حفظ قياس الضغط', success: false);
+                _showSnack(
+                  LocaleKeys.pressure_saved_error.tr(),
+                  success: false,
+                );
               },
               orElse: () {},
             );
@@ -182,12 +187,12 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
               addWeightLoading: () => _toggleSaving(true),
               addWeightSuccess: () {
                 _toggleSaving(false);
-                _showSnack('تم حفظ الوزن بنجاح', success: true);
+                _showSnack(LocaleKeys.weight_saved_success.tr(), success: true);
                 _handleSuccessfulSave();
               },
               addWeightError: () {
                 _toggleSaving(false);
-                _showSnack('فشل حفظ الوزن', success: false);
+                _showSnack(LocaleKeys.weight_saved_error.tr(), success: false);
               },
               orElse: () {},
             );
@@ -207,7 +212,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                 onPressed: () => Navigator.pop(context),
               ),
               title: Text(
-                'إضافة قياس',
+                LocaleKeys.add_measurement.tr(),
                 style: TextStyle(
                   color: Colors.grey[800],
                   fontSize: 20,
@@ -216,7 +221,6 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
               ),
               centerTitle: true,
             ),
-            // الحل الجذري: تغليف كل body في SingleChildScrollView
             body: SingleChildScrollView(
               child: Column(
                 children: [
@@ -252,7 +256,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'وقت القياس: '
+                              '${LocaleKeys.measurement_time.tr()}: '
                               '${_selectedDateTime.year}/${_selectedDateTime.month.toString().padLeft(2, '0')}/${_selectedDateTime.day.toString().padLeft(2, '0')} '
                               '${_selectedDateTime.hour.toString().padLeft(2, '0')}:${_selectedDateTime.minute.toString().padLeft(2, '0')}',
                               style: const TextStyle(
@@ -303,15 +307,15 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                       tabs: [
                         Tab(
                           icon: Icon(Icons.bloodtype, size: 20.sp),
-                          text: 'السكر',
+                          text: LocaleKeys.sugar.tr(),
                         ),
                         Tab(
                           icon: Icon(Icons.favorite, size: 20.sp),
-                          text: 'الضغط',
+                          text: LocaleKeys.pressure.tr(),
                         ),
                         Tab(
                           icon: Icon(Icons.monitor_weight, size: 20.sp),
-                          text: 'الوزن',
+                          text: LocaleKeys.weight.tr(),
                         ),
                       ],
                     ),
@@ -363,8 +367,8 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
                   ),
                   child: _isSaving
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                          "حفظ القياس",
+                      : Text(
+                          LocaleKeys.save_measurement.tr(),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -427,7 +431,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
             _selectedDateTime,
           );
         } else {
-          _showSnack('يرجى ملء جميع الحقول المطلوبة', success: false);
+          _showSnack(LocaleKeys.fill_required_fields.tr(), success: false);
         }
         break;
 
@@ -442,7 +446,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
             selectedDate: _selectedDateTime,
           );
         } else {
-          _showSnack('يرجى ملء جميع الحقول المطلوبة', success: false);
+          _showSnack(LocaleKeys.fill_required_fields.tr(), success: false);
         }
         break;
 
@@ -456,7 +460,7 @@ class _AddingMeasurementsScreenState extends State<AddingMeasurementsScreen>
             _selectedDateTime,
           );
         } else {
-          _showSnack('يرجى ملء جميع الحقول المطلوبة', success: false);
+          _showSnack(LocaleKeys.fill_required_fields.tr(), success: false);
         }
         break;
     }

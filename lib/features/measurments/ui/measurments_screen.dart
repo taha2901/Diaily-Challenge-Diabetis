@@ -1,4 +1,5 @@
 import 'package:challenge_diabetes/core/helpers/constants.dart';
+import 'package:challenge_diabetes/core/widget/cutom_app_bar.dart';
 import 'package:challenge_diabetes/features/measurments/logic/pressure/pressure_cubit.dart';
 import 'package:challenge_diabetes/features/measurments/logic/suger/suger_cubit.dart';
 import 'package:challenge_diabetes/features/measurments/logic/weight/weight_cubit.dart';
@@ -70,37 +71,44 @@ class _MeasurementsScreenState extends State<MeasurementsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        title: const Text(
-          "سجل القياسات",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        ),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          DatePickerWidget(
-            selectedDate: _selectedDate,
-            onDateChanged: _onDateChanged,
-          ),
-          MeasurementsTabBar(controller: _tabController),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                PressureTab(selectedDate: _selectedDate),
-                SugarTab(selectedDate: _selectedDate),
-                WeightTab(selectedDate: _selectedDate),
-              ],
+    final t = Theme.of(context);
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: t.colorScheme.onPrimary,
+        body: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    t.colorScheme.primary.withOpacity(0.1),
+                    t.colorScheme.primary.withOpacity(0.05),
+                  ],
+                ),
+              ),
+              child: const CustomAppBar(),
             ),
-          ),
-        ],
+            DatePickerWidget(
+              selectedDate: _selectedDate,
+              onDateChanged: _onDateChanged,
+            ),
+            MeasurementsTabBar(controller: _tabController),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  PressureTab(selectedDate: _selectedDate),
+                  SugarTab(selectedDate: _selectedDate),
+                  WeightTab(selectedDate: _selectedDate),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

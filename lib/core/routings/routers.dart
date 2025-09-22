@@ -11,14 +11,14 @@ class Routers {
   static const String editMedicine = '/editMedicine';
   static const String measurement = '/measurement';
   static const String myReservation = '/myReservation';
+  static const String exercise = '/exercise';
   // static const String confirmDoctorResrvation = '/confirmDoctorResrvation';
   // static const String doctorResrvation = '/doctorResrvation';
   // static const String profile = '/profile';
   // static const String updateProfile = '/updateProfile';
   // static const String thankYouView = '/thankYouView';
-  // static const String exercise = '/exercise';
   // static const String favourite = '/favourite';
   // static const String splashScreen = '/splashScreen';
-  // static const String chatbot = '/chatbot';
+  static const String picBot = '/picBot';
   // static const String addPerson = '/addPerson';
 }

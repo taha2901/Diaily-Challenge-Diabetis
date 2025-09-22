@@ -3,6 +3,8 @@ import 'package:challenge_diabetes/core/theming/colors.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_state.dart';
 import 'package:challenge_diabetes/features/doctor/ui/widgets/booking/booking_success_dialouge.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +24,11 @@ class BookingButtonWidget extends StatelessWidget {
           reservationError: (error) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(error.getAllErrorMessages()),
+                content: Text(
+                  error.getAllErrorMessages().isNotEmpty
+                      ? error.getAllErrorMessages()
+                      : LocaleKeys.reservation_error.tr(),
+                ),
                 backgroundColor: Colors.red,
               ),
             );
@@ -63,9 +69,9 @@ class BookingButtonWidget extends StatelessWidget {
                     children: [
                       const Icon(Icons.calendar_month, size: 20),
                       horizontalSpace(8),
-                      const Text(
-                        'تأكيد الحجز',
-                        style: TextStyle(
+                      Text(
+                        LocaleKeys.confirm_booking.tr(),
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),

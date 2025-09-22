@@ -1,15 +1,17 @@
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SaveMedicineButton extends StatelessWidget {
   final VoidCallback onSave;
   final bool isLoading;
 
   const SaveMedicineButton({
-    Key? key,
+    super.key,
     required this.onSave,
     this.isLoading = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class SaveMedicineButton extends StatelessWidget {
             ? SizedBox(
                 height: 20.h,
                 width: 20.w,
-                child: CircularProgressIndicator(
+                child: const CircularProgressIndicator(
                   color: Colors.white,
                   strokeWidth: 2,
                 ),
@@ -41,7 +43,7 @@ class SaveMedicineButton extends StatelessWidget {
                   Icon(Icons.save, size: 20.sp),
                   SizedBox(width: 8.w),
                   Text(
-                    'Save Medicine',
+                    LocaleKeys.save_medicine.tr(),
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,

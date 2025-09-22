@@ -21,14 +21,13 @@ class DiabetesHomePage extends StatefulWidget {
 
 class _DiabetesHomePageState extends State<DiabetesHomePage>
     with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
-  
   @override
   bool get wantKeepAlive => true;
-  
+
   bool _isInitialized = false;
   bool _isRefreshing = false;
   DateTime? _lastRefresh;
-  
+
   // Cache duration - 5 minutes
   static const Duration _cacheDuration = Duration(minutes: 5);
 
@@ -36,7 +35,7 @@ class _DiabetesHomePageState extends State<DiabetesHomePage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    
+
     // تأخير بسيط لضمان بناء الويدجت أولاً
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -62,7 +61,7 @@ class _DiabetesHomePageState extends State<DiabetesHomePage>
   // Initialize data only once or when needed
   Future<void> _initializeData() async {
     if (_isInitialized && !_shouldRefresh()) return;
-    
+
     await _fetchAllData();
     _isInitialized = true;
   }
@@ -80,14 +79,14 @@ class _DiabetesHomePageState extends State<DiabetesHomePage>
 
   Future<void> _fetchAllData() async {
     if (_isRefreshing) return;
-    
+
     setState(() {
       _isRefreshing = true;
     });
 
     try {
       final today = DateHelper.formatDate(DateTime.now());
-      
+
       // Fetch all data concurrently for better performance
       await Future.wait([
         _fetchSugarDataSafely(today),
@@ -145,43 +144,64 @@ class _DiabetesHomePageState extends State<DiabetesHomePage>
 
   @override
   Widget build(BuildContext context) {
+    final t = Theme.of(context);
     super.build(context); // Required for AutomaticKeepAliveClientMixin
 
     return Scaffold(
-      backgroundColor: ColorsManager.mainBackGround,
+      backgroundColor: t.colorScheme.onPrimary,
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: _onRefresh,
           color: ColorsManager.mainBlue,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(16),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CustomAppBar(),
-                verticalSpace(10),
-                
-                // Quick Stats Card with refresh capability
-                QuickStateCard(
-                  isRefreshing: _isRefreshing,
-                  onRefresh: _onRefresh,
+                 Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        t.colorScheme.primary.withOpacity(0.1),
+                        t.colorScheme.primary.withOpacity(0.05),
+                      ],
+                    ),
+                  ),
+                  child: const CustomAppBar(),
                 ),
-                verticalSpace(20),
-
-                // Quick Actions
-                const QuickActionsSection(),
-                verticalSpace(20),
-
-                // Medications Reminder
-                const MedicationsCard(),
-                verticalSpace(20),
-
-                // Exercise Section
-                const ExerciseCard(),
-                
-                // Add some bottom padding for better UX
-                verticalSpace(20),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                     
+                      verticalSpace(10),
+                  
+                      // Quick Stats Card with refresh capability
+                      QuickStateCard(
+                        isRefreshing: _isRefreshing,
+                        onRefresh: _onRefresh,
+                      ),
+                      verticalSpace(20),
+                  
+                      // Quick Actions
+                      const QuickActionsSection(),
+                      verticalSpace(20),
+                  
+                      // Medications Reminder
+                      const MedicationsCard(),
+                      verticalSpace(20),
+                  
+                      // Exercise Section
+                      const ExerciseCard(),
+                  
+                      // Add some bottom padding for better UX
+                      verticalSpace(20),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

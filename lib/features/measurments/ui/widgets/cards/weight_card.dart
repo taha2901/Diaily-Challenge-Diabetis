@@ -1,5 +1,7 @@
 import 'package:challenge_diabetes/core/helpers/constants.dart';
 import 'package:challenge_diabetes/features/measurments/model/data/get_measurments_models/get_weight_response.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class WeightCard extends StatelessWidget {
@@ -48,13 +50,16 @@ class WeightCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // الوزن
         Text(
-          "الوزن: ${weight.weight} كجم",
+          "${LocaleKeys.weight.tr()}: ${weight.weight} ${LocaleKeys.kg.tr()}",
           style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
         ),
         const SizedBox(height: 4),
+        // النشاط
         Text(
-          weight.sport ? "نشاط: مشي" : "نشاط: آخر",
+          "${LocaleKeys.activity.tr()}: "
+          "${weight.sport ? LocaleKeys.activity_walk.tr() : LocaleKeys.activity_other.tr()}",
           style: TextStyle(color: Colors.grey[600], fontSize: 13),
         ),
       ],

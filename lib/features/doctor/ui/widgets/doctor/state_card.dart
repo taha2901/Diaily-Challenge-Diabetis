@@ -1,35 +1,47 @@
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
-import 'package:challenge_diabetes/core/theming/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class StateCard extends StatelessWidget {
+class StateItem extends StatelessWidget {
   final String title;
   final String value;
-  const StateCard({super.key, required this.title, required this.value});
+  final IconData icon;
+  const StateItem({super.key, required this.title, required this.value, required this.icon});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            value,
-            style:  TextStyles.font18WhiteMedium,
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: Colors.white,
+              size: 20,
+            ),
+            horizontalSpace(8),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+        verticalSpace(4),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 12.sp,
+            color: Colors.white.withOpacity(0.9),
+            fontWeight: FontWeight.w500,
           ),
-          verticalSpace(4),
-          Text(
-            title,
-            style: TextStyles.font12WhiteMedium,
-          ),
-        ],
-      ),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }

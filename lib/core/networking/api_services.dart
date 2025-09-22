@@ -23,6 +23,7 @@ import 'package:challenge_diabetes/features/profile/data/models/update_user_requ
 import 'package:challenge_diabetes/features/profile/data/models/update_user_response.dart';
 import 'package:challenge_diabetes/features/profile/data/models/user_details_response.dart';
 import 'package:challenge_diabetes/features/signup/data/models/sign_up_response.dart';
+import 'package:challenge_diabetes/features/sports/data/model/exercise_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'api_constants.dart';
@@ -108,10 +109,12 @@ abstract class ApiServices {
   Future<UpdateUserResponse> updateProfile(
     @Body() UpdateUserRequest updateProfileRequestModel,
   );
+  
   //   @POST(ApiConstants.logout)
   // Future<void> logout();
-  // @GET(ApiConstants.getExercise)
-  // Future<List<Exercise>> gerExercise();
+
+  @GET(ApiConstants.getExercise)
+  Future<List<Exercise>> gerExercise();
 
   // @GET(ApiConstants.getFavourite)
   // Future<List<FavouriteDoctorResponse>> getFavourite();

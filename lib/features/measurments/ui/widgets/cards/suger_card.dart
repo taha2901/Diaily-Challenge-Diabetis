@@ -1,5 +1,7 @@
 import 'package:challenge_diabetes/core/helpers/constants.dart';
 import 'package:challenge_diabetes/features/measurments/model/data/get_measurments_models/get_blood_suger_response.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SugarCard extends StatelessWidget {
@@ -49,12 +51,12 @@ class SugarCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "القراءة: ${reading.sugarReading} mg/dL",
+          "${LocaleKeys.measurement.tr()}: ${reading.sugarReading} mg/dL",
           style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
         ),
         const SizedBox(height: 4),
         Text(
-          "التوقيت: ${reading.measurementDate}",
+          "${LocaleKeys.time.tr()}: ${reading.measurementDate}",
           style: TextStyle(color: Colors.grey[600], fontSize: 13),
         ),
       ],

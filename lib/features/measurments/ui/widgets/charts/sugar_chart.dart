@@ -1,4 +1,6 @@
 import 'package:challenge_diabetes/features/measurments/model/data/get_measurments_models/get_blood_suger_response.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +12,9 @@ class SugarChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (data.isEmpty) {
-      return const Padding(
+      return Padding(
         padding: EdgeInsets.all(16),
-        child: Text("لا توجد بيانات كافية لعرض الرسم البياني"),
+        child: Text(LocaleKeys.no_data_sugar.tr()),
       );
     }
 
@@ -27,7 +29,7 @@ class SugarChartWidget extends StatelessWidget {
         child: LineChart(
           LineChartData(
             gridData: FlGridData(show: true),
-            titlesData: FlTitlesData(show: false), // يمكن تعديله لأسماء الأيام
+            titlesData: FlTitlesData(show: false),
             borderData: FlBorderData(show: true),
             lineBarsData: [
               LineChartBarData(

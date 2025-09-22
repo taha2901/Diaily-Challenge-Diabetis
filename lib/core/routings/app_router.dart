@@ -5,6 +5,7 @@ import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/features/doctor/ui/doctor_screen.dart';
 import 'package:challenge_diabetes/features/doctor/ui/doctor_details_screen.dart';
+import 'package:challenge_diabetes/features/pic_products/presentation/view/pic_products.dart';
 import 'package:challenge_diabetes/features/profile/ui/my_reservations_screen.dart';
 import 'package:challenge_diabetes/features/login/logic/cubit/login_cubit.dart';
 import 'package:challenge_diabetes/features/login/ui/login_screen.dart';
@@ -15,6 +16,7 @@ import 'package:challenge_diabetes/features/medicals/ui/add_medicine_screen.dart
 import 'package:challenge_diabetes/features/medicals/ui/edit_medicine_screen.dart';
 import 'package:challenge_diabetes/features/medicals/ui/medicals_screen.dart';
 import 'package:challenge_diabetes/features/signup/ui/sign_up_screen.dart';
+import 'package:challenge_diabetes/features/sports/ui/exercise.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -56,14 +58,14 @@ class AppRouter {
       case Routers.doctors:
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
-            value:  getit<DoctorsCubit>()..getDoctors(),
+            value: getit<DoctorsCubit>()..getDoctors(),
             child: const DoctorsListScreen(),
           ),
         );
-        case Routers.myReservation:
+      case Routers.myReservation:
         return MaterialPageRoute(
           builder: (_) => BlocProvider.value(
-            value:  getit<DoctorsCubit>()..getUserReservation(),
+            value: getit<DoctorsCubit>()..getUserReservation(),
             child: const MyReservationsScreen(),
           ),
         );
@@ -90,22 +92,16 @@ class AppRouter {
             ),
           );
         }
-    
 
-     
-   
-
-      // case Routers.exercise:
-      //   return MaterialPageRoute(
-      //     builder: (_) => const ExerciseScreen(),
-      //   );
+      case Routers.exercise:
+        return MaterialPageRoute(builder: (_) => const ExerciseScreen());
+      case Routers.picBot:
+        return MaterialPageRoute(builder: (_) => const PicProductsView());
 
       // case Routers.profile:
       //   return MaterialPageRoute(
       //     builder: (_) => const ProfileScreen(),
       //   );
-
-   
 
       // case Routers.chatbot:
       //   return MaterialPageRoute(

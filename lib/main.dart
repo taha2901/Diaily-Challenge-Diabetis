@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,15 +21,23 @@ void main() async {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
+  await EasyLocalization.ensureInitialized();
   setUpGetIt();
   await ScreenUtil.ensureScreenSize();
   await checkLoggedInUser();
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) {
-        return DocApp(appRouter: AppRouter());
-      },
+    EasyLocalization(
+      path: 'assets/lang',
+      saveLocale: true,
+      startLocale: const Locale('en'),
+      fallbackLocale: const Locale('en'),
+      supportedLocales: const [Locale('ar'), Locale('en')],
+      child: DevicePreview(
+        enabled: !kReleaseMode,
+        builder: (context) {
+          return DocApp(appRouter: AppRouter());
+        },
+      ),
     ),
   );
 }

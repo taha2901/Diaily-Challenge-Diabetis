@@ -1,4 +1,6 @@
 import 'package:challenge_diabetes/core/theming/colors.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class BookingTabsWidget extends StatelessWidget {
@@ -23,11 +25,10 @@ class BookingTabsWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         indicatorSize: TabBarIndicatorSize.tab,
-        tabs: const [
-          Tab(child: Text('البيانات', style: TextStyle(fontSize: 12))),
-          Tab(child: Text('التاريخ', style: TextStyle(fontSize: 12))),
-          Tab(child: Text('الوقت', style: TextStyle(fontSize: 12))),
-          Tab(child: Text('ملاحظات', style: TextStyle(fontSize: 12))),
+        tabs: [
+          Tab(child: Text(LocaleKeys.booking_tab_data.tr(), style: const TextStyle(fontSize: 12))),
+          Tab(child: Text(LocaleKeys.booking_tab_date.tr(), style: const TextStyle(fontSize: 12))),
+          Tab(child: Text(LocaleKeys.booking_tab_notes.tr(), style: const TextStyle(fontSize: 12))),
         ],
       ),
     );

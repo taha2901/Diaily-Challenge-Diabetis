@@ -1,3 +1,5 @@
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class CancelButton extends StatelessWidget {
@@ -16,7 +18,7 @@ class CancelButton extends StatelessWidget {
           ),
         ),
         child: Text(
-          "Cancel",
+          LocaleKeys.cancel.tr(),
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,

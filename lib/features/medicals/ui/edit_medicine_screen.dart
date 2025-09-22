@@ -9,6 +9,8 @@ import 'package:challenge_diabetes/features/medicals/ui/widgets/cancel_button.da
 import 'package:challenge_diabetes/features/medicals/ui/widgets/section_title.dart';
 import 'package:challenge_diabetes/features/medicals/ui/widgets/text_field_of_medicine.dart';
 import 'package:challenge_diabetes/features/medicals/ui/widgets/update_button.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,12 +29,12 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
   final TextEditingController _notesController = TextEditingController();
   TimeOfDay? _selectedTime;
   String _selectedFrequency = 'Daily';
-  final List<String> _frequencies = [
-    'Daily',
-    'Every 2 days',
-    'Weekly',
-    'As needed',
-  ];
+  final Map<String, String> _frequencyOptions = {
+    "Daily": LocaleKeys.daily.tr(),
+    "Every 2 days": LocaleKeys.every_2_days.tr(),
+    "Weekly": LocaleKeys.weekly.tr(),
+    "As needed": LocaleKeys.as_needed.tr(),
+  };
 
   @override
   void initState() {
@@ -77,7 +79,7 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
   void _showSuccessMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Medicine updated successfully!'),
+        content: Text(LocaleKeys.medicine_updated.tr()),
         backgroundColor: Colors.green,
         duration: Duration(seconds: 2),
       ),
@@ -87,7 +89,7 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
   void _showErrorMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Error: $message'),
+        content: Text(LocaleKeys.medicine_error.tr(args: [message])),
         backgroundColor: Colors.red,
         duration: Duration(seconds: 3),
       ),
@@ -120,7 +122,7 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
         },
         child: Column(
           children: [
-            CustomAppBarForDoctors(title: 'Edit Medicine'),
+            CustomAppBarForDoctors(title: LocaleKeys.edit_medicine.tr()),
             Expanded(
               child: Form(
                 key: _formKey,
@@ -129,15 +131,15 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SectionTitle(title: "Medicine Details"),
+                      SectionTitle(title: LocaleKeys.medicine_details.tr()),
                       verticalSpace(16),
                       TextFieldOfMedicine(
                         controller: _nameController,
-                        label: "Medicine Name",
+                        label: LocaleKeys.medicine_name.tr(),
                         icon: Icons.medical_services,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Please enter medicine name';
+                            return LocaleKeys.medicine_name_required.tr();
                           }
                           return null;
                         },
@@ -146,28 +148,28 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
                       verticalSpace(20),
                       TextFieldOfMedicine(
                         controller: _doseController,
-                        label: "Dose (e.g., 1 pill, 5ml)",
+                        label: LocaleKeys.dose_label.tr(),
                         icon: Icons.scale,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Please enter dose';
+                            return LocaleKeys.dose_required.tr();
                           }
                           return null;
                         },
                         maxLines: 1,
                       ),
                       const SizedBox(height: 24),
-                      SectionTitle(title: "Schedule"),
+                      SectionTitle(title: LocaleKeys.schedule.tr()),
                       const SizedBox(height: 16),
                       _buildTimeSelector(),
                       const SizedBox(height: 20),
                       _buildFrequencyDropdown(),
                       const SizedBox(height: 24),
-                      SectionTitle(title: "Additional Notes"),
+                      SectionTitle(title: LocaleKeys.additional_notes.tr()),
                       const SizedBox(height: 16),
                       TextFieldOfMedicine(
                         controller: _notesController,
-                        label: "Notes (optional)",
+                        label: LocaleKeys.notes_optional.tr(),
                         icon: Icons.notes,
                         maxLines: 3,
                       ),
@@ -239,8 +241,10 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
               Expanded(
                 child: Text(
                   _selectedTime == null
-                      ? "Select Time"
-                      : "Time: ${_selectedTime!.format(context)}",
+                      ? LocaleKeys.select_time.tr()
+                      : LocaleKeys.time_label.tr(
+                          args: [_selectedTime!.format(context)],
+                        ),
                   style: TextStyle(
                     fontSize: 16,
                     color: _selectedTime == null
@@ -276,7 +280,7 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
       child: DropdownButtonFormField<String>(
         value: _selectedFrequency,
         decoration: InputDecoration(
-          labelText: "Frequency",
+          labelText: LocaleKeys.frequency.tr(),
           prefixIcon: Icon(Icons.repeat, color: Colors.blue[600]),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
@@ -289,9 +293,12 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
             vertical: 16,
           ),
         ),
-        items: _frequencies.map((frequency) {
-          return DropdownMenuItem(value: frequency, child: Text(frequency));
-        }).toList(),
+        items: _frequencyOptions.entries.map((entry) {
+    return DropdownMenuItem(
+      value: entry.key,   // ← القيمة الأصلية (ثابتة)
+      child: Text(entry.value), // ← النص المترجم
+    );
+  }).toList(),
         onChanged: (value) {
           setState(() {
             _selectedFrequency = value!;

@@ -1,8 +1,34 @@
+import 'package:challenge_diabetes/core/routings/routers.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-class ExerciseCard extends StatelessWidget {
+class ExerciseCard extends StatefulWidget {
   const ExerciseCard({super.key});
 
+  @override
+  State<ExerciseCard> createState() => _ExerciseCardState();
+}
+
+class _ExerciseCardState extends State<ExerciseCard> {
+    String? _currentLocale;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // التحقق من تغيير اللغة
+    final newLocale = context.locale.toString();
+    if (_currentLocale != null && _currentLocale != newLocale) {
+      if (mounted) {
+        setState(() {
+          _currentLocale = newLocale;
+        });
+      }
+    } else {
+      _currentLocale = newLocale;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,12 +51,12 @@ class ExerciseCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
               Icon(Icons.fitness_center, color: Colors.white, size: 24),
               SizedBox(width: 12),
               Text(
-                'Daily Exercises',
+                LocaleKeys.daily_exercises.tr(),
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -47,7 +73,7 @@ class ExerciseCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '30 minutes walking',
+                      LocaleKeys.exercise_walking.tr(),
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.9),
                         fontSize: 14,
@@ -55,7 +81,7 @@ class ExerciseCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Helps regulate sugar',
+                      LocaleKeys.hello_user.tr(),
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.7),
                         fontSize: 12,
@@ -66,7 +92,10 @@ class ExerciseCard extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  // Navigate to exercises
+                  Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).pushNamed(Routers.exercise);
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
@@ -78,8 +107,8 @@ class ExerciseCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.white.withOpacity(0.3)),
                   ),
-                  child: const Text(
-                    'Start',
+                  child: Text(
+                    LocaleKeys.start.tr(),
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,

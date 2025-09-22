@@ -1,162 +1,176 @@
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
 import 'package:challenge_diabetes/core/routings/routers.dart';
 import 'package:challenge_diabetes/core/theming/colors.dart';
-import 'package:challenge_diabetes/core/theming/styles.dart';
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/arrow_icon_widget.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/doc_avatar.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/doctor_name_widget.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/doctor_rate_widget.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/price_tag_of_doc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DoctorCard extends StatelessWidget {
+class DoctorCard extends StatefulWidget {
   final DoctorResponseBody doctor;
+  final int index;
 
-  const DoctorCard({super.key, required this.doctor});
+  const DoctorCard({
+    super.key,
+    required this.doctor,
+    required this.index,
+  });
+
+  @override
+  State<DoctorCard> createState() => _DoctorCardState();
+}
+
+class _DoctorCardState extends State<DoctorCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  bool _isPressed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.95,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _handleTapDown(TapDownDetails details) {
+    setState(() => _isPressed = true);
+    _controller.forward();
+  }
+
+  void _handleTapUp(TapUpDetails details) {
+    setState(() => _isPressed = false);
+    _controller.reverse();
+  }
+
+  void _handleTapCancel() {
+    setState(() => _isPressed = false);
+    _controller.reverse();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: GestureDetector(
+        onTapDown: _handleTapDown,
+        onTapUp: _handleTapUp,
+        onTapCancel: _handleTapCancel,
         onTap: () {
-          Navigator.of(context).pushNamed(
-            Routers.doctorDetails,
-            arguments: doctor, 
-          );
+          Navigator.of(
+            context,
+          ).pushNamed(Routers.doctorDetails, arguments: widget.doctor);
         },
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Container(
-                width: 70.w,
-                height: 70.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  color: Colors.grey[300],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: doctor.photo.isNotEmpty
-                      ? Image.network(
-                          doctor.photo,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: ColorsManager.mainBlue,
-                              child: Icon(
-                                Icons.person,
-                                color: Colors.white,
-                                size: 40.sp,
-                              ),
-                            );
-                          },
-                        )
-                      : Container(
-                          color: ColorsManager.mainBlue,
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 40.sp,
-                          ),
-                        ),
-                ),
+        child: Container(
+          margin: EdgeInsets.only(bottom: 16.h),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
               ),
-              horizontalSpace(16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      doctor.userName,
-                      style: TextStyles.font18DarkBlueBold,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    verticalSpace(4),
-
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on,
-                          size: 16,
-                          color: Colors.grey[600],
-                        ),
-                        horizontalSpace(4),
-                        Expanded(
-                          child: Text(
-                            doctor.address,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    verticalSpace(8),
-                    Row(
-                      children: [
-                        Icon(Icons.star, size: 16, color: Colors.amber[600]),
-                        horizontalSpace(4),
-                        Text(
-                          doctor.rate?.toString() ?? '0.0',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        horizontalSpace(16),
-                        Icon(
-                          Icons.work_outline,
-                          size: 16.sp,
-                          color: Colors.grey[600],
-                        ),
-                      ],
-                    ),
-                    if (doctor.detectionPrice > 0) ...[
-                      verticalSpace(8),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.attach_money,
-                            size: 16,
-                            color: Colors.green[600],
-                          ),
-                          horizontalSpace(4),
-                          Text(
-                            '${doctor.detectionPrice} جنيه',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.green[600],
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const Spacer(),
-                          // أيقونة المفضلة
-                          Icon(
-                            doctor.favorite
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: doctor.favorite
-                                ? Colors.red
-                                : Colors.grey[400],
-                            size: 20,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.grey[400],
-                size: 20.sp,
+              BoxShadow(
+                color: ColorsManager.mainBlue.withOpacity(0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Stack(
+              children: [
+                // خلفية متدرجة خفيفة
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white,
+                          const Color.fromARGB(255, 152, 174, 207).withOpacity(0.02),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      //photo of doc
+                      DocAvatar(
+                        doctor: widget.doctor,
+                      ),
+                      horizontalSpace(16),
+
+                      // Doc Info
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            DoctorNameWidget(
+                              doctor:  widget.doctor,
+                            ),
+                            verticalSpace(8),
+                            DoctorRateWidget(
+                              doctor: widget.doctor,
+                            ),
+                            if (widget.doctor.detectionPrice > 0) ...[
+                              verticalSpace(8),
+                              PriceTagOfDoc(
+                                doctor: widget.doctor,
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+
+                      ArrowIconWidget(),
+                    ],
+                  ),
+                ),
+
+                // شريط ملون علوي للتمييز
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 3,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          ColorsManager.mainBlue,
+                          ColorsManager.mainBlue.withOpacity(0.5),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

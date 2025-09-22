@@ -6,8 +6,10 @@ import 'package:challenge_diabetes/features/medicals/logic/medicine_state.dart';
 import 'package:challenge_diabetes/features/medicals/ui/widgets/save_medicine_button.dart';
 import 'package:challenge_diabetes/features/medicals/ui/widgets/section_title.dart';
 import 'package:challenge_diabetes/features/medicals/ui/widgets/text_field_of_medicine.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AddMedicineScreen extends StatefulWidget {
   const AddMedicineScreen({super.key});
@@ -22,13 +24,13 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
   final TextEditingController _doseController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   TimeOfDay? _selectedTime;
-  String _selectedFrequency = 'Daily';
+  String _selectedFrequency = LocaleKeys.daily.tr();
 
   final List<String> _frequencies = [
-    'Daily',
-    'Every 2 days',
-    'Weekly',
-    'As needed',
+    LocaleKeys.daily.tr(),
+    LocaleKeys.every_2_days.tr(),
+    LocaleKeys.weekly.tr(),
+    LocaleKeys.as_needed.tr(),
   ];
 
   Future<void> _pickTime() async {
@@ -54,9 +56,9 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
   void _showSuccessMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Medicine added successfully!'),
+        content: Text(LocaleKeys.medicine_added.tr()),
         backgroundColor: Colors.green,
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
@@ -64,9 +66,9 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
   void _showErrorMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Error: $message'),
+        content: Text(LocaleKeys.error_prefix.tr(args: [message])),
         backgroundColor: Colors.red,
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
       ),
     );
   }
@@ -98,7 +100,7 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CustomAppBarForDoctors(title: 'Add Medicine'),
+              CustomAppBarForDoctors(title: LocaleKeys.add_medicine.tr()),
               Form(
                 key: _formKey,
                 child: SingleChildScrollView(
@@ -106,15 +108,15 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SectionTitle(title: "Medicine Details"),
+                      SectionTitle(title: LocaleKeys.medicine_details.tr()),
                       verticalSpace(16),
                       TextFieldOfMedicine(
                         controller: _nameController,
-                        label: "Medicine Name",
+                        label: LocaleKeys.medicine_name.tr(),
                         icon: Icons.medical_services,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Please enter medicine name';
+                            return LocaleKeys.medicine_name_error.tr();
                           }
                           return null;
                         },
@@ -123,28 +125,28 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                       verticalSpace(20),
                       TextFieldOfMedicine(
                         controller: _doseController,
-                        label: "Dose (e.g., 1 pill, 5ml)",
+                        label: LocaleKeys.dose.tr(),
                         icon: Icons.scale,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Please enter dose';
+                            return LocaleKeys.dose_error.tr();
                           }
                           return null;
                         },
                         maxLines: 1,
                       ),
                       verticalSpace(24),
-                      SectionTitle(title: "Schedule"),
+                      SectionTitle(title: LocaleKeys.schedule.tr()),
                       verticalSpace(16),
                       _buildTimeSelector(),
                       verticalSpace(20),
                       _buildFrequencyDropdown(),
                       verticalSpace(24),
-                      SectionTitle(title: "Additional Notes"),
+                      SectionTitle(title: LocaleKeys.additional_notes.tr()),
                       verticalSpace(16),
                       TextFieldOfMedicine(
                         controller: _notesController,
-                        label: "Notes (optional)",
+                        label: LocaleKeys.notes_optional.tr(),
                         icon: Icons.notes,
                         maxLines: 3,
                       ),
@@ -154,17 +156,15 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                           if (_formKey.currentState!.validate()) {
                             final cubit = context.read<MedicineCubit>();
 
-                            // تنظيف الكنترولر أولاً
                             cubit.clearControllers();
-
-                            // ملء البيانات الجديدة
-                            cubit.nameController.text = _nameController.text
-                                .trim();
-                            cubit.dosageController.text = _doseController.text
-                                .trim();
+                            cubit.nameController.text =
+                                _nameController.text.trim();
+                            cubit.dosageController.text =
+                                _doseController.text.trim();
                             cubit.countController.text = _selectedFrequency;
                             cubit.timeController.text =
-                                _selectedTime?.format(context) ?? "8:00 AM";
+                                _selectedTime?.format(context) ??
+                                    "8:00 AM";
 
                             cubit.emitAddMedicine();
                           }
@@ -206,8 +206,10 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
               Expanded(
                 child: Text(
                   _selectedTime == null
-                      ? "Select Time"
-                      : "Time: ${_selectedTime!.format(context)}",
+                      ? LocaleKeys.select_time.tr()
+                      : LocaleKeys.time.tr(args: [
+                          _selectedTime!.format(context),
+                        ]),
                   style: TextStyle(
                     fontSize: 16,
                     color: _selectedTime == null
@@ -243,7 +245,7 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
       child: DropdownButtonFormField<String>(
         value: _selectedFrequency,
         decoration: InputDecoration(
-          labelText: "Frequency",
+          labelText: LocaleKeys.frequency.tr(),
           prefixIcon: Icon(Icons.repeat, color: Colors.blue[600]),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
@@ -276,4 +278,3 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
     super.dispose();
   }
 }
-

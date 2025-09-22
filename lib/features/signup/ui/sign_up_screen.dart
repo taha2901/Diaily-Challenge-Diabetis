@@ -1,4 +1,5 @@
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
+import 'package:challenge_diabetes/core/routings/routers.dart';
 import 'package:challenge_diabetes/core/theming/styles.dart';
 import 'package:challenge_diabetes/core/widget/app_text_button.dart';
 import 'package:challenge_diabetes/features/signup/logic/cubit/sign_up_cubit.dart';
@@ -65,6 +66,7 @@ class RegisterScreen extends StatelessWidget {
                             isLoading: state is RegisterLoading,
                             onPressed: () {
                               _validateThenRegister(context);
+                              Navigator.pushNamed(context, Routers.login);
                             },
                           );
                         },

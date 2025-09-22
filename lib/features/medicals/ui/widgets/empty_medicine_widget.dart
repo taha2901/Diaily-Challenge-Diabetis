@@ -1,5 +1,6 @@
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
 import 'package:flutter/material.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 
 class EmptyMedicine extends StatefulWidget {
   final VoidCallback? onAddMedicine;
@@ -93,7 +94,7 @@ class _EmptyMedicineState extends State<EmptyMedicine>
                   ),
                   const SizedBox(height: 32),
                   Text(
-                    '💊 لا توجد أدوية',
+                    LocaleKeys.no_medicines_empty.tr(),
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -104,7 +105,7 @@ class _EmptyMedicineState extends State<EmptyMedicine>
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: Text(
-                      'ابدأ رحلتك في تنظيم أدويتك\nوالحفاظ على صحتك',
+                      LocaleKeys.start_journey.tr(),
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey.shade600,
@@ -130,9 +131,9 @@ class _EmptyMedicineState extends State<EmptyMedicine>
                       child: ElevatedButton.icon(
                         onPressed: widget.onAddMedicine,
                         icon: const Icon(Icons.add_box_outlined, color: Colors.white),
-                        label: const Text(
-                          'ابدأ الآن',
-                          style: TextStyle(
+                        label: Text(
+                          LocaleKeys.start_now.tr(),
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -161,4 +162,3 @@ class _EmptyMedicineState extends State<EmptyMedicine>
     );
   }
 }
- 

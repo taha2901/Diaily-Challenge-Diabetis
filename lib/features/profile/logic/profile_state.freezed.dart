@@ -430,17 +430,12 @@ class _$ProfileSuccessImpl implements ProfileSuccess {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ProfileSuccessImpl &&
-            const DeepCollectionEquality().equals(
-              other.profileModel,
-              profileModel,
-            ));
+            (identical(other.profileModel, profileModel) ||
+                other.profileModel == profileModel));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    const DeepCollectionEquality().hash(profileModel),
-  );
+  int get hashCode => Object.hash(runtimeType, profileModel);
 
   /// Create a copy of ProfileState
   /// with the given fields replaced by the non-null parameter values.

@@ -1,11 +1,18 @@
 
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-class HeaderWithDescription extends StatelessWidget {
+class HeaderWithDescription extends StatefulWidget {
   const HeaderWithDescription({
     super.key,
   });
 
+  @override
+  State<HeaderWithDescription> createState() => _HeaderWithDescriptionState();
+}
+
+class _HeaderWithDescriptionState extends State<HeaderWithDescription> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +26,7 @@ class HeaderWithDescription extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'اختر نوع القياس المطلوب',
+            LocaleKeys.choose_measurement_type.tr(),
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -28,7 +35,7 @@ class HeaderWithDescription extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'املأ البيانات المطلوبة لحفظ القياس الجديد',
+            LocaleKeys.fill_required_data.tr(),
             style: TextStyle(
               fontSize: 14,
               color: Colors.grey[600],

@@ -1,258 +1,3 @@
-// import 'package:challenge_diabetes/core/helpers/constants.dart';
-// import 'package:challenge_diabetes/core/helpers/spacing.dart';
-// import 'package:challenge_diabetes/core/theming/colors.dart';
-// import 'package:challenge_diabetes/core/theming/styles.dart';
-// import 'package:challenge_diabetes/features/home/ui/widgets/state_item.dart';
-// import 'package:challenge_diabetes/features/measurments/logic/pressure/pressure_cubit.dart';
-// import 'package:challenge_diabetes/features/measurments/logic/pressure/pressure_state.dart';
-// import 'package:challenge_diabetes/features/measurments/logic/suger/suger_cubit.dart';
-// import 'package:challenge_diabetes/features/measurments/logic/suger/suger_state.dart';
-// import 'package:challenge_diabetes/features/measurments/logic/weight/weight_cubit.dart';
-// import 'package:challenge_diabetes/features/measurments/logic/weight/weight_state.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:shimmer/shimmer.dart';
-
-// class QuickStateCard extends StatefulWidget {
-//   const QuickStateCard({super.key});
-
-//   @override
-//   State<QuickStateCard> createState() => _QuickStateCardState();
-// }
-
-// class _QuickStateCardState extends State<QuickStateCard>
-//     with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
-//   // للحفاظ على الـ state لما نرجع للصفحة
-//   @override
-//   bool get wantKeepAlive => true;
-
-//   // هذه الدالة تستدعى عند العودة للصفحة
-//   @override
-//   void didChangeAppLifecycleState(AppLifecycleState state) {
-//     super.didChangeAppLifecycleState(state);
-//     if (state == AppLifecycleState.resumed) {
-//       // تحديث البيانات عند العودة للتطبيق
-//       _fetchAllData();
-//     }
-//   }
-
-//   // إضافة دالة للتحديث من الخارج
-//   void refreshData() {
-//     _fetchAllData();
-//   }
-
-//   void _fetchAllData() {
-//     final today = DateHelper.formatDate(DateTime.now());
-
-//     // تحديث البيانات للجميع
-//     context.read<MeasurmentsCubit>().fetchSugarData(today);
-//     context.read<PressureCubit>().fetchPressureData(today);
-//     context.read<WeightCubit>().fetchWeightData(today);
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     super.build(context); // مهم للـ AutomaticKeepAliveClientMixin
-
-//     return Container(
-//       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(16),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.1),
-//             spreadRadius: 1,
-//             blurRadius: 10,
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               Text('Today\'s Readings', style: TextStyles.font18DarkBlueBold),
-//               // زر الـ refresh
-//               IconButton(
-//                 onPressed: _fetchAllData,
-//                 icon: Icon(
-//                   Icons.refresh,
-//                   color: ColorsManager.mainBlue,
-//                   size: 20,
-//                 ),
-//               ),
-//             ],
-//           ),
-//           verticalSpace(16),
-//           Row(
-//             children: [
-//               // Sugar
-//               Expanded(
-//                 child: BlocBuilder<MeasurmentsCubit, MeasurmentsState>(
-//                   builder: (context, state) {
-//                     return state.when(
-//                       initial: buildShimmerItem,
-//                       addBloodSugerLoading: buildShimmerItem,
-//                       addBloodSugerSuccess: buildShimmerItem,
-//                       addBloodSugerError: (error) =>
-//                           _errorBox("Sugar Error: $error"),
-//                       getBloodSugerLoading: buildShimmerItem,
-//                       getBloodSugerSuccess: (bloodSugar) {
-//                         if (bloodSugar.isEmpty) {
-//                           return _emptySugerBox();
-//                         }
-//                         final last = bloodSugar.last;
-//                         return StateItem(
-//                           icon: Icons.bloodtype,
-//                           label: 'Sugar',
-//                           value: last.sugarReading.toString(),
-//                           unit: 'mg/dL',
-//                           color: ColorsManager.red,
-//                           backgroundColor: ColorsManager.lighterRed,
-//                         );
-//                       },
-//                       getBloodSugerError: (error) =>
-//                           _errorBox("Sugar Error: $error"),
-//                     );
-//                   },
-//                 ),
-//               ),
-
-//               horizontalSpace(12),
-
-//               // Pressure
-//               Expanded(
-//                 child: BlocBuilder<PressureCubit, PressureState>(
-//                   builder: (context, state) {
-//                     return state.when(
-//                       initial: buildShimmerItem,
-//                       addBloodPressureLoading: buildShimmerItem,
-//                       addBloodPressureSuccess: buildShimmerItem,
-//                       addBloodPressureError: () => _errorBox("Pressure Error"),
-//                       getBloodPressureLoading: buildShimmerItem,
-//                       getBloodPressureSuccess: (pressures, heartRate) {
-//                         if (pressures.isEmpty) {
-//                           return _emptyPressureBox();
-//                         }
-//                         final last = pressures.last;
-//                         return StateItem(
-//                           icon: Icons.favorite,
-//                           label: 'Pressure',
-//                           value:
-//                               "${last.systolicPressure}/${last.diastolicPressure}",
-//                           unit: 'mmHg',
-//                           color: ColorsManager.mainBlue,
-//                           backgroundColor: ColorsManager.lightBlue,
-//                         );
-//                       },
-//                       getBloodPressureError: () => _errorBox("Pressure Error"),
-//                       getBloodPressureEmpty: () =>
-//                           _emptyPressureBox(),
-//                     );
-//                   },
-//                 ),
-//               ),
-
-//               horizontalSpace(12),
-
-//               // Weight
-//               Expanded(
-//                 child: BlocBuilder<WeightCubit, WeightState>(
-//                   builder: (context, state) {
-//                     return state.when(
-//                       initial: buildShimmerItem,
-//                       addWeightLoading: buildShimmerItem,
-//                       addWeightSuccess: buildShimmerItem,
-//                       addWeightError: () => _errorBox("Weight Error"),
-//                       getWeightLoading: buildShimmerItem,
-//                       getWeightSuccess: (weights) {
-//                         if (weights.isEmpty) {
-//                           return _emptyWeightBox();
-//                         }
-//                         final last = weights.last;
-//                         return StateItem(
-//                           icon: Icons.monitor_weight,
-//                           label: 'Weight',
-//                           value: last.weight.toString(),
-//                           unit: 'kg',
-//                           color: ColorsManager.lightGreen,
-//                           backgroundColor: ColorsManager.lighterGreen,
-//                         );
-//                       },
-//                       getWeightError: (error) =>
-//                           _errorBox("Weight Error: $error"),
-//                     );
-//                   },
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget buildShimmerItem() => Shimmer.fromColors(
-//     baseColor: Colors.grey.shade300,
-//     highlightColor: Colors.grey.shade100,
-//     child: Container(
-//       height: 80.h,
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(16),
-//       ),
-//     ),
-//   );
-
-//   Widget _errorBox(String error) => Container(
-//     height: 80.h,
-//     decoration: BoxDecoration(
-//       color: Colors.red.withOpacity(0.1),
-//       borderRadius: BorderRadius.circular(16),
-//     ),
-//     child: Center(
-//       child: Text(
-//         error,
-//         style: TextStyle(color: Colors.red, fontSize: 10.sp),
-//         textAlign: TextAlign.center,
-//       ),
-//     ),
-//   );
-
-//   Widget _emptyWeightBox() => StateItem(
-//     icon: Icons.monitor_weight,
-//     label: 'Weight',
-//     value: "??",
-//     unit: 'kg',
-//     color: ColorsManager.lightGreen,
-//     backgroundColor: ColorsManager.lighterGreen,
-//   );
-
-//   Widget _emptySugerBox() => StateItem(
-//     icon: Icons.bloodtype,
-//     label: 'Sugar',
-//     value: '??',
-//     unit: 'mg/dL',
-//     color: ColorsManager.red,
-//     backgroundColor: ColorsManager.lighterRed,
-//   );
-
-//   Widget _emptyPressureBox() => StateItem(
-//     icon: Icons.favorite,
-//     label: 'Pressure',
-//     value: "${'??'}/${'??'}",
-//     unit: 'mmHg',
-//     color: ColorsManager.mainBlue,
-//     backgroundColor: ColorsManager.lightBlue,
-//   );
-// }
-
-
-
-
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
 import 'package:challenge_diabetes/core/theming/colors.dart';
 import 'package:challenge_diabetes/core/theming/styles.dart';
@@ -263,6 +8,8 @@ import 'package:challenge_diabetes/features/measurments/logic/suger/suger_cubit.
 import 'package:challenge_diabetes/features/measurments/logic/suger/suger_state.dart';
 import 'package:challenge_diabetes/features/measurments/logic/weight/weight_cubit.dart';
 import 'package:challenge_diabetes/features/measurments/logic/weight/weight_state.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -271,12 +18,8 @@ import 'package:shimmer/shimmer.dart';
 class QuickStateCard extends StatefulWidget {
   final bool isRefreshing;
   final VoidCallback? onRefresh;
-  
-  const QuickStateCard({
-    super.key,
-    this.isRefreshing = false,
-    this.onRefresh,
-  });
+
+  const QuickStateCard({super.key, this.isRefreshing = false, this.onRefresh});
 
   @override
   State<QuickStateCard> createState() => _QuickStateCardState();
@@ -284,7 +27,6 @@ class QuickStateCard extends StatefulWidget {
 
 class _QuickStateCardState extends State<QuickStateCard>
     with AutomaticKeepAliveClientMixin {
-  
   @override
   bool get wantKeepAlive => true;
 
@@ -316,8 +58,11 @@ class _QuickStateCardState extends State<QuickStateCard>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Today\'s Readings', style: TextStyles.font18DarkBlueBold),
-              
+              Text(
+                LocaleKeys.todays_readings.tr(),
+                style: TextStyles.font18DarkBlueBold,
+              ),
+
               // Refresh button with loading state
               widget.isRefreshing
                   ? SizedBox(
@@ -343,17 +88,17 @@ class _QuickStateCardState extends State<QuickStateCard>
             ],
           ),
           verticalSpace(16),
-          
+
           Row(
             children: [
               // Sugar Reading
               Expanded(child: _buildSugarWidget()),
               horizontalSpace(12),
-              
-              // Pressure Reading  
+
+              // Pressure Reading
               Expanded(child: _buildPressureWidget()),
               horizontalSpace(12),
-              
+
               // Weight Reading
               Expanded(child: _buildWeightWidget()),
             ],
@@ -384,7 +129,7 @@ class _QuickStateCardState extends State<QuickStateCard>
               final last = bloodSugar.last;
               widget = StateItem(
                 icon: Icons.bloodtype,
-                label: 'Sugar',
+                label: LocaleKeys.sugar.tr(),
                 value: last.sugarReading.toString(),
                 unit: 'mg/dL',
                 color: ColorsManager.red,
@@ -394,7 +139,8 @@ class _QuickStateCardState extends State<QuickStateCard>
             _cachedSugarWidget = widget;
             return widget;
           },
-          getBloodSugerError: (error) => _buildErrorBox("خطأ في السكر"),
+          getBloodSugerError: (error) =>
+              _buildErrorBox(LocaleKeys.sugar_error.tr()),
         );
       },
     );
@@ -408,10 +154,14 @@ class _QuickStateCardState extends State<QuickStateCard>
       builder: (context, state) {
         return state.when(
           initial: () => _buildShimmerItem(),
-          addBloodPressureLoading: () => _cachedPressureWidget ?? _buildShimmerItem(),
-          addBloodPressureSuccess: () => _cachedPressureWidget ?? _buildShimmerItem(),
-          addBloodPressureError: () => _buildErrorBox("خطأ في الضغط"),
-          getBloodPressureLoading: () => _cachedPressureWidget ?? _buildShimmerItem(),
+          addBloodPressureLoading: () =>
+              _cachedPressureWidget ?? _buildShimmerItem(),
+          addBloodPressureSuccess: () =>
+              _cachedPressureWidget ?? _buildShimmerItem(),
+          addBloodPressureError: () =>
+              _buildErrorBox(LocaleKeys.pressure_error.tr()),
+          getBloodPressureLoading: () =>
+              _cachedPressureWidget ?? _buildShimmerItem(),
           getBloodPressureSuccess: (pressures, heartRate) {
             Widget widget;
             if (pressures.isEmpty) {
@@ -420,7 +170,7 @@ class _QuickStateCardState extends State<QuickStateCard>
               final last = pressures.last;
               widget = StateItem(
                 icon: Icons.favorite,
-                label: 'Pressure',
+                label: LocaleKeys.pressure.tr(),
                 value: "${last.systolicPressure}/${last.diastolicPressure}",
                 unit: 'mmHg',
                 color: ColorsManager.mainBlue,
@@ -430,7 +180,8 @@ class _QuickStateCardState extends State<QuickStateCard>
             _cachedPressureWidget = widget;
             return widget;
           },
-          getBloodPressureError: () => _buildErrorBox("خطأ في الضغط"),
+          getBloodPressureError: () =>
+              _buildErrorBox(LocaleKeys.pressure_error.tr()),
           getBloodPressureEmpty: () {
             final widget = _buildEmptyPressureBox();
             _cachedPressureWidget = widget;
@@ -451,7 +202,7 @@ class _QuickStateCardState extends State<QuickStateCard>
           initial: () => _buildShimmerItem(),
           addWeightLoading: () => _cachedWeightWidget ?? _buildShimmerItem(),
           addWeightSuccess: () => _cachedWeightWidget ?? _buildShimmerItem(),
-          addWeightError: () => _buildErrorBox("خطأ في الوزن"),
+          addWeightError: () => _buildErrorBox(LocaleKeys.weight_error.tr()),
           getWeightLoading: () => _cachedWeightWidget ?? _buildShimmerItem(),
           getWeightSuccess: (weights) {
             Widget widget;
@@ -461,7 +212,7 @@ class _QuickStateCardState extends State<QuickStateCard>
               final last = weights.last;
               widget = StateItem(
                 icon: Icons.monitor_weight,
-                label: 'Weight',
+                label: LocaleKeys.weight.tr(),
                 value: last.weight.toString(),
                 unit: 'kg',
                 color: ColorsManager.lightGreen,
@@ -471,7 +222,8 @@ class _QuickStateCardState extends State<QuickStateCard>
             _cachedWeightWidget = widget;
             return widget;
           },
-          getWeightError: (error) => _buildErrorBox("خطأ في الوزن"),
+          getWeightError: (error) =>
+              _buildErrorBox(LocaleKeys.weight_error.tr()),
         );
       },
     );
@@ -521,7 +273,7 @@ class _QuickStateCardState extends State<QuickStateCard>
   Widget _buildEmptyWeightBox() {
     return StateItem(
       icon: Icons.monitor_weight,
-      label: 'Weight',
+      label: LocaleKeys.weight.tr(),
       value: "--",
       unit: 'kg',
       color: ColorsManager.lightGreen.withOpacity(0.6),
@@ -532,7 +284,7 @@ class _QuickStateCardState extends State<QuickStateCard>
   Widget _buildEmptySugarBox() {
     return StateItem(
       icon: Icons.bloodtype,
-      label: 'Sugar',
+      label: LocaleKeys.sugar.tr(),
       value: '--',
       unit: 'mg/dL',
       color: ColorsManager.red.withOpacity(0.6),
@@ -543,7 +295,7 @@ class _QuickStateCardState extends State<QuickStateCard>
   Widget _buildEmptyPressureBox() {
     return StateItem(
       icon: Icons.favorite,
-      label: 'Pressure',
+      label: LocaleKeys.pressure.tr(),
       value: "--/--",
       unit: 'mmHg',
       color: ColorsManager.mainBlue.withOpacity(0.6),

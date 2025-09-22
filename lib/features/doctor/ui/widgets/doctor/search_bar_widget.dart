@@ -1,6 +1,8 @@
 
 import 'package:challenge_diabetes/core/theming/colors.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +25,7 @@ class SearchBarWidget extends StatelessWidget {
           context.read<DoctorsCubit>().searchDoctors(value);
         },
         decoration: InputDecoration(
-          hintText: 'ابحث عن طبيب...',
+          hintText: LocaleKeys.search_doctor_hint.tr(),
           prefixIcon: Icon(
             Icons.search,
             color: ColorsManager.mainBlue,

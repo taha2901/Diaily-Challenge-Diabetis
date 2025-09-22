@@ -1,32 +1,57 @@
-
 import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/state_card.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-class SatatesCardSuccess extends StatelessWidget {
+class ModernStatsCardSuccess extends StatelessWidget {
   final List<DoctorResponseBody> doctors;
-  const SatatesCardSuccess({super.key, required this.doctors});
+
+  const ModernStatsCardSuccess({super.key, required this.doctors});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        StateCard(title: 'إجمالي الأطباء', value: doctors.length.toString()),
-        StateCard(
-          title: 'متاحين الآن',
-          value: _getAvailableDoctorsCount(doctors).toString(),
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.3),
+          width: 1,
         ),
-        StateCard(
-          title: 'متوسط التقييم',
-          value: _getAverageRating(doctors).toStringAsFixed(1),
-        ),
-      ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: StateItem(
+              icon: Icons.groups_rounded,
+              title: LocaleKeys.total_doctors.tr(),
+              value: doctors.length.toString(),
+            ),
+          ),
+          Container(
+            width: 1,
+            height: 40,
+            color: Colors.white.withOpacity(0.3),
+          ),
+          Expanded(
+            child: StateItem(
+              icon: Icons.star_rounded,
+              title: LocaleKeys.average_rating.tr(),
+              value: _getAverageRating(doctors).toStringAsFixed(1),
+            ),
+          ),
+        ],
+      ),
     );
-  }
-  
-  int _getAvailableDoctorsCount(List<DoctorResponseBody> doctors) {
-    return doctors.length;
   }
 
   double _getAverageRating(List<DoctorResponseBody> doctors) {
@@ -35,13 +60,11 @@ class SatatesCardSuccess extends StatelessWidget {
     final totalRating = doctors
         .where((doctor) => doctor.rate != null)
         .map((doctor) => doctor.rate!)
-        .reduce((a, b) => a + b);
+        .fold(0.0, (a, b) => a + b);
 
-    final doctorsWithRating = doctors
-        .where((doctor) => doctor.rate != null)
-        .length;
+    final doctorsWithRating =
+        doctors.where((doctor) => doctor.rate != null).length;
 
     return doctorsWithRating > 0 ? totalRating / doctorsWithRating : 0.0;
   }
-
 }

@@ -1,10 +1,37 @@
 
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-class CustomAppBar extends StatelessWidget {
+
+class CustomAppBar extends StatefulWidget {
   const CustomAppBar({
     super.key,
   });
+
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  String? _currentLocale;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // التحقق من تغيير اللغة
+    final newLocale = context.locale.toString();
+    if (_currentLocale != null && _currentLocale != newLocale) {
+      if (mounted) {
+        setState(() {
+          _currentLocale = newLocale;
+        });
+      }
+    } else {
+      _currentLocale = newLocale;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +41,7 @@ class CustomAppBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hello Ahmed',
+              LocaleKeys.hello_user.tr(),
               style: TextStyle(
                 color: Colors.grey[800],
                 fontSize: 24,
@@ -22,7 +49,7 @@ class CustomAppBar extends StatelessWidget {
               ),
             ),
             Text(
-              'How are you today?',
+              LocaleKeys.how_are_you.tr(),
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 14,

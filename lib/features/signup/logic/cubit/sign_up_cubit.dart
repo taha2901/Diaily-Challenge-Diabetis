@@ -121,7 +121,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       }
     } catch (e) {
       emit(RegisterState.registerError(error: 'Error picking image from gallery'));
-      print('Error picking image from gallery: $e');
+      debugPrint('Error picking image from gallery: $e');
     }
   }
 

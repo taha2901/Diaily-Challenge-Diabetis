@@ -1,10 +1,12 @@
 import 'package:challenge_diabetes/features/home/ui/home_page.dart';
 import 'package:challenge_diabetes/features/measurments/ui/measurments_screen.dart';
 import 'package:challenge_diabetes/features/profile/ui/profile_page.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CustomBottomNavbar extends StatefulWidget {
   const CustomBottomNavbar({super.key});
@@ -24,7 +26,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
   }
 
   List<Widget> _buildScreens() {
-    return [DiabetesHomePage(), MeasurementsScreen(), ProfilePage()];
+    return [const DiabetesHomePage(), const MeasurementsScreen(), const ProfilePage()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems(BuildContext context) {
@@ -32,21 +34,20 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.home),
-        title: 'Home',
-        activeColorPrimary: theme.colorScheme.primary,
+        title: LocaleKeys.home.tr(),
+        // activeColorPrimary: theme.colorScheme.primary,
         inactiveColorPrimary: theme.disabledColor,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Iconsax.bag_tick),
-        title: 'measurments',
-        activeColorPrimary: theme.colorScheme.primary,
+        title: LocaleKeys.measurements.tr(),
+        // activeColorPrimary: theme.colorScheme.primary,
         inactiveColorPrimary: theme.disabledColor,
       ),
-
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.person),
-        title: 'Profile',
-        activeColorPrimary: theme.colorScheme.primary,
+        title: LocaleKeys.profile.tr(),
+        // activeColorPrimary: theme.colorScheme.primary,
         inactiveColorPrimary: theme.disabledColor,
       ),
     ];
@@ -70,13 +71,9 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
         },
         items: _navBarsItems(context),
         navBarStyle: NavBarStyle.style9,
-        backgroundColor:
-            theme.bottomNavigationBarTheme.backgroundColor ??
-            theme.colorScheme.surface,
+        backgroundColor: theme.bottomNavigationBarTheme.backgroundColor ?? theme.colorScheme.surface,
         decoration: NavBarDecoration(
-          colorBehindNavBar:
-              theme.bottomNavigationBarTheme.backgroundColor ??
-              theme.colorScheme.surface,
+          colorBehindNavBar: theme.bottomNavigationBarTheme.backgroundColor ?? theme.colorScheme.surface,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           boxShadow: const [
             BoxShadow(

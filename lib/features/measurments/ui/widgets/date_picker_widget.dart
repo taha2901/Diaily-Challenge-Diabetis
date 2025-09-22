@@ -1,4 +1,6 @@
 import 'package:challenge_diabetes/core/helpers/constants.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DatePickerWidget extends StatelessWidget {
@@ -32,7 +34,7 @@ class DatePickerWidget extends StatelessWidget {
           _buildDateIcon(),
           const SizedBox(width: 12),
           Text(
-            "التاريخ: $selectedDate",
+            "${LocaleKeys.date.tr()}: $selectedDate",
             style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16,

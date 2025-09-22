@@ -16,6 +16,8 @@ import 'package:challenge_diabetes/features/profile/data/repos/profile_repo.dart
 import 'package:challenge_diabetes/features/profile/logic/profile_cubit.dart';
 import 'package:challenge_diabetes/features/signup/data/repo/sign_up_repo.dart';
 import 'package:challenge_diabetes/features/signup/logic/cubit/sign_up_cubit.dart';
+import 'package:challenge_diabetes/features/sports/data/repo/exercise_repo.dart';
+import 'package:challenge_diabetes/features/sports/logic/exercise_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
@@ -63,8 +65,8 @@ Future<void> setUpGetIt() async {
   getit.registerFactory<ProfileCubit>(() => ProfileCubit(getit()));
 
   //exercise
-  // getit.registerLazySingleton<ExerciseRepo>(() => ExerciseRepo(getit()));
-  // getit.registerFactory<ExerciseCubit>(() => ExerciseCubit(getit()));
+  getit.registerLazySingleton<ExerciseRepo>(() => ExerciseRepo(getit()));
+  getit.registerFactory<ExerciseCubit>(() => ExerciseCubit(getit()));
 
   //favourite
   // getit.registerLazySingleton<FavouriteRepo>(() => FavouriteRepo(getit()));

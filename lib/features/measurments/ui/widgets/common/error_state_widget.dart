@@ -1,3 +1,4 @@
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 
 class ErrorStateWidget extends StatelessWidget {
@@ -11,7 +12,7 @@ class ErrorStateWidget extends StatelessWidget {
         children: [
           Icon(Icons.error_outline, size: 48, color: Colors.red),
           SizedBox(height: 16),
-          Text("حدث خطأ أثناء تحميل البيانات", style: TextStyle(color: Colors.red)),
+          Text(LocaleKeys.pressure_error, style: TextStyle(color: Colors.red)),
         ],
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:challenge_diabetes/core/routings/routers.dart';
 import 'package:challenge_diabetes/core/theming/styles.dart';
 import 'package:challenge_diabetes/features/medicals/logic/medicine_cubit.dart';
@@ -6,6 +5,8 @@ import 'package:challenge_diabetes/features/medicals/model/data/medicine_respons
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:easy_localization/easy_localization.dart';
+import '../../../../gen/locale_keys.g.dart';
 
 class MedicineCard extends StatelessWidget {
   final MedicineResponseBody medicine;
@@ -51,7 +52,7 @@ class MedicineCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        medicine.name ?? 'Unnamed Medicine',
+                        medicine.name ?? LocaleKeys.unknown.tr(),
                         style: TextStyles.font18DarkBlueBold,
                       ),
                       SizedBox(height: 4.h),
@@ -67,38 +68,37 @@ class MedicineCard extends StatelessWidget {
                 ),
                 PopupMenuButton<String>(
                   onSelected: (value) async {
-                    if (value == 'edit') {
+                    if (value == LocaleKeys.edit.tr()) {
                       final result = await Navigator.pushNamed(
                         context,
                         Routers.editMedicine,
                         arguments: medicine,
                       );
-                      // إذا تم تعديل الدواء بنجاح، قم بتحديث القائمة
                       if (result == true) {
                         context.read<MedicineCubit>().getMedicine();
                       }
-                    } else if (value == 'delete') {
+                    } else if (value == LocaleKeys.delete.tr()) {
                       _showDeleteDialog(context, medicine.id!);
                     }
                   },
                   itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: 'edit',
+                    PopupMenuItem(
+                      value: LocaleKeys.edit.tr(),
                       child: Row(
                         children: [
-                          Icon(Icons.edit, color: Colors.blue),
-                          SizedBox(width: 8),
-                          Text('Edit'),
+                          const Icon(Icons.edit, color: Colors.blue),
+                          const SizedBox(width: 8),
+                          Text(LocaleKeys.edit.tr()),
                         ],
                       ),
                     ),
-                    const PopupMenuItem(
-                      value: 'delete',
+                    PopupMenuItem(
+                      value: LocaleKeys.delete.tr(),
                       child: Row(
                         children: [
-                          Icon(Icons.delete, color: Colors.red),
-                          SizedBox(width: 8),
-                          Text('Delete'),
+                          const Icon(Icons.delete, color: Colors.red),
+                          const SizedBox(width: 8),
+                          Text(LocaleKeys.delete.tr()),
                         ],
                       ),
                     ),
@@ -139,21 +139,23 @@ class MedicineCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text("Delete Medicine"),
-        content: const Text("Are you sure you want to delete this medicine?"),
+        title: Text(LocaleKeys.delete_medicine_title.tr()),
+        content: Text(LocaleKeys.delete_medicine_message.tr()),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: Text("Cancel", style: TextStyle(color: Colors.grey[600])),
+            child: Text(
+              LocaleKeys.cancel.tr(),
+              style: TextStyle(color: Colors.grey[600]),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(dialogContext);
-              // 👉 استخدم Original context
               context.read<MedicineCubit>().deleteMedicine(id);
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text("Delete"),
+            child: Text(LocaleKeys.delete.tr()),
           ),
         ],
       ),

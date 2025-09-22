@@ -1,4 +1,6 @@
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:challenge_diabetes/features/medicals/logic/medicine_cubit.dart';
@@ -7,9 +9,32 @@ import 'package:challenge_diabetes/features/home/ui/widgets/medication_item.dart
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
-class MedicationsCard extends StatelessWidget {
+class MedicationsCard extends StatefulWidget {
   const MedicationsCard({super.key});
 
+  @override
+  State<MedicationsCard> createState() => _MedicationsCardState();
+}
+
+class _MedicationsCardState extends State<MedicationsCard> {
+    String? _currentLocale;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // التحقق من تغيير اللغة
+    final newLocale = context.locale.toString();
+    if (_currentLocale != null && _currentLocale != newLocale) {
+      if (mounted) {
+        setState(() {
+          _currentLocale = newLocale;
+        });
+      }
+    } else {
+      _currentLocale = newLocale;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MedicineCubit, MedicineState>(
@@ -179,9 +204,9 @@ class MedicationsCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Medication Reminder',
+                  LocaleKeys.medication_reminder.tr(),
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),

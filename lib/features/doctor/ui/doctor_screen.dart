@@ -1,20 +1,16 @@
-import 'package:challenge_diabetes/core/theming/colors.dart';
 import 'package:challenge_diabetes/core/widget/custom_app_bar_doctors.dart';
-import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/doctor_card.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/doctor_list.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/empty_doc_list.dart';
 import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/empty_search_widget.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/search_bar_widget.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/states_card_error.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/states_card_loading.dart';
-import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/states_card_success.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/headers_info_doctor.dart';
 import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/doctor_error_retry_model.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_cubit.dart';
 import 'package:challenge_diabetes/features/doctor/logic/doctors_state.dart';
+import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/shimmer_load_doctor.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'widgets/doctor/states_card_initial.dart';
 
 class DoctorsListScreen extends StatefulWidget {
   const DoctorsListScreen({super.key});
@@ -23,89 +19,69 @@ class DoctorsListScreen extends StatefulWidget {
   State<DoctorsListScreen> createState() => _DoctorsListScreenState();
 }
 
-class _DoctorsListScreenState extends State<DoctorsListScreen> {
+class _DoctorsListScreenState extends State<DoctorsListScreen>
+    with SingleTickerProviderStateMixin {
   String searchQuery = '';
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorsManager.mainBackGround,
+      backgroundColor: const Color(0xFFF8FAFB),
       body: Column(
         children: [
-          const CustomAppBarForDoctors(title: 'الأطباء المتخصصين'),
-          // Header with statistics
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: ColorsManager.mainBlue,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: Column(
-                children: [
-                  // Search Bar
-                  SearchBarWidget(),
-                  // Statistics with BlocBuilder
-                  BlocBuilder<DoctorsCubit, DoctorsState>(
-                    builder: (context, state) {
-                      return state.maybeWhen(
-                        orElse: () => const StatesCardInitial(),
-                        initial: () => StatesCardInitial(),
-                        doctorLoading: () => StatesCardLoading(),
-                        doctorSuccess: (doctors) {
-                          return SatatesCardSuccess(doctors: doctors);
-                        },
-                        doctorError: (error) => StatesCardError(),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
+           CustomAppBarForDoctors(title: LocaleKeys.specialized_doctors.tr()),
+
+          HeadersInfoDoctor(),
+
+          // قائمة الأطباء
           Expanded(
-            child: BlocBuilder<DoctorsCubit, DoctorsState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  orElse: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  initial: () => const Center(child: Text('لا توجد بيانات')),
-                  doctorLoading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  doctorSearch: (filtered) {
-                    if (filtered.isEmpty) {
-                      return EmptySearchWidget();
-                    }
-                    return buildDoctorsList(filtered, context);
-                  },
-
-                  doctorSuccess: (doctors) {
-                    final cubit = context.read<DoctorsCubit>();
-                    if (cubit.filteredDoctors.isEmpty) {
-                      return EmptySearchWidget();
-                    }
-
-                    return RefreshIndicator(
-                      onRefresh: () async {
-                        context.read<DoctorsCubit>().getDoctors();
-                      },
-                      child: ListView.builder(
-                        padding: EdgeInsets.only(top: 8.h, bottom: 20.h),
-                        itemCount: cubit.filteredDoctors.length,
-                        itemBuilder: (context, index) {
-                          final doctor = cubit.filteredDoctors[index];
-                          return DoctorCard(doctor: doctor);
-                        },
-                      ),
-                    );
-                  },
-                  doctorError: (error) => DoctorErrorRetryWidget(error: error),
-                );
-              },
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: BlocBuilder<DoctorsCubit, DoctorsState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    orElse: () => ShimmerLoadDoctor(),
+                    initial: () => EmptyDocList(),
+                    doctorLoading: () => ShimmerLoadDoctor(),
+                    doctorSearch: (filtered) {
+                      if (filtered.isEmpty) {
+                        return const EmptySearchWidget();
+                      }
+                      return DoctorList(doctors:  filtered);
+                    },
+                    doctorSuccess: (doctors) {
+                      final cubit = context.read<DoctorsCubit>();
+                      if (cubit.filteredDoctors.isEmpty) {
+                        return const EmptySearchWidget();
+                      }
+                      return DoctorList(doctors:  cubit.filteredDoctors);
+                    },
+                    doctorError: (error) =>
+                        DoctorErrorRetryWidget(error: error),
+                  );
+                },
+              ),
             ),
           ),
         ],
@@ -113,20 +89,3 @@ class _DoctorsListScreenState extends State<DoctorsListScreen> {
     );
   }
 }
-
- Widget buildDoctorsList(List<DoctorResponseBody> doctors, BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        context.read<DoctorsCubit>().getDoctors();
-      },
-      child: ListView.builder(
-        padding: EdgeInsets.only(top: 8.h, bottom: 20.h),
-        itemCount: doctors.length,
-        itemBuilder: (context, index) {
-          final doctor = doctors[index];
-          return DoctorCard(doctor: doctor);
-        },
-      ),
-    );
-  }
-

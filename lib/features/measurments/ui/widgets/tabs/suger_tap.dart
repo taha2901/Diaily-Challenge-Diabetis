@@ -7,11 +7,13 @@ import 'package:challenge_diabetes/features/measurments/ui/widgets/common/empty_
 import 'package:challenge_diabetes/features/measurments/ui/widgets/common/error_state_widget.dart';
 import 'package:challenge_diabetes/features/measurments/ui/widgets/common/loading_state_widget.dart';
 import 'package:challenge_diabetes/features/measurments/ui/widgets/common/measurement_content_widget.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-class SugarTab extends StatelessWidget {
+class SugarTab extends StatefulWidget {
   final String selectedDate;
 
   const SugarTab({
@@ -19,6 +21,11 @@ class SugarTab extends StatelessWidget {
     required this.selectedDate,
   });
 
+  @override
+  State<SugarTab> createState() => _SugarTabState();
+}
+
+class _SugarTabState extends State<SugarTab> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MeasurmentsCubit, MeasurmentsState>(
@@ -29,8 +36,8 @@ class SugarTab extends StatelessWidget {
             if (bloodSugar.isEmpty) {
               return EmptyStateWidget(
                 icon: Icons.bloodtype,
-                message: 'لا توجد قراءات سكر حالياً',
-                onRefresh: () => context.read<MeasurmentsCubit>().fetchSugarData(selectedDate),
+                message: LocaleKeys.dont_exist_suger_date.tr(),
+                onRefresh: () => context.read<MeasurmentsCubit>().fetchSugarData(widget.selectedDate),
               );
             }
             

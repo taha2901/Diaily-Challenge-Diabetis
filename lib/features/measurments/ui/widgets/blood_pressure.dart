@@ -1,4 +1,6 @@
 import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/blood_pressure_request_model.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class BloodPressureForm extends StatefulWidget {
@@ -22,14 +24,11 @@ class BloodPressureFormState extends State<BloodPressureForm>
   @override
   void initState() {
     super.initState();
-    // Listen to changes to update status
     _systolicController.addListener(_updateStatus);
     _diastolicController.addListener(_updateStatus);
   }
 
-  void _updateStatus() {
-    setState(() {});
-  }
+  void _updateStatus() => setState(() {});
 
   @override
   void dispose() {
@@ -61,21 +60,21 @@ class BloodPressureFormState extends State<BloodPressureForm>
     Color statusColor;
 
     if (systolic < 120 && diastolic < 80) {
-      status = "طبيعي";
+      status = LocaleKeys.normal.tr();
       statusColor = Colors.green;
     } else if ((systolic >= 120 && systolic <= 139) ||
         (diastolic >= 80 && diastolic <= 89)) {
-      status = "مرحلة ما قبل ارتفاع الضغط";
+      status = LocaleKeys.pre_hypertension.tr();
       statusColor = Colors.orange;
     } else if ((systolic >= 140 && systolic <= 180) ||
         (diastolic >= 90 && diastolic <= 120)) {
-      status = "ضغط مرتفع";
+      status = LocaleKeys.high_pressure.tr();
       statusColor = Colors.red;
     } else if (systolic > 180 || diastolic > 120) {
-      status = "أزمة ارتفاع ضغط الدم (طارئ)";
+      status = LocaleKeys.hypertensive_crisis.tr();
       statusColor = Colors.purple;
     } else {
-      status = "غير محدد";
+      status = LocaleKeys.undefined.tr();
       statusColor = Colors.grey;
     }
 
@@ -92,7 +91,7 @@ class BloodPressureFormState extends State<BloodPressureForm>
           Icon(Icons.favorite, color: statusColor),
           const SizedBox(width: 8),
           Text(
-            "الحالة: $status",
+            "${LocaleKeys.status.tr()}: $status",
             style: TextStyle(fontWeight: FontWeight.bold, color: statusColor),
           ),
         ],
@@ -141,9 +140,9 @@ class BloodPressureFormState extends State<BloodPressureForm>
                       ),
                     ),
                     const SizedBox(width: 12),
-                    const Text(
-                      'قياس ضغط الدم',
-                      style: TextStyle(
+                    Text(
+                      LocaleKeys.blood_pressure_measurement.tr(),
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF1F2937),
@@ -152,17 +151,16 @@ class BloodPressureFormState extends State<BloodPressureForm>
                   ],
                 ),
                 const SizedBox(height: 20),
-    
+
                 // Systolic and Diastolic in a Row
                 Row(
                   children: [
-                    // Systolic Pressure
                     Expanded(
                       child: TextFormField(
                         controller: _systolicController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: 'الانقباض',
+                          labelText: LocaleKeys.systolic.tr(),
                           hintText: '120',
                           suffixText: 'mmHg',
                           prefixIcon: const Icon(
@@ -184,28 +182,25 @@ class BloodPressureFormState extends State<BloodPressureForm>
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'مطلوب';
+                            return LocaleKeys.required.tr();
                           }
                           final pressure = int.tryParse(value);
                           if (pressure == null ||
                               pressure < 80 ||
                               pressure > 250) {
-                            return '80-250';
+                            return LocaleKeys.systolic_range.tr();
                           }
                           return null;
                         },
                       ),
                     ),
-    
                     const SizedBox(width: 16),
-    
-                    // Diastolic Pressure
                     Expanded(
                       child: TextFormField(
                         controller: _diastolicController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          labelText: 'الانبساط',
+                          labelText: LocaleKeys.diastolic.tr(),
                           hintText: '80',
                           suffixText: 'mmHg',
                           prefixIcon: const Icon(
@@ -227,13 +222,13 @@ class BloodPressureFormState extends State<BloodPressureForm>
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'مطلوب';
+                            return LocaleKeys.required.tr();
                           }
                           final pressure = int.tryParse(value);
                           if (pressure == null ||
                               pressure < 40 ||
                               pressure > 150) {
-                            return '40-150';
+                            return LocaleKeys.diastolic_range.tr();
                           }
                           return null;
                         },
@@ -241,16 +236,16 @@ class BloodPressureFormState extends State<BloodPressureForm>
                     ),
                   ],
                 ),
-    
+
                 const SizedBox(height: 16),
-    
+
                 // Heart Rate
                 TextFormField(
                   controller: _heartRateController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'معدل ضربات القلب',
-                    hintText: 'أدخل معدل النبض',
+                    labelText: LocaleKeys.heart_rate.tr(),
+                    hintText: LocaleKeys.enter_heart_rate.tr(),
                     suffixText: 'BPM',
                     prefixIcon: const Icon(
                       Icons.monitor_heart_outlined,
@@ -269,31 +264,30 @@ class BloodPressureFormState extends State<BloodPressureForm>
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال معدل ضربات القلب';
+                      return LocaleKeys.heart_rate_required.tr();
                     }
                     final heartRate = int.tryParse(value);
                     if (heartRate == null) {
-                      return 'يرجى إدخال رقم صحيح';
+                      return LocaleKeys.heart_rate_number.tr();
                     }
                     if (heartRate < 40 || heartRate > 200) {
-                      return 'معدل النبض يجب أن يكون بين 40-200';
+                      return LocaleKeys.heart_rate_range.tr();
                     }
                     return null;
                   },
                 ),
-    
+
                 const SizedBox(height: 16),
-    
-                // Blood Pressure Status
+
                 if (_systolicController.text.isNotEmpty &&
                     _diastolicController.text.isNotEmpty)
                   _buildPressureStatus(),
               ],
             ),
           ),
-    
+
           const SizedBox(height: 20),
-    
+
           // Information Card
           Container(
             width: double.infinity,
@@ -307,18 +301,18 @@ class BloodPressureFormState extends State<BloodPressureForm>
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.info_outline,
                       color: Color(0xFF3B82F6),
                       size: 20,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
-                      'معلومات مهمة',
-                      style: TextStyle(
+                      LocaleKeys.important_info.tr(),
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF3B82F6),
@@ -326,14 +320,10 @@ class BloodPressureFormState extends State<BloodPressureForm>
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
-                  '• المعدل الطبيعي: أقل من 120/80 mmHg\n'
-                  '• مرحلة ما قبل ارتفاع الضغط: 120-139 / 80-89 mmHg\n'
-                  '• ضغط مرتفع (درجة أولى): 140-159 / 90-99 mmHg\n'
-                  '• ضغط مرتفع (درجة ثانية): 160-180 / 100-120 mmHg\n'
-                  '• أزمة ارتفاع ضغط الدم: أكثر من 180 / 120 mmHg (طارئ)',
-                  style: TextStyle(
+                  LocaleKeys.bp_info.tr(),
+                  style: const TextStyle(
                     fontSize: 13,
                     color: Color(0xFF1F2937),
                     height: 1.5,

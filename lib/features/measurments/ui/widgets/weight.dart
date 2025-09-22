@@ -1,5 +1,7 @@
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
 import 'package:challenge_diabetes/features/measurments/model/data/add_measurments_models/weight_request_model.dart';
+import 'package:challenge_diabetes/gen/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,52 +17,53 @@ class WeightForm extends StatefulWidget {
 class WeightFormState extends State<WeightForm>
     with AutomaticKeepAliveClientMixin {
   final TextEditingController _weightController = TextEditingController();
-  String _selectedActivity = 'مشي';
+  String _selectedActivity = LocaleKeys.walking.tr();
 
   @override
   bool get wantKeepAlive => true;
+
   final List<Map<String, dynamic>> _activities = [
     {
-      'title': 'مشي',
-      'description': 'المشي العادي أو السريع',
+      'title': LocaleKeys.walking.tr(),
+      'description': LocaleKeys.walking_desc.tr(),
       'icon': Icons.directions_walk,
       'color': const Color(0xFF10B981),
-      'calories': '3-5 سعرات/دقيقة',
+      'calories': LocaleKeys.walking_calories.tr(),
     },
     {
-      'title': 'جري',
-      'description': 'الجري أو الهرولة',
+      'title': LocaleKeys.running.tr(),
+      'description': LocaleKeys.running_desc.tr(),
       'icon': Icons.directions_run,
       'color': const Color(0xFFEF4444),
-      'calories': '8-12 سعرات/دقيقة',
+      'calories': LocaleKeys.running_calories.tr(),
     },
     {
-      'title': 'سباحة',
-      'description': 'السباحة أو التمارين المائية',
+      'title': LocaleKeys.swimming.tr(),
+      'description': LocaleKeys.swimming_desc.tr(),
       'icon': Icons.pool,
       'color': const Color(0xFF3B82F6),
-      'calories': '6-10 سعرات/دقيقة',
+      'calories': LocaleKeys.swimming_calories.tr(),
     },
     {
-      'title': 'ركوب الدراجة',
-      'description': 'ركوب الدراجة الهوائية',
+      'title': LocaleKeys.cycling.tr(),
+      'description': LocaleKeys.cycling_desc.tr(),
       'icon': Icons.directions_bike,
       'color': const Color(0xFF8B5CF6),
-      'calories': '5-8 سعرات/دقيقة',
+      'calories': LocaleKeys.cycling_calories.tr(),
     },
     {
-      'title': 'تمارين رياضية',
-      'description': 'تمارين اللياقة البدنية',
+      'title': LocaleKeys.fitness.tr(),
+      'description': LocaleKeys.fitness_desc.tr(),
       'icon': Icons.fitness_center,
       'color': const Color(0xFFF59E0B),
-      'calories': '4-7 سعرات/دقيقة',
+      'calories': LocaleKeys.fitness_calories.tr(),
     },
     {
-      'title': 'يوجا',
-      'description': 'تمارين اليوجا والاسترخاء',
+      'title': LocaleKeys.yoga.tr(),
+      'description': LocaleKeys.yoga_desc.tr(),
       'icon': Icons.self_improvement,
       'color': const Color(0xFFEC4899),
-      'calories': '2-4 سعرات/دقيقة',
+      'calories': LocaleKeys.yoga_calories.tr(),
     },
   ];
 
@@ -70,16 +73,14 @@ class WeightFormState extends State<WeightForm>
     _weightController.addListener(_updateStatus);
   }
 
-  void _updateStatus() {
-    setState(() {});
-  }
+  void _updateStatus() => setState(() {});
 
   WeightRequestBody? read() {
     final w = double.tryParse(_weightController.text.trim());
     if (w == null) return null;
     return WeightRequestBody(
       weight: w.toInt(),
-      sport: _selectedActivity.trim() == 'مشي',
+      sport: _selectedActivity == LocaleKeys.walking.tr(),
     );
   }
 
@@ -132,9 +133,9 @@ class WeightFormState extends State<WeightForm>
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Text(
-                        'قياس الوزن',
-                        style: TextStyle(
+                      Text(
+                        LocaleKeys.weight_measurement.tr(),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF1F2937),
@@ -151,9 +152,9 @@ class WeightFormState extends State<WeightForm>
                       decimal: true,
                     ),
                     decoration: InputDecoration(
-                      labelText: 'الوزن الحالي',
-                      hintText: 'أدخل وزنك',
-                      suffixText: 'كجم',
+                      labelText: LocaleKeys.current_weight.tr(),
+                      hintText: LocaleKeys.enter_weight.tr(),
+                      suffixText: LocaleKeys.kg.tr(),
                       prefixIcon: const Icon(
                         Icons.straighten,
                         color: Color(0xFF10B981),
@@ -171,14 +172,14 @@ class WeightFormState extends State<WeightForm>
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'يرجى إدخال الوزن';
+                        return LocaleKeys.weight_required.tr();
                       }
                       final weight = double.tryParse(value);
                       if (weight == null) {
-                        return 'يرجى إدخال رقم صحيح';
+                        return LocaleKeys.weight_number.tr();
                       }
                       if (weight < 30 || weight > 300) {
-                        return 'الوزن يجب أن يكون بين 30-300 كجم';
+                        return LocaleKeys.weight_range.tr();
                       }
                       return null;
                     },
@@ -186,7 +187,6 @@ class WeightFormState extends State<WeightForm>
 
                   const SizedBox(height: 16),
 
-                  // Weight Status
                   if (_weightController.text.isNotEmpty) _buildWeightStatus(),
                 ],
               ),
@@ -227,9 +227,9 @@ class WeightFormState extends State<WeightForm>
                         ),
                       ),
                       horizontalSpace(12),
-                      const Text(
-                        'النشاط البدني المفضل',
-                        style: TextStyle(
+                      Text(
+                        LocaleKeys.favorite_activity.tr(),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF1F2937),
@@ -239,21 +239,21 @@ class WeightFormState extends State<WeightForm>
                   ),
                   verticalSpace(16),
 
-                  // Activity Grid
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          childAspectRatio: 1.1,
-                        ),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1.1,
+                    ),
                     itemCount: _activities.length,
                     itemBuilder: (context, index) {
                       final activity = _activities[index];
-                      final isSelected = _selectedActivity == activity['title'];
+                      final isSelected =
+                          _selectedActivity == activity['title'];
 
                       return InkWell(
                         onTap: () {
@@ -326,7 +326,7 @@ class WeightFormState extends State<WeightForm>
 
             const SizedBox(height: 20),
 
-            // BMI Information Card
+            // BMI Info Card
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -349,28 +349,22 @@ class WeightFormState extends State<WeightForm>
                 children: [
                   Row(
                     children: [
-                      Icon(
-                        Icons.calculate,
-                        color: const Color(0xFF10B981),
-                        size: 20,
-                      ),
+                      Icon(Icons.calculate,
+                          color: const Color(0xFF10B981), size: 20),
                       const SizedBox(width: 8),
                       Text(
-                        'مؤشر كتلة الجسم (BMI)',
-                        style: TextStyle(
+                        LocaleKeys.bmi_title.tr(),
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF10B981),
+                          color: Color(0xFF10B981),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '• أقل من 18.5: نقص في الوزن\n'
-                    '• 18.5-24.9: وزن طبيعي\n'
-                    '• 25-29.9: زيادة في الوزن\n'
-                    '• 30 أو أكثر: سمنة',
+                    LocaleKeys.bmi_info.tr(),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[700],
@@ -386,18 +380,15 @@ class WeightFormState extends State<WeightForm>
                     ),
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.info_outline,
-                          color: const Color(0xFF3B82F6),
-                          size: 16,
-                        ),
+                        const Icon(Icons.info_outline,
+                            color: Color(0xFF3B82F6), size: 16),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'لحساب BMI تحتاج أيضاً لإدخال الطول في الملف الشخصي',
-                            style: TextStyle(
+                            LocaleKeys.bmi_note.tr(),
+                            style: const TextStyle(
                               fontSize: 11,
-                              color: const Color(0xFF3B82F6),
+                              color: Color(0xFF3B82F6),
                             ),
                           ),
                         ),
@@ -415,38 +406,33 @@ class WeightFormState extends State<WeightForm>
 
   Widget _buildWeightStatus() {
     final weight = double.tryParse(_weightController.text) ?? 0;
-
     if (weight <= 0) return const SizedBox.shrink();
-
-    // This is a simplified status - in real app, you'd need height for BMI
-    String status = 'تم تسجيل الوزن';
-    Color statusColor = const Color(0xFF10B981);
-    IconData statusIcon = Icons.check_circle;
 
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: statusColor.withOpacity(0.1),
+        color: const Color(0xFF10B981).withOpacity(0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: statusColor.withOpacity(0.3)),
+        border: Border.all(color: const Color(0xFF10B981).withOpacity(0.3)),
       ),
       child: Row(
         children: [
-          Icon(statusIcon, color: statusColor, size: 20),
+          const Icon(Icons.check_circle,
+              color: Color(0xFF10B981), size: 20),
           const SizedBox(width: 8),
           Text(
-            status,
-            style: TextStyle(
-              color: statusColor,
+            LocaleKeys.weight_recorded.tr(),
+            style: const TextStyle(
+              color: Color(0xFF10B981),
               fontWeight: FontWeight.w600,
               fontSize: 14,
             ),
           ),
           const Spacer(),
           Text(
-            '${weight.toStringAsFixed(1)} كجم',
-            style: TextStyle(
-              color: statusColor,
+            '${weight.toStringAsFixed(1)} ${LocaleKeys.kg.tr()}',
+            style: const TextStyle(
+              color: Color(0xFF10B981),
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),

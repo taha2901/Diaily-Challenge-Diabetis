@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:easy_localization/easy_localization.dart' as easy_localization;
 
 class DocApp extends StatelessWidget {
   final AppRouter appRouter;
@@ -25,29 +26,33 @@ class DocApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        final today = DateHelper.formatDate(DateTime.now());
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => getit<RegisterCubit>()),
             BlocProvider(
               create: (context) => getit<MedicineCubit>()..getMedicine(),
             ),
-            // BlocProvider(create: (_) => getit<MeasurmentsCubit>()..fetchSugarData(today)),
-            // BlocProvider(create: (_) => getit<PressureCubit>()..fetchPressureData(today)),
-            // BlocProvider(create: (_) => getit<WeightCubit>()..fetchWeightData(today)),
             BlocProvider(create: (_) => getit<MeasurmentsCubit>()),
             BlocProvider(create: (_) => getit<PressureCubit>()),
             BlocProvider(create: (_) => getit<WeightCubit>()),
             BlocProvider(create: (_) => getit<DoctorsCubit>()),
           ],
           child: MaterialApp(
-            builder: DevicePreview.appBuilder,
+            builder: (context, child) => Directionality(
+              textDirection: context.locale.languageCode == 'ar'
+                  ? TextDirection.rtl
+                  : TextDirection.ltr,
+              child: DevicePreview.appBuilder(context, child),
+            ),
             title: 'Doc App',
             theme: ThemeData(
               primaryColor: ColorsManager.mainBlue,
               scaffoldBackgroundColor: Colors.white,
               useMaterial3: true,
             ),
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
             initialRoute: isLoggedInUser ? Routers.bottomNavBar : Routers.login,
             debugShowCheckedModeBanner: false,
             onGenerateRoute: appRouter.generateRoute,
