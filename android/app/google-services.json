@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "615058398637",
+    "project_id": "daily-challenge-diabetes",
+    "storage_bucket": "daily-challenge-diabetes.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615058398637:android:5cbb7084a5207647071524",
+        "android_client_info": {
+          "package_name": "com.example.challenge_diabetes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp3Ula2uR5Mhnn_T9JlEyPUUU9_AWMKxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

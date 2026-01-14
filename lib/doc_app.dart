@@ -49,7 +49,7 @@ class DocApp extends StatelessWidget {
                   : TextDirection.ltr,
               child: DevicePreview.appBuilder(context, child),
             ),
-            title: 'Doc App',
+            title: 'Daily Challenge Diabetes App',
             theme: ThemeData(
               primaryColor: ColorsManager.mainBlue,
               scaffoldBackgroundColor: Colors.white,

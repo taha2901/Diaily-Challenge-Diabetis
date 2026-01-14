@@ -84,27 +84,27 @@ class ThankYouCard extends StatelessWidget {
 
             verticalSpace(12),
             // Total amount highlight
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).primaryColor.withOpacity(0.1),
-                    Theme.of(context).primaryColor.withOpacity(0.05),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Theme.of(context).primaryColor.withOpacity(0.3),
-                ),
-              ),
-              child: TotalPrice(title: 'Total Amount', value: '\$total'),
-            ),
+            // Container(
+            //   width: double.infinity,
+            //   padding: EdgeInsets.all(20),
+            //   decoration: BoxDecoration(
+            //     gradient: LinearGradient(
+            //       colors: [
+            //         Theme.of(context).primaryColor.withOpacity(0.1),
+            //         Theme.of(context).primaryColor.withOpacity(0.05),
+            //       ],
+            //     ),
+            //     borderRadius: BorderRadius.circular(16),
+            //     border: Border.all(
+            //       color: Theme.of(context).primaryColor.withOpacity(0.3),
+            //     ),
+            //   ),
+            //   child: TotalPrice(title: 'Total Amount', value: '\$total'),
+            // ),
 
             verticalSpace(16),
-            CardInfoWidget(),
-            verticalSpace(24),
+            // CardInfoWidget(),
+            // verticalSpace(24),
 
             // Bottom section with barcode and PAID badge
             Row(

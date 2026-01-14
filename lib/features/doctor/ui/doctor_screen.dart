@@ -1,4 +1,5 @@
 import 'package:challenge_diabetes/core/widget/custom_app_bar_doctors.dart';
+import 'package:challenge_diabetes/features/doctor/model/data/doctor_response_body.dart';
 import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/doctor_list.dart';
 import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/empty_doc_list.dart';
 import 'package:challenge_diabetes/features/doctor/ui/widgets/doctor/empty_search_widget.dart';
@@ -22,6 +23,20 @@ class DoctorsListScreen extends StatefulWidget {
 class _DoctorsListScreenState extends State<DoctorsListScreen>
     with SingleTickerProviderStateMixin {
   String searchQuery = '';
+  List<DoctorResponseBody> filteredDoctors = [];
+
+  void _filterDoctors(List<DoctorResponseBody> allDoctors) {
+    filteredDoctors = allDoctors.where((doctor) {
+      final matchesSearch =
+          searchQuery.isEmpty ||
+          doctor.userName.toLowerCase().contains(searchQuery.toLowerCase()) ||
+          doctor.doctorspecialization.toLowerCase().contains(
+            searchQuery.toLowerCase(),
+          );
+
+      return matchesSearch;
+    }).toList();
+  }
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -62,7 +77,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen>
                 builder: (context, state) {
                   return state.maybeWhen(
                     orElse: () => ShimmerLoadDoctor(),
-                    initial: () => EmptyDocList(),
+                    // initial: () => EmptyDocList(),
                     doctorLoading: () => ShimmerLoadDoctor(),
                     doctorSearch: (filtered) {
                       if (filtered.isEmpty) {

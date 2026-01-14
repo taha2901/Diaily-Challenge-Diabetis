@@ -19,15 +19,12 @@ class RegisterCubit extends Cubit<RegisterState> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>(
-    debugLabel: 'register_form',
-  );
+
   XFile? pickedImage;
 
   final ImagePicker _picker = ImagePicker();
 
   Future<void> emitRegisterState() async {
-    if (!(formKey.currentState?.validate() ?? false)) return;
 
     if (pickedImage == null) {
       emit(
@@ -53,21 +50,47 @@ class RegisterCubit extends Cubit<RegisterState> {
 
     response.when(
       success: (registerResponse) async {
-        final token = registerResponse.token ?? '';
-        final username = registerResponse.username ?? '';
+        try {
+          final token = registerResponse.token ?? '';
+          final username = registerResponse.username ?? '';
+          final photoUrl = registerResponse.photoUrl ?? '';
 
-        await SharedPrefHelper.setSecuredString(
-          SharedPrefKeys.userToken,
-          token,
-        );
-        await SharedPrefHelper.setSecuredString(
-          SharedPrefKeys.userName,
-          username,
-        );
+          // حفظ التوكن
+          await SharedPrefHelper.setSecuredString(
+            SharedPrefKeys.userToken,
+            token,
+          );
+          
+          // حفظ اسم المستخدم
+          await SharedPrefHelper.setSecuredString(
+            SharedPrefKeys.userName,
+            username,
+          );
+          
+          // حفظ رابط الصورة من الـ Response
+          if (photoUrl.isNotEmpty) {
+            await SharedPrefHelper.setSecuredString(
+              SharedPrefKeys.userPhoto,
+              photoUrl,
+            );
+          } else {
+            // في حالة عدم وجود رابط من الـ Server، احفظ المسار المحلي
+            await SharedPrefHelper.setSecuredString(
+              SharedPrefKeys.userPhoto,
+              pickedImage!.path,
+            );
+          }
 
-        DioFactory.setTokenIntoHeaderAfterLogin(token);
+          DioFactory.setTokenIntoHeaderAfterLogin(token);
 
-        emit(RegisterState.registerSuccess(registerResponse));
+          emit(RegisterState.registerSuccess(registerResponse));
+        } catch (e) {
+          emit(
+            const RegisterState.registerError(
+              error: 'حدث خطأ أثناء حفظ بيانات المستخدم',
+            ),
+          );
+        }
       },
       failure: (error) {
         emit(

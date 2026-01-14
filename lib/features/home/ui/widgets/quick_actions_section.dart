@@ -15,12 +15,12 @@ class QuickActionsSection extends StatefulWidget {
 }
 
 class _QuickActionsSectionState extends State<QuickActionsSection> {
-    String? _currentLocale;
+  String? _currentLocale;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
+
     // التحقق من تغيير اللغة
     final newLocale = context.locale.toString();
     if (_currentLocale != null && _currentLocale != newLocale) {
@@ -33,19 +33,23 @@ class _QuickActionsSectionState extends State<QuickActionsSection> {
       _currentLocale = newLocale;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(LocaleKeys.quick_actions.tr(), style: TextStyles.font18DarkBlueBold),
+        Text(
+          LocaleKeys.quick_actions.tr(),
+          style: TextStyles.font18DarkBlueBold,
+        ),
         verticalSpace(12),
         Row(
           children: [
             Expanded(
               child: ActionButton(
                 icon: Icons.add_circle_outline,
-                label:  LocaleKeys.add_reading.tr(),
+                label: LocaleKeys.add_reading.tr(),
                 color: ColorsManager.mainBlue,
                 onTap: () {
                   Navigator.of(
@@ -59,7 +63,7 @@ class _QuickActionsSectionState extends State<QuickActionsSection> {
             Expanded(
               child: ActionButton(
                 icon: Icons.camera_alt_outlined,
-                label:  LocaleKeys.food_photo.tr(),
+                label: LocaleKeys.food_photo.tr(),
                 color: ColorsManager.lightGreen,
                 onTap: () {
                   Navigator.of(
@@ -91,7 +95,7 @@ class _QuickActionsSectionState extends State<QuickActionsSection> {
             Expanded(
               child: ActionButton(
                 icon: Icons.medical_services_outlined,
-                label:  LocaleKeys.medications.tr(),
+                label: LocaleKeys.medications.tr(),
                 color: ColorsManager.yellow,
                 onTap: () {
                   Navigator.of(

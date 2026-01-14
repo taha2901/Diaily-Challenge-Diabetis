@@ -5,6 +5,8 @@ import 'package:challenge_diabetes/core/helpers/extentions.dart';
 import 'package:challenge_diabetes/core/helpers/shared_pref_helper.dart';
 import 'package:challenge_diabetes/core/routings/app_router.dart';
 import 'package:challenge_diabetes/doc_app.dart';
+import 'package:challenge_diabetes/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +26,7 @@ void main() async {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await EasyLocalization.ensureInitialized();
   await dotenv.load();
   Stripe.publishableKey = ApiKeys.publicKey;

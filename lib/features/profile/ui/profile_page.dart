@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:challenge_diabetes/core/di/dependency_injection.dart';
 import 'package:challenge_diabetes/core/helpers/shared_pref_helper.dart';
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
@@ -125,7 +126,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             title: LocaleKeys.toggle_theme.tr(),
                             subtitle: LocaleKeys.toggle_theme_sub.tr(),
                             iconColor: Colors.purple.shade600,
-                            onTap: () async {},
+                            onTap: () async {
+                              AdaptiveTheme.of(context).toggleThemeMode();
+                            },
                           ),
 
                           ModernSettingItem(

@@ -1,5 +1,4 @@
 import 'package:challenge_diabetes/core/helpers/spacing.dart';
-import 'package:challenge_diabetes/core/routings/routers.dart';
 import 'package:challenge_diabetes/core/theming/styles.dart';
 import 'package:challenge_diabetes/core/widget/app_text_button.dart';
 import 'package:challenge_diabetes/features/signup/logic/cubit/sign_up_cubit.dart';
@@ -12,8 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>(); 
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,7 @@ class RegisterScreen extends StatelessWidget {
                 // Header Section
                 _buildHeader(),
                 verticalSpace(40),
-                
+
                 // Form Card
                 Container(
                   padding: EdgeInsets.all(24.w),
@@ -46,40 +52,43 @@ class RegisterScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Column(
-                    children: [
-                      // Profile Photo Picker
-                      const ProfilePhotoPicker(),
-                      verticalSpace(24),
-                      
-                      // Form Fields
-                      const RegisterFormFields(),
-                      verticalSpace(32),
-                      
-                      // Register Button
-                      BlocBuilder<RegisterCubit, RegisterState>(
-                        builder: (context, state) {
-                          return AppTextButton(
-                            buttonText: 'Create Account',
-                            textStyle: TextStyles.font16WhiteSemiBold,
-                            buttonHeight: 50,
-                            isLoading: state is RegisterLoading,
-                            onPressed: () {
-                              _validateThenRegister(context);
-                              Navigator.pushNamed(context, Routers.login);
-                            },
-                          );
-                        },
-                      ),
-                      verticalSpace(20),
-                      
-                      // Already have account
-                      const AlreadyHaveAccountText(),
-                    ],
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        // Profile Photo Picker
+                        const ProfilePhotoPicker(),
+                        verticalSpace(24),
+                    
+                        // Form Fields
+                        const RegisterFormFields(),
+                        verticalSpace(32),
+                    
+                        // Register Button
+                        BlocBuilder<RegisterCubit, RegisterState>(
+                          builder: (context, state) {
+                            return AppTextButton(
+                              buttonText: 'Create Account',
+                              textStyle: TextStyles.font16WhiteSemiBold,
+                              buttonHeight: 50,
+                              isLoading: state is RegisterLoading,
+                              onPressed: () {
+                                _validateThenRegister(context);
+                                // Navigator.pushNamed(context, Routers.login);
+                              },
+                            );
+                          },
+                        ),
+                        verticalSpace(20),
+                    
+                        // Already have account
+                        const AlreadyHaveAccountText(),
+                      ],
+                    ),
                   ),
                 ),
                 verticalSpace(20),
-                
+
                 // BlocListener
                 const RegisterBlocListener(),
               ],
@@ -94,16 +103,11 @@ class RegisterScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Create Account',
-          style: TextStyles.font24BlueBold,
-        ),
+        Text('Create Account', style: TextStyles.font24BlueBold),
         verticalSpace(12),
         Text(
           'Sign up now and start exploring all that our app has to offer. We\'re excited to welcome you to our community!',
-          style: TextStyles.font14greyRegular.copyWith(
-            height: 1.4,
-          ),
+          style: TextStyles.font14greyRegular.copyWith(height: 1.4),
         ),
       ],
     );
@@ -111,7 +115,7 @@ class RegisterScreen extends StatelessWidget {
 
   void _validateThenRegister(BuildContext context) {
     final cubit = context.read<RegisterCubit>();
-    if (cubit.formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate()) {
       cubit.emitRegisterState();
     }
   }

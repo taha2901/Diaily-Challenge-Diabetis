@@ -28,6 +28,7 @@ class RegisterBlocListener extends StatelessWidget {
             if (Navigator.of(context).canPop()) {
               Navigator.of(context).pop();
             }
+
             _showSuccessDialog(context, data?.username ?? 'User');
           },
           registerError: (error) {
@@ -151,7 +152,8 @@ class RegisterBlocListener extends StatelessWidget {
                     onPressed: () {
                       context.pop(); // Close success dialog
                       context.pushNamedAndRemoveUntil(
-                        Routers.home,
+                        Routers
+                            .login, // ✅ أو Routers.home لو تحب يدخل يشتغل فورًا
                         predicate: (route) => false,
                       );
                     },

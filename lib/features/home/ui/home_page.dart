@@ -148,7 +148,7 @@ class _DiabetesHomePageState extends State<DiabetesHomePage>
     super.build(context); // Required for AutomaticKeepAliveClientMixin
 
     return Scaffold(
-      backgroundColor: t.colorScheme.onPrimary,
+      backgroundColor:  Colors.grey[50],
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: _onRefresh,

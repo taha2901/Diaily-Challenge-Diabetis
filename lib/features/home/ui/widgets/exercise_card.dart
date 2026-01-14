@@ -81,7 +81,7 @@ class _ExerciseCardState extends State<ExerciseCard> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      LocaleKeys.hello_user.tr(),
+                      LocaleKeys.hello_userr.tr(),
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.7),
                         fontSize: 12,

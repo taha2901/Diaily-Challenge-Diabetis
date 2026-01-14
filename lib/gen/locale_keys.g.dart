@@ -3,7 +3,7 @@
 // ignore_for_file: constant_identifier_names
 
 abstract class  LocaleKeys {
-  static const hello_user = 'hello_user';
+  static const hello_userr = 'hello_userr';
   static const how_are_you = 'how_are_you';
   static const This_Is_Loggin = 'This_Is_Loggin';
   static const welcome_back = 'welcome_back';

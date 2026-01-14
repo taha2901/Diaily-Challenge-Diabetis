@@ -41,17 +41,18 @@ class _QuickStateCardState extends State<QuickStateCard>
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 10,
-          ),
-        ],
-      ),
+     decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.withOpacity(0.2)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.05),
+              spreadRadius: 1,
+              blurRadius: 5,
+            ),
+          ],
+        ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -303,3 +304,4 @@ class _QuickStateCardState extends State<QuickStateCard>
     );
   }
 }
+
